@@ -11,6 +11,8 @@ import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.config.SparkFlexConfig;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Lanceur extends SubsystemBase {
@@ -24,20 +26,20 @@ public class Lanceur extends SubsystemBase {
   private SparkFlexConfig lanceurConfig2 = new SparkFlexConfig();
   private SparkFlexConfig lanceurConfigHood = new SparkFlexConfig();
 
-  private double conversion = 1.0;
+  private double conversionLanceur = 1.0;
   private double conversionHood = 1.0;
 
   public Lanceur() {
     lanceurConfig1.inverted(false);
     lanceurConfig1.idleMode(IdleMode.kCoast);
-    lanceurConfig1.encoder.positionConversionFactor(conversion);
-    lanceurConfig1.encoder.velocityConversionFactor(conversion / 60.0);
+    lanceurConfig1.encoder.positionConversionFactor(conversionLanceur);
+    lanceurConfig1.encoder.velocityConversionFactor(conversionLanceur / 60.0);
     lanceur1.configure(lanceurConfig1, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
     lanceurConfig2.inverted(false);
     lanceurConfig2.idleMode(IdleMode.kCoast);
-    lanceurConfig2.encoder.positionConversionFactor(conversion);
-    lanceurConfig2.encoder.velocityConversionFactor(conversion / 60.0);
+    lanceurConfig2.encoder.positionConversionFactor(conversionLanceur);
+    lanceurConfig2.encoder.velocityConversionFactor(conversionLanceur / 60.0);
     lanceur2.configure(lanceurConfig2, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
     lanceurConfigHood.inverted(false);
@@ -82,5 +84,15 @@ public class Lanceur extends SubsystemBase {
     return lanceurHood.getEncoder().getPosition();
   }
 
-  
+  public double getVitesseLanceur1() {
+    return lanceur1.getEncoder().getVelocity();
+  }
+
+  public double getVitesseLanceur2() {
+    return lanceur2.getEncoder().getVelocity();
+  }
+
+  public Command lnacerSimpleCommand() {
+    return Commands.runEnd(this::lancer, this::stop, this);
+  }
 }
