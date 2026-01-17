@@ -5,42 +5,63 @@
 package frc.robot;
 
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.commands.BasePilotableDefaut;
 import frc.robot.lib.FancyPathGeneration;
 import frc.robot.subsystems.BasePilotable;
+import frc.robot.subsystems.Lanceur;
+import frc.robot.subsystems.Tourelle;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 /**
- * This class is where the bulk of the robot should be declared. Since Command-based is a
- * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
- * periodic methods (other than the scheduler calls). Instead, the structure of the robot (including
+ * This class is where the bulk of the robot should be declared. Since
+ * Command-based is a
+ * "declarative" paradigm, very little robot logic should actually be handled in
+ * the {@link Robot}
+ * periodic methods (other than the scheduler calls). Instead, the structure of
+ * the robot (including
  * subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
-  private final CommandXboxController m_driverController =
-      new CommandXboxController(OperatorConstants.kDriverControllerPort);
+  private final CommandXboxController manette = new CommandXboxController(0);
 
-      private final BasePilotable basePilotable = new BasePilotable();
-      
-      private final FancyPathGeneration fancyPathGeneration;
+  private final BasePilotable basePilotable;
+  private final Tourelle tourelle;
+  private final Lanceur lanceur; 
 
+  private final FancyPathGeneration fancyPathGeneration;
 
   public RobotContainer() {
-    fancyPathGeneration = new FancyPathGeneration(basePilotable.getPoseSupplier(), basePilotable.getChassisSpeedsSupplier());
+    basePilotable = new BasePilotable();
+    tourelle = new Tourelle();
+    lanceur = new Lanceur(); 
+
+    fancyPathGeneration = new FancyPathGeneration(basePilotable.getPoseSupplier(),
+        basePilotable.getChassisSpeedsSupplier());
+
     configureBindings();
+
+    basePilotable.setDefaultCommand(new BasePilotableDefaut(manette::getLeftY,
+        manette::getLeftX, manette::getRightX, basePilotable));
+
   }
 
- 
   private void configureBindings() {
-    
+
+    manette.leftBumper().whileTrue(tourelle.tournerAntiHoraire());
+    manette.rightBumper().whileTrue(tourelle.tournerHoraire());
+
+    manette.rightTrigger(0.5).whileTrue(lanceur.lancerSimpleCommand()); 
+    manette.povUp().whileTrue(lanceur.sortirHoodCommand()); 
+    manette.povDown().whileTrue(lanceur.rentrerHoodCommand()); 
+
   }
 
-  
   public Command getAutonomousCommand() {
-   return null; 
+    return null;
   }
 }

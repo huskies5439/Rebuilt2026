@@ -78,6 +78,14 @@ public class Lanceur extends SubsystemBase {
     lanceurHood.setVoltage(0);
   }
 
+  public void sortirHood() {
+    setVoltageHood(2);
+  }
+
+  public void rentrerHood() {
+    setVoltageHood(-2);
+  }
+
   public double getPositionLanceur() {
     return (lanceur1.getEncoder().getPosition() + lanceur2.getEncoder().getPosition()) / 2.0;
   }
@@ -97,4 +105,13 @@ public class Lanceur extends SubsystemBase {
   public Command lancerSimpleCommand() {
     return Commands.runEnd(this::lancer, this::stop, this);
   }
+
+  public Command rentrerHoodCommand() {
+    return Commands.runEnd(this::rentrerHood, this::stopHood, this);
+  }
+
+  public Command sortirHoodCommand() {
+    return Commands.runEnd(this::sortirHood, this::stopHood, this);
+  }
+
 }

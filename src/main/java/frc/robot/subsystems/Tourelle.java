@@ -15,6 +15,8 @@ import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 
@@ -55,12 +57,15 @@ public class Tourelle extends SubsystemBase {
     moteurTourelle.setVoltage(voltage);
   }
 
-  public void stop(){
-    setVoltage(0);
+  private void setVoltageHoraire(){
+    setVoltage(-2);
+  }
+  private void setVoltageAntiHoraire(){
+    setVoltage(2);
   }
 
-  public void tourner(double voltage){
-    setVoltage(voltage);
+  public void stop(){
+    setVoltage(0);
   }
 
   public double getAngle(){
@@ -87,6 +92,15 @@ public class Tourelle extends SubsystemBase {
 
   public boolean atCible(){
     return pidTourelle.atGoal(); 
+  } 
+
+  //Commandes temporaires 
+  public Command tournerHoraire(){
+    return Commands.runEnd(this::setVoltageHoraire, this::stop, this); 
+  }
+
+  public Command tournerAntiHoraire(){
+    return Commands.runEnd(this::setVoltageAntiHoraire,this::stop,this); 
   }
 
 
