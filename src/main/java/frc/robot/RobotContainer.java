@@ -32,15 +32,17 @@ public class RobotContainer {
   private final BasePilotable basePilotable;
   private final Tourelle tourelle;
   private final Lanceur lanceur;
-  private final Gobeur gobeur = new Gobeur();
-  private final Indexeur indexeur = new Indexeur();
+  private final Gobeur gobeur;
+  private final Indexeur indexeur;
 
   private final FancyPathGeneration fancyPathGeneration;
 
   public RobotContainer() {
     basePilotable = new BasePilotable();
     tourelle = new Tourelle();
-    lanceur = new Lanceur(); 
+    lanceur = new Lanceur();
+    gobeur = new Gobeur();
+    indexeur = new Indexeur();
 
     fancyPathGeneration = new FancyPathGeneration(basePilotable.getPoseSupplier(),
         basePilotable.getChassisSpeedsSupplier());
@@ -54,10 +56,11 @@ public class RobotContainer {
 
   private void configureBindings() {
     manette.a().whileTrue(gobeur.avalerCommand());
-    manette.b().whileTrue(indexeur.tournerAntiHoraireCarousselCommand());
-    manette.x().whileTrue(indexeur.AccelerateurCommand());
-    manette.y().whileTrue(gobeur.descendreCoudeCommand());
+    manette.povRight().whileTrue(gobeur.descendreCoudeCommand());
     manette.povLeft().whileTrue(gobeur.monterCoudeCommand());
+
+    manette.x().whileTrue(indexeur.tournerAntiHoraireCarousselCommand());
+    manette.b().whileTrue(indexeur.AccelerateurCommand());
 
     manette.leftBumper().whileTrue(tourelle.tournerAntiHoraire());
     manette.rightBumper().whileTrue(tourelle.tournerHoraire());
