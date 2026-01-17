@@ -16,9 +16,11 @@ import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-public class Gobbeur extends SubsystemBase {
+public class Gobeur extends SubsystemBase {
   /** Creates a new Gobbeur. */
 
   private SparkFlex moteurRouleau = new SparkFlex(41, MotorType.kBrushless);
@@ -32,17 +34,14 @@ public class Gobbeur extends SubsystemBase {
 
   private double conversionCoude = 1.0;
 
-  ///PID et feedForward
+  /// PID et feedForward
 
-  private ProfiledPIDController pidCoude = new ProfiledPIDController(0, 0, 0, 
-    new TrapezoidProfile.Constraints(1, 1));
-  
-  private ArmFeedforward feedforward = new ArmFeedforward(0.0, 0.0, 0.0);//valeur à déterminer
+  private ProfiledPIDController pidCoude = new ProfiledPIDController(0, 0, 0,
+      new TrapezoidProfile.Constraints(1, 1));
 
+  private ArmFeedforward feedforward = new ArmFeedforward(0.0, 0.0, 0.0);// valeur à déterminer
 
-
-
-  public Gobbeur() {
+  public Gobeur() {
     moteurRouleauConfig.inverted(false);
     moteurRouleauConfig.idleMode(IdleMode.kCoast);
     moteurRouleauConfig.encoder.positionConversionFactor(conversionCoude);
@@ -51,9 +50,9 @@ public class Gobbeur extends SubsystemBase {
     moteurCoudeConfig.inverted(false);
     moteurCoudeConfig.idleMode(IdleMode.kBrake);
 
-    conversionCoude = 1.0; 
+    conversionCoude = 1.0;
 
-     moteurCoude.configure(moteurCoudeConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+    moteurCoude.configure(moteurCoudeConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
     resetEncodeurStartUp();
 
     pidCoude.setTolerance(2);
@@ -63,22 +62,21 @@ public class Gobbeur extends SubsystemBase {
   @Override
   public void periodic() {
 
-      // SmartDashboard
-     SmartDashboard.putNumber("Angle Coude", getAngleCoude());
+    // SmartDashboard
+    SmartDashboard.putNumber("Angle Coude", getAngleCoude());
     // SmartDashboard.putNumber("Vitesse Poignet", getVitesse());
-    //SmartDashboard.putNumber("Cible Poignet : ", getCibleManetteOperateur());
-    //SmartDashboard.putBoolean("Capteur Poignet", isLimitSwitch());
-    //SmartDashboard.putBoolean("Pgn. PID AT CIBLE", atCible());
+    // SmartDashboard.putNumber("Cible Poignet : ", getCibleManetteOperateur());
+    // SmartDashboard.putBoolean("Capteur Poignet", isLimitSwitch());
+    // SmartDashboard.putBoolean("Pgn. PID AT CIBLE", atCible());
     SmartDashboard.putBoolean("AtCible Poignet", atCible());
 
-    if(isLimitSwitch()){
+    if (isLimitSwitch()) {
 
       resetEncodeurLimitSwitch();
     }
   }
 
-
-  //////////Rouleau
+  ////////// Rouleau
   public void setVoltageRouleau(double voltage) {
     moteurRouleau.setVoltage(voltage);
   }
@@ -87,12 +85,19 @@ public class Gobbeur extends SubsystemBase {
     setVoltageRouleau(0);
   }
 
-  //////////Coude
-  
+  public void avaler() {
+    setVoltageRouleau(1);
+  }
+
+  public void recracher() {
+    setVoltageRouleau(-1);
+  }
+
+  ////////// Coude
 
   /// moteur
-  
-    public void setVoltageCoude(double voltage) {
+
+  public void setVoltageCoude(double voltage) {
     moteurCoude.setVoltage(voltage);
   }
 
@@ -104,34 +109,33 @@ public class Gobbeur extends SubsystemBase {
     setVoltageCoude(-1);
   }
 
-  public void holdCoude(){
+  public void stopCoude() {
+    setVoltageCoude(0);
+  }
+
+  public void holdCoude() {
     setVoltageCoude(feedforward.calculate(Math.toRadians(getAngleCoude()), 0));
   }
 
-  public void stop() {
-    setVoltageCoude(0);
-  }
-   
-  ///Encodeur
-  
+  /// Encodeur
+
   public double getAngleCoude() {
-   return moteurCoude.getEncoder().getPosition();
+    return moteurCoude.getEncoder().getPosition();
   }
 
   public double getVitesseCoude() {
     return moteurCoude.getEncoder().getVelocity();
   }
 
-  public void resetEncodeurLimitSwitch() {//Quand on clique la limit switch
-    moteurCoude.getEncoder().setPosition(0); //À determiner
+  public void resetEncodeurLimitSwitch() {// Quand on clique la limit switch
+    moteurCoude.getEncoder().setPosition(0); // À determiner
   }
 
-  public void resetEncodeurStartUp(){//Quand on ouvre le robot, la pince doit être verticale vers le haut
-    moteurCoude.getEncoder().setPosition(0); 
+  public void resetEncodeurStartUp() {// Quand on ouvre le robot, la pince doit être verticale vers le haut
+    moteurCoude.getEncoder().setPosition(0);
   }
 
-  
-/// PID + feedForward
+  /// PID + feedForward
   public void setPIDCoude(double cible) {
     double voltagePIDCoude = pidCoude.calculate(getAngleCoude(), cible);
 
@@ -142,7 +146,7 @@ public class Gobbeur extends SubsystemBase {
 
   }
 
-    public void resetPID() {
+  public void resetPID() {
     pidCoude.reset(getAngleCoude());
   }
 
@@ -150,10 +154,28 @@ public class Gobbeur extends SubsystemBase {
     return pidCoude.atGoal();
   }
 
+  /// limit switch
 
-///limit switch
+  public boolean isLimitSwitch() {
+    return !limitSwitch.get();
+  }
 
-  public boolean isLimitSwitch(){
-    return!limitSwitch.get();
+  /// Commandes
+
+  public Command avalerCommand() {
+
+    return Commands.runEnd(this::avaler, this::stopRouleau, this);
+  }
+
+  public Command recracherCommand() {
+    return Commands.runEnd(this::recracher, this::stopRouleau, this);
+  }
+
+  public Command monterCoudeCommand() {
+    return Commands.runEnd(this::monterCoude, this::stopCoude, this);
+  }
+
+  public Command descendreCoudeCommand() {
+    return Commands.runEnd(this::descendreCoude, this::stopCoude, this);
   }
 }

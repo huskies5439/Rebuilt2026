@@ -13,6 +13,8 @@ import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 
 import edu.wpi.first.units.measure.Voltage;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Indexeur extends SubsystemBase {
@@ -39,19 +41,50 @@ public class Indexeur extends SubsystemBase {
     // This method will be called once per scheduler run
   }
 
+  ////////carousselle
   public void setVoltageCaroussel(double voltage) {
     moteurCarroussel.setVoltage(voltage);
+  }
+
+  public void tournerHoraire(){
+    setVoltageCaroussel(1);
+  }
+
+    public void tournerAntiHoraire(){
+    setVoltageCaroussel(-1);
   }
 
   public void stopCaroussel() {
     setVoltageCaroussel(0);
   }
 
-  public void setVoltage(double voltage) {
+  /////////accelerateur
+  public void setVoltageAccelerateur(double voltage) {
     moteurAccelerateur.setVoltage(voltage);
   }
 
-  public void stop() {
-    setVoltage(0);
+  public void activeAccelerateur(){
+    setVoltageAccelerateur(0);
   }
+
+  public void stopAccelerateur() {
+    setVoltageAccelerateur(0);
+  }
+
+  //////Commandes
+
+  public Command tournerHoraireCarousselCommand(){
+    return Commands.runEnd(this ::tournerHoraire, this:: stopCaroussel, this);
+  }
+
+   public Command tournerAntiHoraireCarousselCommand(){
+    return Commands.runEnd(this ::tournerAntiHoraire, this:: stopCaroussel, this);
+  }
+
+   public Command AccelerateurCommand(){
+    return Commands.runEnd(this :: activeAccelerateur, this:: stopAccelerateur, this);
+  }
+
+
+  
 }

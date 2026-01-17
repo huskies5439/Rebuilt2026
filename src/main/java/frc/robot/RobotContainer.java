@@ -5,6 +5,8 @@
 package frc.robot;
 
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.subsystems.Gobeur;
+import frc.robot.subsystems.Indexeur;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -16,10 +18,11 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  * subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
-  // The robot's subsystems and commands are defined here...
 
-  // Replace with CommandPS4Controller or CommandJoystick if needed
-  private final CommandXboxController m_driverController =
+  private final Gobeur gobeur = new Gobeur();
+  private final Indexeur indexeur = new Indexeur();
+
+  private final CommandXboxController manette =
       new CommandXboxController(OperatorConstants.kDriverControllerPort);
 
 
@@ -30,8 +33,14 @@ public class RobotContainer {
 
  
   private void configureBindings() {
-    
+    manette.a().whileTrue(gobeur.avalerCommand());
+    manette.b().whileTrue(indexeur.tournerAntiHoraireCarousselCommand());
+    manette.x().whileTrue(indexeur.AccelerateurCommand());
+    manette.y().whileTrue(gobeur.descendreCoudeCommand());
+    manette.povLeft().whileTrue(gobeur.monterCoudeCommand());
+      
   }
+
 
   
   public Command getAutonomousCommand() {
