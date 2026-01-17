@@ -5,6 +5,8 @@
 package frc.robot;
 
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.subsystems.Gobeur;
+import frc.robot.subsystems.Indexeur;
 import frc.robot.commands.BasePilotableDefaut;
 import frc.robot.lib.FancyPathGeneration;
 import frc.robot.subsystems.BasePilotable;
@@ -24,21 +26,23 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  * subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
-  // The robot's subsystems and commands are defined here...
 
-  // Replace with CommandPS4Controller or CommandJoystick if needed
   private final CommandXboxController manette = new CommandXboxController(0);
 
   private final BasePilotable basePilotable;
   private final Tourelle tourelle;
-  private final Lanceur lanceur; 
+  private final Lanceur lanceur;
+  private final Gobeur gobeur;
+  private final Indexeur indexeur;
 
   private final FancyPathGeneration fancyPathGeneration;
 
   public RobotContainer() {
     basePilotable = new BasePilotable();
     tourelle = new Tourelle();
-    lanceur = new Lanceur(); 
+    lanceur = new Lanceur();
+    gobeur = new Gobeur();
+    indexeur = new Indexeur();
 
     fancyPathGeneration = new FancyPathGeneration(basePilotable.getPoseSupplier(),
         basePilotable.getChassisSpeedsSupplier());
@@ -51,6 +55,12 @@ public class RobotContainer {
   }
 
   private void configureBindings() {
+    manette.a().whileTrue(gobeur.avalerCommand());
+    manette.povRight().whileTrue(gobeur.descendreCoudeCommand());
+    manette.povLeft().whileTrue(gobeur.monterCoudeCommand());
+
+    manette.x().whileTrue(indexeur.tournerAntiHoraireCarousselCommand());
+    manette.b().whileTrue(indexeur.AccelerateurCommand());
 
     manette.leftBumper().whileTrue(tourelle.tournerAntiHoraire());
     manette.rightBumper().whileTrue(tourelle.tournerHoraire());
