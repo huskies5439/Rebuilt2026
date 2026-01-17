@@ -26,7 +26,7 @@ public class Tourelle extends SubsystemBase {
   //moteur 
   private SparkFlex moteurTourelle = new SparkFlex(21, MotorType.kBrushless); 
   private SparkFlexConfig configTourelle = new SparkFlexConfig(); 
-  private double conversionTourelle = 1.0; 
+  private double conversionTourelle = 20.0 / 200.0 * 360.0; //moteur gear 20 dents tourelle 200 dents, 360 degrés
 
   //PID 
   private ProfiledPIDController pidTourelle = new ProfiledPIDController(0, 0, 0, //Valeurs à déterminer
@@ -37,7 +37,8 @@ public class Tourelle extends SubsystemBase {
     //Moteur + config 
     configTourelle.inverted(false); 
     configTourelle.idleMode(IdleMode.kBrake); 
-    configTourelle.encoder.positionConversionFactor(conversionTourelle); 
+    configTourelle.encoder.positionConversionFactor(conversionTourelle);
+    configTourelle.encoder.velocityConversionFactor(conversionTourelle / 60.0);
     configTourelle.softLimit.forwardSoftLimit(90.0).reverseSoftLimit(-90.0); //Faudrait peut être call la fonction pour l'enable? 
     moteurTourelle.configure(configTourelle, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters); 
 

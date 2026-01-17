@@ -25,10 +25,16 @@ public class Indexeur extends SubsystemBase {
   private SparkFlexConfig moteurCarrousselConfig = new SparkFlexConfig();
   private SparkFlexConfig moteurAccelerateurConfig = new SparkFlexConfig();
 
+//moteur avec maxPlanetary, poulie 36 vers 72, 360 degrées
+  private double maxPlanetary = 9.0;
+  private double conversionCarrousel = (1.0 / maxPlanetary) * (36.0 / 72.0) * 360; 
+
   public Indexeur() {
     
     moteurCarrousselConfig.inverted(false);
     moteurCarrousselConfig.idleMode(IdleMode.kBrake);
+    moteurCarrousselConfig.encoder.positionConversionFactor(conversionCarrousel);
+    moteurCarrousselConfig.encoder.velocityConversionFactor(conversionCarrousel / 60.0);
     moteurCarroussel.configure(moteurCarrousselConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
     moteurAccelerateurConfig.inverted(false);
@@ -64,7 +70,7 @@ public class Indexeur extends SubsystemBase {
   }
 
   public void activeAccelerateur(){
-    setVoltageAccelerateur(0);
+    setVoltageAccelerateur(2);
   }
 
   public void stopAccelerateur() {

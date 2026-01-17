@@ -66,8 +66,8 @@ public class RobotContainer {
     manette.rightBumper().whileTrue(tourelle.tournerHoraire());
 
     manette.rightTrigger(0.5).whileTrue(lanceur.lancerSimpleCommand()); 
-    manette.povUp().whileTrue(lanceur.sortirHoodCommand()); 
-    manette.povDown().whileTrue(lanceur.rentrerHoodCommand()); 
+    manette.povUp().whileTrue(lanceur.sortirCapotCommand()); 
+    manette.povDown().whileTrue(lanceur.rentrerCapotCommand()); 
 
   }
 

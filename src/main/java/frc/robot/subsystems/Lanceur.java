@@ -22,14 +22,14 @@ public class Lanceur extends SubsystemBase {
 
   private SparkFlex lanceur1 = new SparkFlex(11, MotorType.kBrushless);
   private SparkFlex lanceur2 = new SparkFlex(12, MotorType.kBrushless);
-  private SparkMax lanceurHood = new SparkMax(13, MotorType.kBrushless);
+  private SparkMax lanceurCapot = new SparkMax(13, MotorType.kBrushless);
 
   private SparkFlexConfig lanceurConfig1 = new SparkFlexConfig();
   private SparkFlexConfig lanceurConfig2 = new SparkFlexConfig();
-  private SparkMaxConfig lanceurConfigHood = new SparkMaxConfig();
+  private SparkMaxConfig lanceurConfigCapot = new SparkMaxConfig();
 
   private double conversionLanceur = 1.0;
-  private double conversionHood = 1.0;
+  private double conversionCapot = 1.0;
 
   public Lanceur() {
     lanceurConfig1.inverted(false);
@@ -44,11 +44,11 @@ public class Lanceur extends SubsystemBase {
     lanceurConfig2.encoder.velocityConversionFactor(conversionLanceur / 60.0);
     lanceur2.configure(lanceurConfig2, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
-    lanceurConfigHood.inverted(false);
-    lanceurConfigHood.idleMode(IdleMode.kCoast);
-    lanceurConfigHood.encoder.positionConversionFactor(conversionHood);
-    lanceurConfigHood.encoder.velocityConversionFactor(conversionHood / 60.0);
-    lanceurHood.configure(lanceurConfigHood, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+    lanceurConfigCapot.inverted(false);
+    lanceurConfigCapot.idleMode(IdleMode.kBrake);
+    lanceurConfigCapot.encoder.positionConversionFactor(conversionCapot);
+    lanceurConfigCapot.encoder.velocityConversionFactor(conversionCapot / 60.0);
+    lanceurCapot.configure(lanceurConfigCapot, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
   }
 
@@ -70,48 +70,44 @@ public class Lanceur extends SubsystemBase {
     setVoltageLanceur(0);
   }
 
-  public void setVoltageHood(double voltage) {
-    lanceurHood.setVoltage(voltage);
+  public void setVoltageCapot(double voltage) {
+    lanceurCapot.setVoltage(voltage);
   }
 
-  public void stopHood() {
-    lanceurHood.setVoltage(0);
+  public void stopCapot() {
+    lanceurCapot.setVoltage(0);
   }
 
-  public void sortirHood() {
-    setVoltageHood(2);
+  public void sortirCapot() {
+    setVoltageCapot(2);
   }
 
-  public void rentrerHood() {
-    setVoltageHood(-2);
+  public void rentrerCapot() {
+    setVoltageCapot(-2);
   }
 
   public double getPositionLanceur() {
     return (lanceur1.getEncoder().getPosition() + lanceur2.getEncoder().getPosition()) / 2.0;
   }
 
-  public double getPositionHood() {
-    return lanceurHood.getEncoder().getPosition();
+  public double getVitesseLanceur() {
+    return (lanceur1.getEncoder().getVelocity() + lanceur2.getEncoder().getVelocity()) / 2.0;
   }
 
-  public double getVitesseLanceur1() {
-    return lanceur1.getEncoder().getVelocity();
-  }
-
-  public double getVitesseLanceur2() {
-    return lanceur2.getEncoder().getVelocity();
+  public double getPositionCapot() {
+    return lanceurCapot.getEncoder().getPosition();
   }
 
   public Command lancerSimpleCommand() {
     return Commands.runEnd(this::lancer, this::stop, this);
   }
 
-  public Command rentrerHoodCommand() {
-    return Commands.runEnd(this::rentrerHood, this::stopHood, this);
+  public Command rentrerCapotCommand() {
+    return Commands.runEnd(this::rentrerCapot, this::stopCapot, this);
   }
 
-  public Command sortirHoodCommand() {
-    return Commands.runEnd(this::sortirHood, this::stopHood, this);
+  public Command sortirCapotCommand() {
+    return Commands.runEnd(this::sortirCapot, this::stopCapot, this);
   }
 
 }

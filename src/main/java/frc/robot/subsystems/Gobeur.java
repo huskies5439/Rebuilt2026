@@ -44,13 +44,12 @@ public class Gobeur extends SubsystemBase {
   public Gobeur() {
     moteurRouleauConfig.inverted(false);
     moteurRouleauConfig.idleMode(IdleMode.kCoast);
-    moteurRouleauConfig.encoder.positionConversionFactor(conversionCoude);
     moteurRouleau.configure(moteurRouleauConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
     moteurCoudeConfig.inverted(false);
     moteurCoudeConfig.idleMode(IdleMode.kBrake);
-
-    conversionCoude = 1.0;
+    moteurCoudeConfig.encoder.positionConversionFactor(conversionCoude);
+    moteurCoudeConfig.encoder.velocityConversionFactor(conversionCoude / 60.0);
 
     moteurCoude.configure(moteurCoudeConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
     resetEncodeurStartUp();
@@ -131,12 +130,12 @@ public class Gobeur extends SubsystemBase {
     moteurCoude.getEncoder().setPosition(0); // À determiner
   }
 
-  public void resetEncodeurStartUp() {// Quand on ouvre le robot, la pince doit être verticale vers le haut
-    moteurCoude.getEncoder().setPosition(0);
+  public void resetEncodeurStartUp() {
+    moteurCoude.getEncoder().setPosition(0);// à déterminer
   }
 
   /// PID + feedForward
-  public void setPIDCoude(double cible) {
+  public void setPID(double cible) {
     double voltagePIDCoude = pidCoude.calculate(getAngleCoude(), cible);
 
     double voltageFFCoude = feedforward.calculate(
