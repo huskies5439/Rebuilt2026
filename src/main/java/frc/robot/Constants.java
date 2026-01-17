@@ -41,7 +41,13 @@ public final class Constants {
       new Translation2d(-kWheelBase / 2, -kTrackWidth / 2));
 
   public static final class PositionHub {
-    
-    
+    public Translation2d hubBleu = new Translation2d(4.625,4.025); 
+    public Translation2d hubRouge = new Translation2d(11.9,4.025); 
   }
+
+  public static final class PositionYTrench {
+    public double trenchBas = 0.65; 
+    public double trenchHaut = 7.4; 
+  }
+    
 }
