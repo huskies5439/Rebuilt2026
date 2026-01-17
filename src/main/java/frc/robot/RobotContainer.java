@@ -5,6 +5,8 @@
 package frc.robot;
 
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.lib.FancyPathGeneration;
+import frc.robot.subsystems.BasePilotable;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -22,9 +24,13 @@ public class RobotContainer {
   private final CommandXboxController m_driverController =
       new CommandXboxController(OperatorConstants.kDriverControllerPort);
 
+      private final BasePilotable basePilotable = new BasePilotable();
+      
+      private final FancyPathGeneration fancyPathGeneration;
+
 
   public RobotContainer() {
-    // Configure the trigger bindings
+    fancyPathGeneration = new FancyPathGeneration(basePilotable.getPoseSupplier(), basePilotable.getChassisSpeedsSupplier());
     configureBindings();
   }
 

@@ -8,7 +8,9 @@ import com.revrobotics.PersistMode;
 import com.revrobotics.ResetMode;
 import com.revrobotics.spark.SparkFlex;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
+import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkFlexConfig;
+import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 
 import edu.wpi.first.wpilibj2.command.Command;
@@ -18,13 +20,13 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class Lanceur extends SubsystemBase {
   /** Creates a new Lanceur. */
 
-  private SparkFlex lanceur1 = new SparkFlex(0, MotorType.kBrushless);
-  private SparkFlex lanceur2 = new SparkFlex(0, MotorType.kBrushless);
-  private SparkFlex lanceurHood = new SparkFlex(0, MotorType.kBrushless);
+  private SparkFlex lanceur1 = new SparkFlex(11, MotorType.kBrushless);
+  private SparkFlex lanceur2 = new SparkFlex(12, MotorType.kBrushless);
+  private SparkMax lanceurHood = new SparkMax(13, MotorType.kBrushless);
 
   private SparkFlexConfig lanceurConfig1 = new SparkFlexConfig();
   private SparkFlexConfig lanceurConfig2 = new SparkFlexConfig();
-  private SparkFlexConfig lanceurConfigHood = new SparkFlexConfig();
+  private SparkMaxConfig lanceurConfigHood = new SparkMaxConfig();
 
   private double conversionLanceur = 1.0;
   private double conversionHood = 1.0;
@@ -92,7 +94,7 @@ public class Lanceur extends SubsystemBase {
     return lanceur2.getEncoder().getVelocity();
   }
 
-  public Command lnacerSimpleCommand() {
+  public Command lancerSimpleCommand() {
     return Commands.runEnd(this::lancer, this::stop, this);
   }
 }
