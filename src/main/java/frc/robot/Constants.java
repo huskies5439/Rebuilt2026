@@ -28,10 +28,10 @@ public final class Constants {
   // public static final double maxVitesseModule = 4.46;// Vitesse maximale d'un module en m/s, pas nécessaire si setpoint generator
 
   // Chassis configuration
-  public static final double kTrackWidth = Units.inchesToMeters(25.5);
+  public static final double kTrackWidth = 0.5972 ;
 
   // Distance between centers of right and left wheels on robot
-  public static final double kWheelBase = Units.inchesToMeters(25.5);
+  public static final double kWheelBase = 0.5972;
 
   // Distance between front and back wheels on robot
   public static final SwerveDriveKinematics kDriveKinematics = new SwerveDriveKinematics(

@@ -94,8 +94,6 @@ public class Gobeur extends SubsystemBase {
 
   ////////// Coude
 
-  /// moteur
-
   public void setVoltageCoude(double voltage) {
     moteurCoude.setVoltage(voltage);
   }
@@ -159,7 +157,7 @@ public class Gobeur extends SubsystemBase {
     return !limitSwitch.get();
   }
 
-  /// Commandes
+  /// Commandes simples
 
   public Command avalerCommand() {
 
@@ -177,4 +175,7 @@ public class Gobeur extends SubsystemBase {
   public Command descendreCoudeCommand() {
     return Commands.runEnd(this::descendreCoude, this::stopCoude, this);
   }
+  
+  /// Commandes complexes
+   
 }

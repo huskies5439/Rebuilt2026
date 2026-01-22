@@ -25,7 +25,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  * the robot (including
  * subsystems, commands, and trigger mappings) should be declared here.
  */
-public class RobotContainer {//coucou
+public class RobotContainer {
 
   private final CommandXboxController manette = new CommandXboxController(0);
 

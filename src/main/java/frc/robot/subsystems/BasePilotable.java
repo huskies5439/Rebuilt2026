@@ -97,6 +97,8 @@ public class BasePilotable extends SubsystemBase {
     RobotConfig robotConfig = null;
     try {
 
+      
+
       robotConfig = RobotConfig.fromGUISettings();
 
     } catch (Exception e) {
