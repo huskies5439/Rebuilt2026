@@ -30,6 +30,7 @@ import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
@@ -43,6 +44,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.Constants.PositionHub;
 
 public class BasePilotable extends SubsystemBase {
 
@@ -96,8 +98,6 @@ public class BasePilotable extends SubsystemBase {
     // aller chercher la configuration du robot dans Pathplanner
     RobotConfig robotConfig = null;
     try {
-
-      
 
       robotConfig = RobotConfig.fromGUISettings();
 
@@ -251,6 +251,23 @@ public class BasePilotable extends SubsystemBase {
     return poseEstimator.getEstimatedPosition();
   }
 
+  public Pose2d getPoseTourelle(){
+    //les deux composantes sont négatives puisque la tourelle se trouve dans le coin inférieur gauche 
+    Transform2d deplacementTourelle = new Transform2d(-0.153,-0.153,Rotation2d.kZero);  
+    return getPose().plus(deplacementTourelle);
+  }
+
+  public Translation2d getPositionHub(){
+    return isRedAlliance() ? PositionHub.hubRouge : PositionHub.hubBleu;  
+  }
+
+  public double getDistanceHub(){
+    return getPoseTourelle().getTranslation().getDistance(getPositionHub()); 
+  }
+
+  public Rotation2d getAngleCible(Translation2d cible){
+    return cible.minus(getPoseTourelle().getTranslation()).getAngle();
+  }
   public void resetOdometry(Pose2d pose) { // pose est à la pose où reset, c'est typiquement l'origine du terrain
     poseEstimator.resetPosition(
         Rotation2d.fromDegrees(getAngle()),
@@ -361,11 +378,11 @@ public class BasePilotable extends SubsystemBase {
   }
 
   public Supplier<Pose2d> getPoseSupplier() {
-    return this:: getPose;
+    return this::getPose;
   }
 
   public Supplier<ChassisSpeeds> getChassisSpeedsSupplier() {
-    return this:: getChassisSpeeds;
+    return this::getChassisSpeeds;
   }
 
   ////////////// isProche permet de vérifier la position du robot

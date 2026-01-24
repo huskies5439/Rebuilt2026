@@ -83,8 +83,8 @@ public class Tourelle extends SubsystemBase {
 
   //PID 
   public void setPID(double cible){
-    double voltagePID = pidTourelle.calculate(getAngle(),cible); 
-    setVoltage(voltagePID);
+    // double voltagePID = pidTourelle.calculate(getAngle(),cible); 
+    // setVoltage(voltagePID);
   }
 
   public void resetPID(){
