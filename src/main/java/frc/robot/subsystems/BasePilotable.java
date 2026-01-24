@@ -44,6 +44,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import static frc.robot.Constants.ParametrePP;
 import frc.robot.Constants.PositionHub;
 
 public class BasePilotable extends SubsystemBase {
@@ -61,8 +62,8 @@ public class BasePilotable extends SubsystemBase {
   private Pigeon2 gyro = new Pigeon2(0);
 
   private PPHolonomicDriveController ppHolonomicDriveController = new PPHolonomicDriveController(
-      new PIDConstants(2, 0, 0), // valeur stupide de 12 a Montréal ; ne plus faire l'Erreur S.V.P
-      new PIDConstants(10, 0, 1));
+      new PIDConstants(ParametrePP.kPLineaire, 0, 0), // valeur stupide de 12 a Montréal ; ne plus faire l'Erreur S.V.P
+      new PIDConstants(ParametrePP.kPRot, 0, ParametrePP.kDRot));
 
   /*
    * Setpoint genetator est une fonction de PathPlanner qui permet de valider

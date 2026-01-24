@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems;
 
+
 import com.revrobotics.PersistMode;
 import com.revrobotics.ResetMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
@@ -19,6 +20,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 
 public class Coude extends SubsystemBase {
 
@@ -126,8 +128,8 @@ public class Coude extends SubsystemBase {
   }
 
   public void resetEncodeurStartUp() {
-    moteurDroit.getEncoder().setPosition(90);// à déterminer
-    moteurGauche.getEncoder().setPosition(90);// à déterminer
+    moteurDroit.getEncoder().setPosition(Constants.kAngleCoudeDepart);// à déterminer
+    moteurGauche.getEncoder().setPosition(Constants.kAngleCoudeDepart);// à déterminer
   }
 
   /// PID + feedForward
@@ -163,12 +165,18 @@ public class Coude extends SubsystemBase {
     return !limitSwitch.get();
   }
 
+  /// commandes
+
   public Command monterCommand() {
     return Commands.runEnd(this::monter, this::stop, this);
   }
 
   public Command descendreCommand() {
     return Commands.runEnd(this::descendre, this::stop, this);
+  }
+
+  public Command holdCommand() {
+    return Commands.run(this::hold, this);
   }
 
 }

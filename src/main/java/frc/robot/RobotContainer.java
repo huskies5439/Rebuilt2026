@@ -9,6 +9,7 @@ import frc.robot.subsystems.Hood;
 import frc.robot.subsystems.Kickeur;
 import frc.robot.subsystems.Carroussel;
 import frc.robot.commands.BasePilotableDefaut;
+import frc.robot.commands.CoudePID;
 import frc.robot.lib.FancyPathGeneration;
 import frc.robot.subsystems.BasePilotable;
 import frc.robot.subsystems.Coude;
@@ -60,10 +61,12 @@ public class RobotContainer {
     basePilotable.setDefaultCommand(new BasePilotableDefaut(manette::getLeftY,
         manette::getLeftX, manette::getRightX, basePilotable));
 
+    coude.setDefaultCommand(coude.holdCommand());
+
   }
 
   private void configureBindings() {
-    manette.a().whileTrue(gobeur.avalerCommand());
+    manette.a().whileTrue(gobeur.goberCommand());
     manette.povRight().whileTrue(coude.descendreCommand());
     manette.povLeft().whileTrue(coude.monterCommand());
 
@@ -75,8 +78,14 @@ public class RobotContainer {
 
     manette.rightTrigger(0.5).whileTrue(lanceur.lancerSimpleCommand()); 
     manette.povUp().whileTrue(hood.sortirCommand()); 
-    manette.povDown().whileTrue(hood.rentrerCommand()); 
+    manette.povDown().whileTrue(hood.rentrerCommand());
+  
 
+    //Gober
+    //manette.leftBumper().whileTrue(new CoudePID(0, coude).alongWith(gobeur.goberCommand())); //à déterminer s'il faut lever légerment le gobeur
+
+    //Protection coude
+    //manette.x().onTrue(new CoudePID(Constants.kAngleCoudeDepart, coude));
   }
 
   public Command getAutonomousCommand() {
