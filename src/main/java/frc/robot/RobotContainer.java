@@ -4,12 +4,14 @@
 
 package frc.robot;
 
-import frc.robot.Constants.OperatorConstants;
 import frc.robot.subsystems.Gobeur;
-import frc.robot.subsystems.Indexeur;
+import frc.robot.subsystems.Hood;
+import frc.robot.subsystems.Kickeur;
+import frc.robot.subsystems.Carroussel;
 import frc.robot.commands.BasePilotableDefaut;
 import frc.robot.lib.FancyPathGeneration;
 import frc.robot.subsystems.BasePilotable;
+import frc.robot.subsystems.Coude;
 import frc.robot.subsystems.Lanceur;
 import frc.robot.subsystems.Tourelle;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -33,7 +35,10 @@ public class RobotContainer {
   private final Tourelle tourelle;
   private final Lanceur lanceur;
   private final Gobeur gobeur;
-  private final Indexeur indexeur;
+  private final Carroussel indexeur;
+  private final Coude coude;
+  private final Hood hood; 
+  private final Kickeur kickeur; 
 
   private final FancyPathGeneration fancyPathGeneration;
 
@@ -42,7 +47,10 @@ public class RobotContainer {
     tourelle = new Tourelle();
     lanceur = new Lanceur();
     gobeur = new Gobeur();
-    indexeur = new Indexeur();
+    indexeur = new Carroussel();
+    coude = new Coude();
+    hood = new Hood(); 
+    kickeur = new Kickeur(); 
 
     fancyPathGeneration = new FancyPathGeneration(basePilotable.getPoseSupplier(),
         basePilotable.getChassisSpeedsSupplier());
@@ -56,18 +64,18 @@ public class RobotContainer {
 
   private void configureBindings() {
     manette.a().whileTrue(gobeur.avalerCommand());
-    manette.povRight().whileTrue(gobeur.descendreCoudeCommand());
-    manette.povLeft().whileTrue(gobeur.monterCoudeCommand());
+    manette.povRight().whileTrue(coude.descendreCommand());
+    manette.povLeft().whileTrue(coude.monterCommand());
 
-    manette.x().whileTrue(indexeur.tournerAntiHoraireCarousselCommand());
-    manette.b().whileTrue(indexeur.AccelerateurCommand());
+    manette.x().whileTrue(indexeur.tournerAntiHoraireCommand());
+    manette.b().whileTrue(kickeur.tournerCommand());
 
     manette.leftBumper().whileTrue(tourelle.tournerAntiHoraire());
     manette.rightBumper().whileTrue(tourelle.tournerHoraire());
 
     manette.rightTrigger(0.5).whileTrue(lanceur.lancerSimpleCommand()); 
-    manette.povUp().whileTrue(lanceur.sortirCapotCommand()); 
-    manette.povDown().whileTrue(lanceur.rentrerCapotCommand()); 
+    manette.povUp().whileTrue(hood.sortirCommand()); 
+    manette.povDown().whileTrue(hood.rentrerCommand()); 
 
   }
 
