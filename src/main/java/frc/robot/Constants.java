@@ -17,9 +17,6 @@ import edu.wpi.first.math.util.Units;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
-  public static class OperatorConstants {
-    public static final int kDriverControllerPort = 0;
-  }
 
  public static final double maxVitesseLineaire = 3.75;// Vitesse linéaire max du chassis 
 
@@ -46,8 +43,20 @@ public final class Constants {
   }
 
   public static final class PositionYTrench {
-    public double trenchBas = 0.65; 
-    public double trenchHaut = 7.4; 
+    public static final double trenchBas = 0.65; 
+    public static final double trenchHaut = 7.4; 
+  }
+
+  public static final double kAngleCoudeDepart = 90.0;
+
+  public static final class ParametrePP {
+    public static final double kPLineaire = 2.0;
+    public static final double kPRot = 10.0;
+    public static final double kDRot = 1.0;
+    public static final double kMaxVitesseLineaire = 3.0;
+    public static final double kMaxAccelLineaire = 1.5;
+    public static final double kMaxVitesseRot = Math.toRadians(360);
+    public static final double kMaxAccelRot = Math.toRadians(360);
   }
     
 }

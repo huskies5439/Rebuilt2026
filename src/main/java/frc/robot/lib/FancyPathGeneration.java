@@ -6,6 +6,7 @@ package frc.robot.lib;
 
 import static edu.wpi.first.units.Units.MetersPerSecond;
 
+import java.lang.reflect.Parameter;
 import java.util.List;
 import java.util.function.Supplier;
 
@@ -20,6 +21,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.units.measure.LinearVelocity;
+import frc.robot.Constants.ParametrePP;
 
 /** Add your docs here. */
 public class FancyPathGeneration {
@@ -33,7 +35,7 @@ public class FancyPathGeneration {
     }
 
     public PathPlannerPath genererPath(Pose2d cible) {
-        PathConstraints constraints = new PathConstraints(3.0, 1.50, Math.toRadians(360), Math.toRadians(360));
+        PathConstraints constraints = new PathConstraints(ParametrePP.kMaxVitesseLineaire, ParametrePP.kMaxAccelLineaire, ParametrePP.kMaxVitesseRot, ParametrePP.kMaxAccelRot);
         // Hyper Important : Il faut mettre la méthode "flipped" pour ajuster pour
         // RedAlliance
         // Fonction pas mentionnée dans la doc !!

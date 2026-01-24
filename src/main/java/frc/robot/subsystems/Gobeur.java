@@ -42,7 +42,6 @@ public class Gobeur extends SubsystemBase {
   @Override
   public void periodic() {
 
-    
   }
 
   ////////// Rouleau
@@ -54,7 +53,7 @@ public class Gobeur extends SubsystemBase {
     setVoltage(0);
   }
 
-  public void avaler() {
+  public void gober() {
     setVoltage(1);
   }
 
@@ -68,9 +67,9 @@ public class Gobeur extends SubsystemBase {
 
   /// Commandes simples
 
-  public Command avalerCommand() {
+  public Command goberCommand() {
 
-    return Commands.runEnd(this::avaler, this::stop, this);
+    return Commands.runEnd(this::gober, this::stop, this);
   }
 
   public Command recracherCommand() {
