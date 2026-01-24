@@ -11,14 +11,22 @@ import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
+import edu.wpi.first.math.controller.ProfiledPIDController;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Hood extends SubsystemBase {
-private SparkMax moteur = new SparkMax(41, MotorType.kBrushless);
+  private SparkMax moteur = new SparkMax(41, MotorType.kBrushless);
   private SparkMaxConfig config = new SparkMaxConfig();
   private double conversion = 1.0;
+
+  private DigitalInput limitSwitch = new DigitalInput(1);
+
+  private ProfiledPIDController profiledPID = new ProfiledPIDController(0, 0, 0,
+      new TrapezoidProfile.Constraints(0, 0));
 
   public Hood() {
 
@@ -32,17 +40,26 @@ private SparkMax moteur = new SparkMax(41, MotorType.kBrushless);
   @Override
   public void periodic() {
 
+    if (isLimitSwitch()) {
+
+      resetEncodeurLimitSwitch();
+    }
+
   }
 
-   public void setVoltage(double voltage) {
+  public void setVoltage(double voltage) {
     moteur.setVoltage(voltage);
+  }
+
+  public double getAngle() {
+    return moteur.getEncoder().getPosition();
   }
 
   public void stop() {
     moteur.setVoltage(0);
   }
 
-   public void sortir() {
+  public void sortir() {
     setVoltage(2);
   }
 
@@ -61,4 +78,35 @@ private SparkMax moteur = new SparkMax(41, MotorType.kBrushless);
   public Command sortirCommand() {
     return Commands.runEnd(this::sortir, this::stop, this);
   }
+
+  /// PID
+
+  public void setPID(double cible) {
+    double voltage = profiledPID.calculate(getAngle(), cible);
+
+    setVoltage(voltage);
+  }
+
+  public void resetPID() {
+    profiledPID.reset(getAngle());
+  }
+
+  public boolean atCible() {
+    return profiledPID.atGoal();
+  }
+
+  // Limit switch
+
+  public boolean isLimitSwitch() {
+    return !limitSwitch.get();
+  }
+
+  public void resetEncodeurLimitSwitch() {
+    moteur.getEncoder().setPosition(0);// à determiner
+  }
+
+  public Command goToAnglePIDCommand(double cible) {
+    return Commands.runEnd(() -> setPID(cible), this::stop, this);
+  }
+
 }

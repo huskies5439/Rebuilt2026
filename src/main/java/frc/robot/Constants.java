@@ -38,8 +38,16 @@ public final class Constants {
       new Translation2d(-kWheelBase / 2, -kTrackWidth / 2));
 
   public static final class PositionHub {
-    public Translation2d hubBleu = new Translation2d(4.625,4.025); 
-    public Translation2d hubRouge = new Translation2d(11.9,4.025); 
+    public static Translation2d hubBleu = new Translation2d(4.625,4.025); 
+    public static Translation2d hubRouge = new Translation2d(11.9,4.025); 
+  }
+
+  public static final class RegimeLanceur{ //valeurs à déterminer
+    public static double distance = 2.0; 
+    public static double vitesseProche = 2000; 
+    public static double vitesseLoin = 4000; 
+    public static double facteurAngleProche = 30.0; 
+    public static double facteurAngleLoin = 15.0; 
   }
 
   public static final class PositionYTrench {
