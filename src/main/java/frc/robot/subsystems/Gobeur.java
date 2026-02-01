@@ -8,22 +8,16 @@ import com.revrobotics.PersistMode;
 import com.revrobotics.ResetMode;
 import com.revrobotics.spark.SparkFlex;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
-import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkFlexConfig;
-import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 
-import edu.wpi.first.math.controller.ArmFeedforward;
-import edu.wpi.first.math.controller.ProfiledPIDController;
-import edu.wpi.first.math.trajectory.TrapezoidProfile;
-import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Gobeur extends SubsystemBase {
-  /** Creates a new Gobbeur. */
+
 
   private SparkFlex moteur = new SparkFlex(31, MotorType.kBrushless);
  
@@ -44,7 +38,6 @@ public class Gobeur extends SubsystemBase {
 
   }
 
-  ////////// Rouleau
   public void setVoltage(double voltage) {
     moteur.setVoltage(voltage);
   }
@@ -61,9 +54,6 @@ public class Gobeur extends SubsystemBase {
     setVoltage(-1);
   }
 
-  ////////// Coude
-
-  
 
   /// Commandes simples
 
@@ -72,12 +62,9 @@ public class Gobeur extends SubsystemBase {
     return Commands.runEnd(this::gober, this::stop, this);
   }
 
-  public Command recracherCommand() {
+  public Command recracherCommand() {//Pertinent ?????
     return Commands.runEnd(this::recracher, this::stop, this);
   }
 
-  
-
-  /// Commandes complexes
 
 }

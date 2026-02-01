@@ -4,13 +4,12 @@
 
 package frc.robot.commands;
 
-import java.lang.reflect.Parameter;
 
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.Constants.ParametrePP;
+import frc.robot.Constants.PidBasePilotable;
 import frc.robot.Constants.PositionYTrench;
 import frc.robot.subsystems.BasePilotable;
 
@@ -27,11 +26,11 @@ public class SnapTrench extends Command {
     this.basePilotable = basePilotable;
     addRequirements(basePilotable);
 
-    pidY = new ProfiledPIDController(ParametrePP.kPLineaire, 0, 0, 
-            new TrapezoidProfile.Constraints(ParametrePP.kMaxVitesseLineaire, ParametrePP.kMaxAccelLineaire));
+    pidY = new ProfiledPIDController(PidBasePilotable.kPLineaire, 0, 0, 
+            new TrapezoidProfile.Constraints(PidBasePilotable.kMaxVitesseLineaire, PidBasePilotable.kMaxAccelLineaire));
 
-    pidAngle = new ProfiledPIDController(ParametrePP.kPRot, 0, ParametrePP.kDRot, 
-            new TrapezoidProfile.Constraints(ParametrePP.kMaxVitesseRot, ParametrePP.kMaxAccelRot));
+    pidAngle = new ProfiledPIDController(PidBasePilotable.kPRot, 0, PidBasePilotable.kDRot, 
+            new TrapezoidProfile.Constraints(PidBasePilotable.kMaxVitesseRot, PidBasePilotable.kMaxAccelRot));
   }
 
   // Called when the command is initially scheduled.

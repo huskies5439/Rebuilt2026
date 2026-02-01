@@ -16,7 +16,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Carroussel extends SubsystemBase {
-  /** Creates a new Indexeur. */
+
   private SparkFlex moteur = new SparkFlex(11, MotorType.kBrushless);
 
   private SparkFlexConfig config = new SparkFlexConfig();
@@ -40,7 +40,6 @@ public class Carroussel extends SubsystemBase {
   
   }
 
-  //////// carousselle
   public void setVoltage(double voltage) {
     moteur.setVoltage(voltage);
   }

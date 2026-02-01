@@ -6,16 +6,9 @@ package frc.robot;
 
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
-import edu.wpi.first.math.util.Units;
 
-/**
- * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
- * constants. This class should not be used for any other purpose. All constants should be declared
- * globally (i.e. public static). Do not put anything functional in this class.
- *
- * <p>It is advised to statically import this class (or one of its inner classes) wherever the
- * constants are needed, to reduce verbosity.
- */
+
+
 public final class Constants {
 
  public static final double maxVitesseLineaire = 3.75;// Vitesse linéaire max du chassis 
@@ -57,10 +50,11 @@ public final class Constants {
 
   public static final double kAngleCoudeDepart = 90.0;
 
-  public static final class ParametrePP {
+  public static final class PidBasePilotable {
     public static final double kPLineaire = 2.0;
     public static final double kPRot = 10.0;
     public static final double kDRot = 1.0;
+    //////Si possible, remplacer ces variables par une fonctions qui va chercher les paramètres PP.
     public static final double kMaxVitesseLineaire = 3.0;
     public static final double kMaxAccelLineaire = 1.5;
     public static final double kMaxVitesseRot = Math.toRadians(360);

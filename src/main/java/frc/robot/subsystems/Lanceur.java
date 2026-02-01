@@ -8,18 +8,17 @@ import com.revrobotics.PersistMode;
 import com.revrobotics.ResetMode;
 import com.revrobotics.spark.SparkFlex;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
-import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkFlexConfig;
-import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 
+import edu.wpi.first.epilogue.Logged;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
+@Logged
 public class Lanceur extends SubsystemBase {
-  /** Creates a new Lanceur. */
 
   private SparkFlex moteurGauche = new SparkFlex(61, MotorType.kBrushless);
   private SparkFlex moteurDroit = new SparkFlex(62, MotorType.kBrushless);
@@ -28,7 +27,7 @@ public class Lanceur extends SubsystemBase {
 
   private double conversionLanceur = 1.0; 
 
-  private PIDController pid = new PIDController(0, 0, 0); //les valeurs sont permanentes 
+  private PIDController pid = new PIDController(0, 0, 0); 
 
   public Lanceur() {
     boolean inverted = false;

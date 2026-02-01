@@ -12,16 +12,17 @@ import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
+import edu.wpi.first.epilogue.Logged;
 import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
+@Logged
 public class Coude extends SubsystemBase {
 
   private SparkMax moteurGauche = new SparkMax(21, MotorType.kBrushless);
@@ -67,10 +68,8 @@ public class Coude extends SubsystemBase {
 
   @Override
   public void periodic() {
-    // TODO : mettre les capteurs dans le dashboard
 
-    if (isLimitSwitch()) {// TODO :à remplacer par un trigger dans le robotcontainer
-
+    if (isLimitSwitch()) {
       resetEncodeurLimitSwitch();
     }
   }
