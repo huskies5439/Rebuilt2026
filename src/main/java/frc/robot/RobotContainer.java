@@ -8,6 +8,7 @@ package frc.robot;
 import frc.robot.commands.BasePilotableDefaut;
 import frc.robot.lib.FancyPathGeneration;
 import frc.robot.subsystems.BasePilotable;
+import frc.robot.subsystems.Lanceur;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 
@@ -18,7 +19,7 @@ public class RobotContainer {
 
   private final BasePilotable basePilotable;
   //private final Tourelle tourelle;
-  //private final Lanceur lanceur;
+  private final Lanceur lanceur;
   //private final Gobeur gobeur;
   //private final Carroussel indexeur;
   //private final Coude coude;
@@ -30,7 +31,7 @@ public class RobotContainer {
   public RobotContainer() {
     basePilotable = new BasePilotable();
     //tourelle = new Tourelle();
-    //lanceur = new Lanceur();
+    lanceur = new Lanceur();
     //gobeur = new Gobeur();
     //indexeur = new Carroussel();
     //coude = new Coude();
@@ -60,7 +61,7 @@ public class RobotContainer {
     //manette.leftBumper().whileTrue(tourelle.tournerAntiHoraire());
     //manette.rightBumper().whileTrue(tourelle.tournerHoraire());
 
-    //manette.rightTrigger(0.5).whileTrue(lanceur.lancerSimpleCommand()); 
+    manette.rightTrigger(0.5).whileTrue(lanceur.lancerSimpleCommand()); 
     //manette.povUp().whileTrue(hood.sortirCommand()); 
     //manette.povDown().whileTrue(hood.rentrerCommand());
   

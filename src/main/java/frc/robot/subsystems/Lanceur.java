@@ -52,7 +52,7 @@ public class Lanceur extends SubsystemBase {
   }
 
   public void lancer() {
-    setVoltage(1);
+    setVoltage(8);
   }
 
   public void stop() {
