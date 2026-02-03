@@ -4,7 +4,8 @@
 
 package frc.robot;
 
-
+import edu.wpi.first.epilogue.Epilogue;
+import edu.wpi.first.epilogue.Logged;
 import frc.robot.commands.BasePilotableDefaut;
 import frc.robot.lib.FancyPathGeneration;
 import frc.robot.subsystems.BasePilotable;
@@ -12,7 +13,7 @@ import frc.robot.subsystems.Lanceur;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 
-
+@Logged 
 public class RobotContainer {
 
   private final CommandXboxController manette = new CommandXboxController(0);

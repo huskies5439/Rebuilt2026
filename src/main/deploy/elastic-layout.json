@@ -1,0 +1,391 @@
+{
+  "version": 1.0,
+  "grid_size": 32,
+  "tabs": [
+    {
+      "name": "Teleoperated",
+      "grid_layout": {
+        "layouts": [],
+        "containers": [
+          {
+            "title": "field2d",
+            "x": 0.0,
+            "y": 96.0,
+            "width": 1088.0,
+            "height": 480.0,
+            "type": "Field",
+            "properties": {
+              "topic": "/SmartDashboard/field2d",
+              "period": 0.06,
+              "field_game": "Rebuilt",
+              "robot_width": 0.85,
+              "robot_length": 0.85,
+              "show_other_objects": true,
+              "show_trajectories": true,
+              "field_rotation": 0.0,
+              "robot_color": 4294198070,
+              "trajectory_color": 4294967295,
+              "show_robot_outside_widget": true
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "Autonomous",
+      "grid_layout": {
+        "layouts": [],
+        "containers": []
+      }
+    },
+    {
+      "name": "Epilogue",
+      "grid_layout": {
+        "layouts": [
+          {
+            "title": "getChassisSpeeds",
+            "x": 1088.0,
+            "y": 256.0,
+            "width": 288.0,
+            "height": 256.0,
+            "type": "List Layout",
+            "properties": {
+              "label_position": "TOP"
+            },
+            "children": [
+              {
+                "title": "omega",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 128.0,
+                "height": 128.0,
+                "type": "Text Display",
+                "properties": {
+                  "topic": "Robot/m_robotContainer/basePilotable/getChassisSpeeds",
+                  "period": 0.06,
+                  "data_type": "double",
+                  "struct_meta": {
+                    "path": [
+                      "omega"
+                    ],
+                    "schema_name": "ChassisSpeeds",
+                    "type": "double"
+                  },
+                  "show_submit_button": false
+                }
+              },
+              {
+                "title": "vx",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 128.0,
+                "height": 128.0,
+                "type": "Text Display",
+                "properties": {
+                  "topic": "Robot/m_robotContainer/basePilotable/getChassisSpeeds",
+                  "period": 0.06,
+                  "data_type": "double",
+                  "struct_meta": {
+                    "path": [
+                      "vx"
+                    ],
+                    "schema_name": "ChassisSpeeds",
+                    "type": "double"
+                  },
+                  "show_submit_button": false
+                }
+              },
+              {
+                "title": "vy",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 128.0,
+                "height": 128.0,
+                "type": "Text Display",
+                "properties": {
+                  "topic": "Robot/m_robotContainer/basePilotable/getChassisSpeeds",
+                  "period": 0.06,
+                  "data_type": "double",
+                  "struct_meta": {
+                    "path": [
+                      "vy"
+                    ],
+                    "schema_name": "ChassisSpeeds",
+                    "type": "double"
+                  },
+                  "show_submit_button": false
+                }
+              }
+            ]
+          },
+          {
+            "title": "rotation",
+            "x": 320.0,
+            "y": 0.0,
+            "width": 256.0,
+            "height": 256.0,
+            "type": "List Layout",
+            "properties": {
+              "label_position": "TOP"
+            },
+            "children": [
+              {
+                "title": "value",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 128.0,
+                "height": 128.0,
+                "type": "Text Display",
+                "properties": {
+                  "topic": "Robot/m_robotContainer/basePilotable/getPose",
+                  "period": 0.06,
+                  "data_type": "double",
+                  "struct_meta": {
+                    "path": [
+                      "rotation",
+                      "value"
+                    ],
+                    "schema_name": "Pose2d",
+                    "type": "double"
+                  },
+                  "show_submit_button": false
+                }
+              }
+            ]
+          },
+          {
+            "title": "translation",
+            "x": 608.0,
+            "y": 352.0,
+            "width": 256.0,
+            "height": 256.0,
+            "type": "List Layout",
+            "properties": {
+              "label_position": "TOP"
+            },
+            "children": [
+              {
+                "title": "x",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 128.0,
+                "height": 128.0,
+                "type": "Text Display",
+                "properties": {
+                  "topic": "Robot/m_robotContainer/basePilotable/getPose",
+                  "period": 0.06,
+                  "data_type": "double",
+                  "struct_meta": {
+                    "path": [
+                      "translation",
+                      "x"
+                    ],
+                    "schema_name": "Pose2d",
+                    "type": "double"
+                  },
+                  "show_submit_button": false
+                }
+              },
+              {
+                "title": "y",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 128.0,
+                "height": 128.0,
+                "type": "Text Display",
+                "properties": {
+                  "topic": "Robot/m_robotContainer/basePilotable/getPose",
+                  "period": 0.06,
+                  "data_type": "double",
+                  "struct_meta": {
+                    "path": [
+                      "translation",
+                      "y"
+                    ],
+                    "schema_name": "Pose2d",
+                    "type": "double"
+                  },
+                  "show_submit_button": false
+                }
+              }
+            ]
+          }
+        ],
+        "containers": [
+          {
+            "title": "gyro",
+            "x": 832.0,
+            "y": 0.0,
+            "width": 256.0,
+            "height": 256.0,
+            "type": "Gyro",
+            "properties": {
+              "topic": "Robot/m_robotContainer/basePilotable/gyro",
+              "period": 0.06,
+              "counter_clockwise_positive": true
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "Rebuilt-Epilogue",
+      "grid_layout": {
+        "layouts": [
+          {
+            "title": "rotation",
+            "x": 800.0,
+            "y": 0.0,
+            "width": 256.0,
+            "height": 256.0,
+            "type": "List Layout",
+            "properties": {
+              "label_position": "TOP"
+            },
+            "children": [
+              {
+                "title": "value",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 128.0,
+                "height": 128.0,
+                "type": "Text Display",
+                "properties": {
+                  "topic": "Robot/m_robotContainer/basePilotable/getPose",
+                  "period": 0.06,
+                  "data_type": "double",
+                  "struct_meta": {
+                    "path": [
+                      "rotation",
+                      "value"
+                    ],
+                    "schema_name": "Pose2d",
+                    "type": "double"
+                  },
+                  "show_submit_button": false
+                }
+              }
+            ]
+          },
+          {
+            "title": "translation",
+            "x": 544.0,
+            "y": 0.0,
+            "width": 256.0,
+            "height": 256.0,
+            "type": "List Layout",
+            "properties": {
+              "label_position": "TOP"
+            },
+            "children": [
+              {
+                "title": "x",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 128.0,
+                "height": 128.0,
+                "type": "Text Display",
+                "properties": {
+                  "topic": "Robot/m_robotContainer/basePilotable/getPose",
+                  "period": 0.06,
+                  "data_type": "double",
+                  "struct_meta": {
+                    "path": [
+                      "translation",
+                      "x"
+                    ],
+                    "schema_name": "Pose2d",
+                    "type": "double"
+                  },
+                  "show_submit_button": false
+                }
+              },
+              {
+                "title": "y",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 128.0,
+                "height": 128.0,
+                "type": "Text Display",
+                "properties": {
+                  "topic": "Robot/m_robotContainer/basePilotable/getPose",
+                  "period": 0.06,
+                  "data_type": "double",
+                  "struct_meta": {
+                    "path": [
+                      "translation",
+                      "y"
+                    ],
+                    "schema_name": "Pose2d",
+                    "type": "double"
+                  },
+                  "show_submit_button": false
+                }
+              }
+            ]
+          }
+        ],
+        "containers": [
+          {
+            "title": "atCible",
+            "x": 0.0,
+            "y": 0.0,
+            "width": 128.0,
+            "height": 128.0,
+            "type": "Boolean Box",
+            "properties": {
+              "topic": "Robot/m_robotContainer/lanceur/atCible",
+              "period": 0.06,
+              "data_type": "boolean",
+              "true_color": 4283215696,
+              "false_color": 4294198070,
+              "true_icon": "None",
+              "false_icon": "None"
+            }
+          },
+          {
+            "title": "getPosition",
+            "x": 0.0,
+            "y": 128.0,
+            "width": 128.0,
+            "height": 128.0,
+            "type": "Text Display",
+            "properties": {
+              "topic": "Robot/m_robotContainer/lanceur/getPosition",
+              "period": 0.06,
+              "data_type": "double",
+              "show_submit_button": false
+            }
+          },
+          {
+            "title": "getVitesse",
+            "x": 0.0,
+            "y": 256.0,
+            "width": 128.0,
+            "height": 128.0,
+            "type": "Text Display",
+            "properties": {
+              "topic": "Robot/m_robotContainer/lanceur/getVitesse",
+              "period": 0.06,
+              "data_type": "double",
+              "show_submit_button": false
+            }
+          },
+          {
+            "title": "gyro",
+            "x": 1056.0,
+            "y": 0.0,
+            "width": 256.0,
+            "height": 256.0,
+            "type": "Gyro",
+            "properties": {
+              "topic": "Robot/m_robotContainer/basePilotable/gyro",
+              "period": 0.06,
+              "counter_clockwise_positive": true
+            }
+          }
+        ]
+      }
+    }
+  ]
+}
