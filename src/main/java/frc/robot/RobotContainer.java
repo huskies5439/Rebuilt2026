@@ -7,8 +7,11 @@ package frc.robot;
 import edu.wpi.first.epilogue.Epilogue;
 import edu.wpi.first.epilogue.Logged;
 import frc.robot.commands.BasePilotableDefaut;
+import frc.robot.commands.CoudePID;
 import frc.robot.lib.FancyPathGeneration;
 import frc.robot.subsystems.BasePilotable;
+import frc.robot.subsystems.Coude;
+import frc.robot.subsystems.Gobeur;
 import frc.robot.subsystems.Lanceur;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -21,9 +24,9 @@ public class RobotContainer {
   private final BasePilotable basePilotable;
   //private final Tourelle tourelle;
   private final Lanceur lanceur;
-  //private final Gobeur gobeur;
+  private final Gobeur gobeur;
   //private final Carroussel indexeur;
-  //private final Coude coude;
+  private final Coude coude;
   //private final Hood hood; 
   //private final Kickeur kickeur; 
 
@@ -33,9 +36,9 @@ public class RobotContainer {
     basePilotable = new BasePilotable();
     //tourelle = new Tourelle();
     lanceur = new Lanceur();
-    //gobeur = new Gobeur();
+    gobeur = new Gobeur();
     //indexeur = new Carroussel();
-    //coude = new Coude();
+    coude = new Coude();
     //hood = new Hood(); 
     //kickeur = new Kickeur(); 
 
@@ -47,14 +50,14 @@ public class RobotContainer {
     basePilotable.setDefaultCommand(new BasePilotableDefaut(manette::getLeftY,
         manette::getLeftX, manette::getRightX, basePilotable));
 
-    //coude.setDefaultCommand(coude.holdCommand());
+    coude.setDefaultCommand(coude.holdCommand());
 
   }
 
   private void configureBindings() {
-    //manette.a().whileTrue(gobeur.goberCommand());
-    //manette.povRight().whileTrue(coude.descendreCommand());
-    //manette.povLeft().whileTrue(coude.monterCommand());
+    manette.a().whileTrue(gobeur.goberCommand());
+    manette.povRight().whileTrue(coude.descendreCommand());
+    manette.povLeft().whileTrue(coude.monterCommand());
 
     //manette.x().whileTrue(indexeur.tournerAntiHoraireCommand());
     //manette.b().whileTrue(kickeur.tournerCommand());
@@ -68,10 +71,10 @@ public class RobotContainer {
   
 
     //Gober
-    //manette.leftBumper().whileTrue(new CoudePID(0, coude).alongWith(gobeur.goberCommand())); //à déterminer s'il faut lever légerment le gobeur
+    manette.leftBumper().whileTrue(new CoudePID(0, coude).alongWith(gobeur.goberCommand())); //à déterminer s'il faut lever légerment le gobeur
 
     //Protection coude
-    //manette.x().onTrue(new CoudePID(Constants.kAngleCoudeDepart, coude));
+    manette.x().onTrue(new CoudePID(Constants.kAngleCoudeDepart, coude));
   }
 
   public Command getAutonomousCommand() {
