@@ -4,7 +4,6 @@
 
 package frc.robot.subsystems;
 
-
 import com.revrobotics.PersistMode;
 import com.revrobotics.ResetMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
@@ -30,7 +29,8 @@ public class Coude extends SubsystemBase {
 
   private SparkMaxConfig moteurConfig = new SparkMaxConfig();
 
-  private DigitalInput limitSwitch = new DigitalInput(0);
+  private DigitalInput limitSwitchGauche = new DigitalInput(0);
+  private DigitalInput limitSwitchDroite = new DigitalInput(1);
 
   private double conversionCoude = (1 / 5.0) * (1 / 5.0) * (1 / 3.0) * 360.0;
 
@@ -47,7 +47,7 @@ public class Coude extends SubsystemBase {
   /** Creates a new Coude. */
   public Coude() {
 
-    boolean inverted = false; 
+    boolean inverted = false;
     moteurConfig.inverted(inverted);
     moteurConfig.idleMode(IdleMode.kBrake);
     moteurConfig.encoder.positionConversionFactor(conversionCoude);
@@ -69,9 +69,13 @@ public class Coude extends SubsystemBase {
   @Override
   public void periodic() {
 
-    if (isLimitSwitch()) {
-      resetEncodeurLimitSwitch();
+    if (isLimitSwitchGauche()) {
+      resetEncodeurLimitSwitchGauche();
     }
+    if (isLimitSwitchDroite()) {
+      resetEncodeurLimitSwitchDroite();
+    }
+    
   }
 
   public void setVoltage(double voltageGauche, double voltageDroit) {
@@ -121,9 +125,12 @@ public class Coude extends SubsystemBase {
 
   /// Encodeurs
 
-  public void resetEncodeurLimitSwitch() {// Quand on clique la limit switch
-    moteurDroit.getEncoder().setPosition(0); // À determiner
+  public void resetEncodeurLimitSwitchGauche() {// Quand on clique la limit switch
     moteurGauche.getEncoder().setPosition(0); // À determiner
+  }
+
+  public void resetEncodeurLimitSwitchDroite() {// Quand on clique la limit switch
+    moteurDroit.getEncoder().setPosition(0); // À determiner
   }
 
   public void resetEncodeurStartUp() {
@@ -160,8 +167,12 @@ public class Coude extends SubsystemBase {
 
   /// limit switch
 
-  public boolean isLimitSwitch() {
-    return !limitSwitch.get();
+  public boolean isLimitSwitchGauche() {
+    return !limitSwitchGauche.get();
+  }
+
+  public boolean isLimitSwitchDroite() {
+    return !limitSwitchDroite.get();
   }
 
   /// commandes

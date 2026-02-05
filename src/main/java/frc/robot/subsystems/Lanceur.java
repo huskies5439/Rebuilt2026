@@ -13,6 +13,8 @@ import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 
 import edu.wpi.first.epilogue.Logged;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.SimpleMotorFeedforward;
+import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -25,9 +27,13 @@ public class Lanceur extends SubsystemBase {
 
   private SparkFlexConfig config = new SparkFlexConfig();
 
-  private double conversionLanceur = 1.0; 
+  private double conversionLanceur = 1.0;
 
-  private PIDController pid = new PIDController(0, 0, 0); 
+  private PIDController pid = new PIDController(0, 0, 0);
+  private SimpleMotorFeedforward ff = new SimpleMotorFeedforward(0, 0); // Les valeurs sont clairement définitives pour
+                                                                        // toujours! Elles ne devraient changer sous
+                                                                        // aucune circomstances!
+  private SlewRateLimiter limiter = new SlewRateLimiter(25); // Pour limiter l'accélération du lanceur
 
   public Lanceur() {
     boolean inverted = false;
@@ -59,17 +65,18 @@ public class Lanceur extends SubsystemBase {
     setVoltage(0);
   }
 
-  //PID 
-  public void setPID(double cible){
-    double voltage = pid.calculate(cible);
-    setVoltage(voltage);
+  // PID
+  public void setPID(double cible) {
+    double cibleCorriger = limiter.calculate(cible);
+    setVoltage(
+        ff.calculate(cibleCorriger) + pid.calculate(getVitesse(), cibleCorriger));
   }
 
-  public boolean atCible(){
-    return pid.atSetpoint(); 
+  public boolean atCible() {
+    return pid.atSetpoint();
   }
 
-  public void resetPID(){
+  public void resetPID() {
     pid.reset();
   }
 
@@ -86,7 +93,8 @@ public class Lanceur extends SubsystemBase {
   }
 
   public Command lancerPIDCommand(double cible) {
-    return Commands.runEnd(()->setPID(cible), this::stop, this);
+    return Commands.runOnce(() -> limiter.reset(getVitesse()))
+        .andThen(Commands.runEnd(() -> setPID(cible), this::stop, this));
   }
 
 }

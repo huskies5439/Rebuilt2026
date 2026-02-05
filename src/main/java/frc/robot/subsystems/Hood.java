@@ -25,7 +25,7 @@ public class Hood extends SubsystemBase {
   private SparkMaxConfig config = new SparkMaxConfig();
   private double conversion = 1.0;
 
-  private DigitalInput limitSwitch = new DigitalInput(1);
+  private DigitalInput limitSwitch = new DigitalInput(2);
 
   private ProfiledPIDController profiledPID = new ProfiledPIDController(0, 0, 0,
       new TrapezoidProfile.Constraints(0, 0));
@@ -43,7 +43,6 @@ public class Hood extends SubsystemBase {
   public void periodic() {
 
     if (isLimitSwitch()) {
-
       resetEncodeur();
     }
 
