@@ -12,6 +12,7 @@ import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
+import com.pathplanner.lib.path.PathConstraints;
 import com.pathplanner.lib.path.PathPlannerPath;
 import com.pathplanner.lib.trajectory.PathPlannerTrajectoryState;
 import com.pathplanner.lib.util.DriveFeedforwards;
@@ -69,6 +70,8 @@ public class BasePilotable extends SubsystemBase {
   private final SwerveSetpointGenerator setpointGenerator;
   private SwerveSetpoint previousSetpoint;
 
+  PathConstraints pathConstraints;
+
   // Initialisation PoseEstimator
   SwerveDrivePoseEstimator poseEstimator = new SwerveDrivePoseEstimator(
       Constants.kDriveKinematics,
@@ -82,6 +85,7 @@ public class BasePilotable extends SubsystemBase {
       Pose2d.kZero);
 
   Field2d field2d = new Field2d();
+
 
   public BasePilotable() {
 
@@ -100,6 +104,8 @@ public class BasePilotable extends SubsystemBase {
     } catch (Exception e) {
       e.printStackTrace();
     }
+
+     pathConstraints = getPPAppSettings();
 
     // AutoBuilder permet de générer les trajets autonomes et de followPath
     AutoBuilder.configure(
@@ -392,5 +398,23 @@ public class BasePilotable extends SubsystemBase {
     ChassisSpeeds chassisSpeeds = ppHolonomicDriveController.calculateRobotRelativeSpeeds(current, stateCible);
     conduireChassis(chassisSpeeds);
   }
+  /////////TEST POUR SYNCHRONISER LES PARAMÈTRES PATHPLANNER ET LES CONSTANTES DU CODE
+  ///Pas capable de le placer dans Constants.java par contre........
+  public PathConstraints getPPAppSettings() {
+    PathPlannerPath pathConfig = null;
 
+     try{
+      pathConfig = PathPlannerPath.fromPathFile("config");
+     } catch (Exception e){
+      e.printStackTrace();
+     }
+
+    return pathConfig.getGlobalConstraints();
+  }
+
+  public double getPPMaxVitesseAngulaire(){
+    return Math.toDegrees(getPPAppSettings().maxAngularVelocityRadPerSec());//nécessaire la conversion ?
+  }
+
+  ////et on fait les 3 autres, on fait juste callé getPPAppSettings().leParamètreSouhaité quand nécessaire.....
 }
