@@ -39,7 +39,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.PidBasePilotable;
-import frc.robot.Constants.PositionHub;
+import frc.robot.Constants.Cible;
 import frc.robot.LimelightHelpers;
 
 @Logged
@@ -114,7 +114,7 @@ public class BasePilotable extends SubsystemBase {
         (speeds, feedforward) -> conduireChassis(speeds),
         ppHolonomicDriveController,
         robotConfig,
-        this::isRedAlliance,
+        Constants::isRedAlliance,
         this);
 
     // Configuration Setpoint Generator
@@ -181,7 +181,7 @@ public class BasePilotable extends SubsystemBase {
 
     // inversion du field oriented selon l'alliance
     double invert = 1;
-    if (isRedAlliance()) {
+    if (Constants.isRedAlliance()) {
       invert = -1;
     }
 
@@ -223,24 +223,7 @@ public class BasePilotable extends SubsystemBase {
     return poseEstimator.getEstimatedPosition();
   }
 
-  public Pose2d getPoseTourelle() {
-    // les deux composantes sont négatives puisque la tourelle se trouve dans le
-    // coin inférieur gauche
-    Transform2d deplacementTourelle = new Transform2d(-0.153, -0.153, Rotation2d.kZero);
-    return getPose().plus(deplacementTourelle);
-  }
-
-  public Translation2d getPositionHub() {
-    return isRedAlliance() ? PositionHub.hubRouge : PositionHub.hubBleu;
-  }
-
-  public double getDistanceHub() {
-    return getPoseTourelle().getTranslation().getDistance(getPositionHub());
-  }
-
-  public Rotation2d getAngleCible(Translation2d cible) {
-    return cible.minus(getPoseTourelle().getTranslation()).getAngle();
-  }
+  
 
   public void resetOdometry(Pose2d pose) { // pose est à la pose où reset, c'est typiquement l'origine du terrain
     poseEstimator.resetPosition(
@@ -323,16 +306,7 @@ public class BasePilotable extends SubsystemBase {
     gyro.setYaw(0);
   }
 
-  /////// ALLIANCE
-  public boolean isRedAlliance() {
-    Optional<Alliance> ally = DriverStation.getAlliance();
-    if (ally.isPresent()) {
-      return ally.get() == Alliance.Red;
 
-    } else {
-      return false;
-    }
-  }
 
   /// ///////////// Path Planner
   public ChassisSpeeds getChassisSpeeds() {

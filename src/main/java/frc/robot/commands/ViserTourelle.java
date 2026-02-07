@@ -6,10 +6,12 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.BasePilotable;
+import frc.robot.subsystems.Superstructure;
 import frc.robot.subsystems.Tourelle;
 
 public class ViserTourelle extends Command {
 
+  Superstructure superstructure; 
   BasePilotable basePilotable;
   Tourelle tourelle;
   double deltaAngleAbsolu;
@@ -22,9 +24,10 @@ public class ViserTourelle extends Command {
   
   double limiteFil = 180; // à vérifier
 
-  public ViserTourelle(Tourelle tourelle) {
+  public ViserTourelle(Tourelle tourelle, BasePilotable basePilotable, Superstructure superstructure) {
     this.tourelle = tourelle;
     this.basePilotable = basePilotable;
+    this.superstructure = superstructure; 
 
     addRequirements(tourelle);
     
@@ -37,7 +40,7 @@ public class ViserTourelle extends Command {
   }
 
   private void getInitialInfos() {
-    angleCibleAbsolu = basePilotable.getAngleCible(basePilotable.getPositionHub()).getDegrees();
+    angleCibleAbsolu = superstructure.yawVecteurLancer(basePilotable.getPose());
     angleActuelAbsolu = tourelle.getAngleAbsolu();
   }
 

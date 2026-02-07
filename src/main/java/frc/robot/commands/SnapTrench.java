@@ -9,6 +9,7 @@ import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants;
 import frc.robot.Constants.PidBasePilotable;
 import frc.robot.Constants.PositionYTrench;
 import frc.robot.subsystems.BasePilotable;
@@ -46,7 +47,7 @@ public class SnapTrench extends Command {
       cibleY = PositionYTrench.trenchBas;
     }
 
-    if (basePilotable.isRedAlliance()) {
+    if (Constants.isRedAlliance()) {
       cibleAngle = Math.toRadians(0);
     } else {
       cibleAngle = Math.toRadians(180);

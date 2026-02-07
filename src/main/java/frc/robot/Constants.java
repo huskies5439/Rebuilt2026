@@ -4,9 +4,14 @@
 
 package frc.robot;
 
+import java.util.Optional;
+
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 
 
 
@@ -31,9 +36,15 @@ public final class Constants {
       new Translation2d(-kWheelBase / 2, kTrackWidth / 2),
       new Translation2d(-kWheelBase / 2, -kTrackWidth / 2));
 
-  public static final class PositionHub {
-    public static Translation2d hubBleu = new Translation2d(4.625,4.025); 
-    public static Translation2d hubRouge = new Translation2d(11.9,4.025); 
+  public static final class Cible {
+    public static double hauteurHub = 1.8288 - 0.42995; //Hauteur du hub moins la hauteur de la tourelle relative au sol (mètres)
+    public static double hauteurSouffleuse = 0.0;
+    public static Translation3d hubBleu = new Translation3d(4.625,4.025,hauteurHub); 
+    public static Translation3d hubRouge = new Translation3d(11.9,4.025,hauteurHub);
+    public static Translation3d souffleuseDepotBleu = new Translation3d(3.0,6.0,hauteurSouffleuse);
+    public static Translation3d souffleuseOutPostBleu = new Translation3d(3.0,2.0,hauteurSouffleuse);
+    public static Translation3d souffleuseOutPostRouge = new Translation3d(13.0,6.0,hauteurSouffleuse);
+    public static Translation3d souffleuseDepotRouge = new Translation3d(13.0,2.0,hauteurSouffleuse);
   }
 
   public static final class RegimeLanceur{ //valeurs à déterminer
@@ -65,5 +76,17 @@ public final class Constants {
   public static final double g  = 9.81; 
 
   public static double hauteurHub = 0.42995; // mètres 
+
+  /////// ALLIANCE
+  public static boolean isRedAlliance() {
+    Optional<Alliance> ally = DriverStation.getAlliance();
+    if (ally.isPresent()) {
+      return ally.get() == Alliance.Red;
+
+    } else {
+      return false;
+    }
+  }
+
     
 }

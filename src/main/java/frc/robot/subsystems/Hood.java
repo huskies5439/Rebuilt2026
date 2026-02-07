@@ -111,20 +111,7 @@ public class Hood extends SubsystemBase {
     return !limitSwitch.get();
   }
 
-   public double calculAngleHood(double vitesseBallon, double hauteur, double distance){ 
-    
-    return Math.toDegrees(Math.atan((Math.pow(vitesseBallon, 2) + 
-    Math.sqrt(Math.pow(vitesseBallon, 4) -
-    Math.pow(Constants.g,2) * 
-    Math.pow(distance,2) -
-    2 * 
-    Constants.g * 
-    Math.pow(vitesseBallon, 2) * 
-    hauteur)) / 
-   Constants.g * 
-   distance
-  )); 
-  } 
+  
 
   public Command goToAnglePIDCommand(double cible){
     return Commands.runEnd(() -> setPID(cible), this::stop, this);

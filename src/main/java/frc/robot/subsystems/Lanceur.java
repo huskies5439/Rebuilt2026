@@ -16,6 +16,7 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -62,7 +63,7 @@ public class Lanceur extends SubsystemBase {
   }
 
   public void lancer() {
-    setVoltage(8);
+    setVoltage(SmartDashboard.getNumber("voltage lanceur", 0));
   }
 
   public void stop() {
@@ -103,20 +104,8 @@ public class Lanceur extends SubsystemBase {
     return (moteurGauche.getEncoder().getVelocity() + moteurDroit.getEncoder().getVelocity()) / 2.0;
   }
 
-  public double getVitesseBallon(){
-    return getVitesse() * Units.inchesToMeters(4) * 1; //1 étant le facteur de friction 
-  }
 
-  public double heuristic(double distance) { // Valeurs à déterminer
-    double vitesse;
-    if (distance < 1) {
-      vitesse = Constants.RegimeLanceur.vitesseProche;
-    } else {
-      vitesse = Constants.RegimeLanceur.vitesseLoin; 
-    }
-
-    return (vitesse);
-  }
+  
 
   public Command lancerSimpleCommand() {
     return Commands.runEnd(this::lancer, this::stop, this);
