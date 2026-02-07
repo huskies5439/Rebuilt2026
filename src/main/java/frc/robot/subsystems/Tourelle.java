@@ -67,9 +67,19 @@ public class Tourelle extends SubsystemBase {
     setVoltage(0);
   }
 
-  public double getAngle(){
+  public double getAngleReel(){
     return moteurTourelle.getEncoder().getPosition(); 
   } 
+
+  public double getAngleAbsolu(){
+    if (Math.abs(getAngleReel())< 180.0) {
+      return getAngleReel();
+    }
+    else {
+      return (Math.abs(getAngleReel())-360.0) * Math.signum(getAngleReel());
+    }
+  }
+
 
   public double getVitesse(){
     return moteurTourelle.getEncoder().getVelocity(); 
@@ -81,17 +91,20 @@ public class Tourelle extends SubsystemBase {
 
   //PID 
   public void setPID(double cible){
-    // double voltagePID = pidTourelle.calculate(getAngle(),cible); 
-    // setVoltage(voltagePID);
+    double voltagePID = pidTourelle.calculate(getAngleReel(),cible); 
+    setVoltage(voltagePID);
+
+
   }
 
   public void resetPID(){
-    pidTourelle.reset(getAngle());
+    pidTourelle.reset(getAngleReel());
   }
 
   public boolean atCible(){
     return pidTourelle.atGoal(); 
   } 
+
 
   //Commandes temporaires 
   public Command tournerHoraire(){
