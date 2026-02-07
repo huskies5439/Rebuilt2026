@@ -86,7 +86,6 @@ public class BasePilotable extends SubsystemBase {
 
   Field2d field2d = new Field2d();
 
-
   public BasePilotable() {
 
     // Reset initial
@@ -105,7 +104,7 @@ public class BasePilotable extends SubsystemBase {
       e.printStackTrace();
     }
 
-     pathConstraints = getPPAppSettings();
+    pathConstraints = getPPAppSettings();
 
     // AutoBuilder permet de générer les trajets autonomes et de followPath
     AutoBuilder.configure(
@@ -324,7 +323,7 @@ public class BasePilotable extends SubsystemBase {
     gyro.setYaw(0);
   }
 
-///////ALLIANCE
+  /////// ALLIANCE
   public boolean isRedAlliance() {
     Optional<Alliance> ally = DriverStation.getAlliance();
     if (ally.isPresent()) {
@@ -334,7 +333,6 @@ public class BasePilotable extends SubsystemBase {
       return false;
     }
   }
-
 
   /// ///////////// Path Planner
   public ChassisSpeeds getChassisSpeeds() {
@@ -350,13 +348,11 @@ public class BasePilotable extends SubsystemBase {
     setModuleStates(swerveModuleState);
   }
 
-
-///////////////////////EN BAS DE CE POINT, CES FONCTIONS NE SONT PEUT-ÊTRE PAS PERTINENTES.
-/// CE SONT DES RESTES DE REEFSCAPE2025 ET DE DEVELOPPMENTAUTOMNE2025 (PID APRÈS FOLLOWPATH)
-/// À VALIDER AU FUR ET À MESURE QUE LES COMMANDES SE PRÉCISENT
-
-
-
+  /////////////////////// EN BAS DE CE POINT, CES FONCTIONS NE SONT PEUT-ÊTRE PAS
+  /////////////////////// PERTINENTES.
+  /// CE SONT DES RESTES DE REEFSCAPE2025 ET DE DEVELOPPMENTAUTOMNE2025 (PID APRÈS
+  /////////////////////// FOLLOWPATH)
+  /// À VALIDER AU FUR ET À MESURE QUE LES COMMANDES SE PRÉCISENT
 
   /////////////// On the fly
 
@@ -381,12 +377,10 @@ public class BasePilotable extends SubsystemBase {
 
   ////////////// isProche permet de vérifier la position du robot
   /// Seule fois où on a besoin des Pose2D de l'alliance rouge car on ne passe pas
-  ////////////// par PathPlanner 
+  ////////////// par PathPlanner
   public boolean isProche(Pose2d cible, double distanceMin) {
     return getPose().getTranslation().getDistance(cible.getTranslation()) < distanceMin;
   }
-
-
 
   public void setPID(Pose2d cible) {
     Pose2d current = getPose();
@@ -398,23 +392,26 @@ public class BasePilotable extends SubsystemBase {
     ChassisSpeeds chassisSpeeds = ppHolonomicDriveController.calculateRobotRelativeSpeeds(current, stateCible);
     conduireChassis(chassisSpeeds);
   }
-  /////////TEST POUR SYNCHRONISER LES PARAMÈTRES PATHPLANNER ET LES CONSTANTES DU CODE
-  ///Pas capable de le placer dans Constants.java par contre........
+
+  ///////// TEST POUR SYNCHRONISER LES PARAMÈTRES PATHPLANNER ET LES CONSTANTES DU
+  ///////// CODE
+  /// Pas capable de le placer dans Constants.java par contre........
   public PathConstraints getPPAppSettings() {
     PathPlannerPath pathConfig = null;
 
-     try{
+    try {
       pathConfig = PathPlannerPath.fromPathFile("config");
-     } catch (Exception e){
+    } catch (Exception e) {
       e.printStackTrace();
-     }
+    }
 
     return pathConfig.getGlobalConstraints();
   }
 
-  public double getPPMaxVitesseAngulaire(){
-    return Math.toDegrees(getPPAppSettings().maxAngularVelocityRadPerSec());//nécessaire la conversion ?
+  public double getPPMaxVitesseAngulaire() {
+    return Math.toDegrees(getPPAppSettings().maxAngularVelocityRadPerSec());// nécessaire la conversion ?
   }
 
-  ////et on fait les 3 autres, on fait juste callé getPPAppSettings().leParamètreSouhaité quand nécessaire.....
+  //// et on fait les 3 autres, on fait juste callé
+  //// getPPAppSettings().leParamètreSouhaité quand nécessaire.....
 }

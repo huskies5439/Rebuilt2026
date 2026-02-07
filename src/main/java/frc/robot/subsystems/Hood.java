@@ -14,10 +14,12 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 import edu.wpi.first.epilogue.Logged;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 
 @Logged
 public class Hood extends SubsystemBase {
@@ -56,6 +58,15 @@ public class Hood extends SubsystemBase {
     return moteur.getEncoder().getPosition();
   }
 
+   public double getVitesse(){
+    return moteur.getEncoder().getVelocity(); 
+  }
+
+    public void resetEncodeur() {
+    moteur.getEncoder().setPosition(0);// à determiner
+  }
+
+
   public void stop() {
     moteur.setVoltage(0);
   }
@@ -68,9 +79,7 @@ public class Hood extends SubsystemBase {
     setVoltage(-2);
   }
 
-  public double getPosition() {
-    return moteur.getEncoder().getPosition();
-  }
+
 
   public Command rentrerCommand() {
     return Commands.runEnd(this::rentrer, this::stop, this);
@@ -102,12 +111,23 @@ public class Hood extends SubsystemBase {
     return !limitSwitch.get();
   }
 
-  public void resetEncodeur() {
-    moteur.getEncoder().setPosition(0);// à determiner
-  }
+   public double calculAngleHood(double vitesseBallon, double hauteur, double distance){ 
+    
+    return Math.toDegrees(Math.atan((Math.pow(vitesseBallon, 2) + 
+    Math.sqrt(Math.pow(vitesseBallon, 4) -
+    Math.pow(Constants.g,2) * 
+    Math.pow(distance,2) -
+    2 * 
+    Constants.g * 
+    Math.pow(vitesseBallon, 2) * 
+    hauteur)) / 
+   Constants.g * 
+   distance
+  )); 
+  } 
 
-  public Command goToAnglePIDCommand(double cible) {
+  public Command goToAnglePIDCommand(double cible){
     return Commands.runEnd(() -> setPID(cible), this::stop, this);
   }
-
+  
 }
