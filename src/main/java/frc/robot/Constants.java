@@ -6,6 +6,7 @@ package frc.robot;
 
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import edu.wpi.first.math.util.Units;
 
 
 
@@ -60,5 +61,9 @@ public final class Constants {
     public static final double kMaxVitesseRot = Math.toRadians(360);
     public static final double kMaxAccelRot = Math.toRadians(360);
   }
+
+  public static final double g  = 9.81; 
+
+  public static double hauteurHub = 0.42995; // mètres 
     
 }

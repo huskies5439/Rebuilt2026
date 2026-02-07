@@ -15,9 +15,11 @@ import edu.wpi.first.epilogue.Logged;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.filter.SlewRateLimiter;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 
 @Logged
 public class Lanceur extends SubsystemBase {
@@ -34,6 +36,8 @@ public class Lanceur extends SubsystemBase {
                                                                         // toujours! Elles ne devraient changer sous
                                                                         // aucune circomstances!
   private SlewRateLimiter limiter = new SlewRateLimiter(25); // Pour limiter l'accélération du lanceur
+
+  private double vraieCible = 0.0;
 
   public Lanceur() {
     boolean inverted = false;
@@ -65,15 +69,26 @@ public class Lanceur extends SubsystemBase {
     setVoltage(0);
   }
 
+  // vraie cible pour déterminer si le lanceur est vraiment à la cible plutot que
+  // celle corrigée
+  public void setVraieCible(double cible) {
+    vraieCible = cible;
+  }
+
+  public double getVraieCible() {
+    return vraieCible;
+  }
+
   // PID
   public void setPID(double cible) {
+    setVraieCible(cible);
     double cibleCorriger = limiter.calculate(cible);
     setVoltage(
         ff.calculate(cibleCorriger) + pid.calculate(getVitesse(), cibleCorriger));
   }
 
   public boolean atCible() {
-    return pid.atSetpoint();
+    return Math.abs(getVitesse() - getVraieCible()) >= 1; // 1 RPS
   }
 
   public void resetPID() {
@@ -86,6 +101,21 @@ public class Lanceur extends SubsystemBase {
 
   public double getVitesse() {
     return (moteurGauche.getEncoder().getVelocity() + moteurDroit.getEncoder().getVelocity()) / 2.0;
+  }
+
+  public double getVitesseBallon(){
+    return getVitesse() * Units.inchesToMeters(4) * 1; //1 étant le facteur de friction 
+  }
+
+  public double heuristic(double distance) { // Valeurs à déterminer
+    double vitesse;
+    if (distance < 1) {
+      vitesse = Constants.RegimeLanceur.vitesseProche;
+    } else {
+      vitesse = Constants.RegimeLanceur.vitesseLoin; 
+    }
+
+    return (vitesse);
   }
 
   public Command lancerSimpleCommand() {
