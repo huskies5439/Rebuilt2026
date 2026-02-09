@@ -64,6 +64,7 @@ public final class Constants {
 
   public static final class PidBasePilotable {
     public static final double kPLineaire = 2.0;
+    public static final double kDLineaire = 1.0;
     public static final double kPRot = 10.0;
     public static final double kDRot = 1.0;
     //////Si possible, remplacer ces variables par une fonctions qui va chercher les paramètres PP.

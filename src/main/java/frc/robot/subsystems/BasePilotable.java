@@ -367,6 +367,12 @@ public class BasePilotable extends SubsystemBase {
     conduireChassis(chassisSpeeds);
   }
 
+  public void conduireChassisSetPoint(ChassisSpeeds speeds){
+     previousSetpoint = setpointGenerator.generateSetpoint(previousSetpoint, speeds, 0.02);
+
+    setModuleStates(previousSetpoint.moduleStates());
+  }
+
   ///////// TEST POUR SYNCHRONISER LES PARAMÈTRES PATHPLANNER ET LES CONSTANTES DU
   ///////// CODE
   /// Pas capable de le placer dans Constants.java par contre........

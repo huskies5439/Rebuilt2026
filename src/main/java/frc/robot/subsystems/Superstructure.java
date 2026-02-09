@@ -7,15 +7,20 @@ package frc.robot.subsystems;
 import java.util.Optional;
 import java.util.Vector;
 
+import com.ctre.phoenix6.sim.ChassisReference;
+
 import edu.wpi.first.epilogue.Logged;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Translation3d;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.Cible;
@@ -25,6 +30,8 @@ public class Superstructure extends SubsystemBase {
  Transform2d deplacementTourelle = new Transform2d(-0.153, -0.153, Rotation2d.kZero);
 
   private Translation3d cible = new Translation3d();
+  private Pose2d poseRobot = new Pose2d(); 
+  private ChassisSpeeds chassisSpeedsRobot = new ChassisSpeeds();
 
   public Superstructure() {
  
@@ -36,11 +43,11 @@ public class Superstructure extends SubsystemBase {
   }
 
 //Mettre en commande par défaut
-  public void setCible(Pose2d pose2d, boolean isHub){
+  public void setCible(boolean isHub){
     if(Constants.isRedAlliance()){
       if(isHub){
         cible = Constants.Cible.hubRouge;
-      }else if(pose2d.getY() > 4 ){
+      }else if(poseRobot.getY() > 4 ){
         cible = Constants.Cible.souffleuseOutPostRouge;
       }else{
         cible = Constants.Cible.souffleuseDepotRouge;
@@ -48,7 +55,7 @@ public class Superstructure extends SubsystemBase {
     }else{
       if(isHub){
         cible = Constants.Cible.hubBleu;
-      }else if(pose2d.getY() > 4){
+      }else if(poseRobot.getY() > 4){
         cible = Constants.Cible.souffleuseDepotBleu;
       }else{
         cible = Constants.Cible.souffleuseOutPostBleu;
@@ -56,29 +63,33 @@ public class Superstructure extends SubsystemBase {
     }
   }
 
-  public Translation3d getCible(){
-    return cible;
+  public void setPoseRobot(Pose2d poseRobot) {
+      this.poseRobot = poseRobot;
   }
 
-  public Translation2d getVecteurCibleTourelle(Pose2d poseRobot) {
+  public void setChassisSpeed(ChassisSpeeds chassisSpeeds){
+    this.chassisSpeedsRobot = chassisSpeeds;
+  }
+
+  public Translation2d getVecteurCibleTourelle() {
     Translation2d poseTourelle = poseRobot.plus(deplacementTourelle).getTranslation(); 
-    return getCible().toTranslation2d().minus(poseTourelle);
+    return cible.toTranslation2d().minus(poseTourelle);
   }
 
-  public double getDistanceCibleTourelle(Pose2d poseRobot){
-    return getVecteurCibleTourelle(poseRobot).getNorm(); 
+  public double getDistanceCibleTourelle(){
+    return getVecteurCibleTourelle().getNorm(); 
   }
 
   
-  public Rotation2d getAngleCible(Pose2d poseRobot) {
-    Rotation2d angleVecteurCible = getVecteurCibleTourelle(poseRobot).getAngle();
+  public Rotation2d getAngleCible() {
+    Rotation2d angleVecteurCible = getVecteurCibleTourelle().getAngle();
     Rotation2d angleTourelle = poseRobot.getRotation().rotateBy(Rotation2d.k180deg); 
     return angleVecteurCible.minus(angleTourelle);  
   }
 
-  public double normeVecteurLancer(Pose2d poseRobot) { 
+  public double normeVecteurLancer() { 
     double vitesseBallon;
-    if (getDistanceCibleTourelle(poseRobot) < 1) {
+    if (getDistanceCibleTourelle() < 1) {
       vitesseBallon = Constants.RegimeLanceur.vitesseProche;
     } else {
       vitesseBallon = Constants.RegimeLanceur.vitesseLoin; 
@@ -92,9 +103,9 @@ public class Superstructure extends SubsystemBase {
 
   //pitch 
   public double pitchVecteurLancer(Pose2d poseRobot){ //ajouter un clamp pour éviter de briser le hood 
-    double vitesseBallon = normeVecteurLancer(poseRobot); 
-    double distance = getDistanceCibleTourelle(poseRobot); 
-    double hauteur = getCible().getZ(); 
+    double vitesseBallon = normeVecteurLancer(); 
+    double distance = getDistanceCibleTourelle(); 
+    double hauteur = cible.getZ(); 
     return Math.toDegrees(
       Math.atan(
         (Math.pow(vitesseBallon, 2) 
@@ -108,10 +119,9 @@ public class Superstructure extends SubsystemBase {
 
   //Yaw 
   public double yawVecteurLancer(Pose2d poseRobot){
-    return getAngleCible(poseRobot).getDegrees(); //ajouter la correction pour la vitesse ici 
+    return getAngleCible().getDegrees(); //ajouter la correction pour la vitesse ici 
   }
 
-  
   
 
 }

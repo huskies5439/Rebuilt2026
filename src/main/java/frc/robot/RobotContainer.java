@@ -8,11 +8,13 @@ import edu.wpi.first.epilogue.Epilogue;
 import edu.wpi.first.epilogue.Logged;
 import frc.robot.commands.BasePilotableDefaut;
 import frc.robot.commands.CoudePID;
+import frc.robot.commands.SuperStructureDefaut;
 import frc.robot.lib.FancyPathGeneration;
 import frc.robot.subsystems.BasePilotable;
 import frc.robot.subsystems.Coude;
 import frc.robot.subsystems.Gobeur;
 import frc.robot.subsystems.Lanceur;
+import frc.robot.subsystems.Superstructure;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 
@@ -22,6 +24,7 @@ public class RobotContainer {
   private final CommandXboxController manette = new CommandXboxController(0);
 
   private final BasePilotable basePilotable;
+  private final Superstructure superstructure; 
   //private final Tourelle tourelle;
   private final Lanceur lanceur;
   private final Gobeur gobeur;
@@ -34,6 +37,7 @@ public class RobotContainer {
 
   public RobotContainer() {
     basePilotable = new BasePilotable();
+    superstructure = new Superstructure(); 
     //tourelle = new Tourelle();
     lanceur = new Lanceur();
     gobeur = new Gobeur();
@@ -51,6 +55,8 @@ public class RobotContainer {
         manette::getLeftX, manette::getRightX, basePilotable));
 
     coude.setDefaultCommand(coude.holdCommand());
+
+    superstructure.setDefaultCommand(new SuperStructureDefaut()); 
 
   }
 
