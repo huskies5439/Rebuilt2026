@@ -4,12 +4,8 @@
 
 package frc.robot.commands;
 
-import com.fasterxml.jackson.databind.JsonSerializable.Base;
 
-import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
-import frc.robot.Constants;
 import frc.robot.subsystems.BasePilotable;
 import frc.robot.subsystems.Carroussel;
 import frc.robot.subsystems.Hood;

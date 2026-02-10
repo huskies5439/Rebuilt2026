@@ -4,7 +4,7 @@
 
 package frc.robot.subsystems;
 
-import java.util.Optional;
+
 import java.util.function.Supplier;
 
 import com.ctre.phoenix6.hardware.Pigeon2;
@@ -25,21 +25,16 @@ import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Transform2d;
-import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.util.Units;
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.PidBasePilotable;
-import frc.robot.Constants.Cible;
 import frc.robot.LimelightHelpers;
 
 @Logged
@@ -373,9 +368,7 @@ public class BasePilotable extends SubsystemBase {
     setModuleStates(previousSetpoint.moduleStates());
   }
 
-  ///////// TEST POUR SYNCHRONISER LES PARAMÈTRES PATHPLANNER ET LES CONSTANTES DU
-  ///////// CODE
-  /// Pas capable de le placer dans Constants.java par contre........
+///////Obtenir les paramètres de Pathplanner automatiquement
   public PathConstraints getPPAppSettings() {
     PathPlannerPath pathConfig = null;
 
@@ -388,10 +381,21 @@ public class BasePilotable extends SubsystemBase {
     return pathConfig.getGlobalConstraints();
   }
 
-  public double getPPMaxVitesseAngulaire() {
-    return Math.toDegrees(getPPAppSettings().maxAngularVelocityRadPerSec());// nécessaire la conversion ?
+  public double getPPMaxVitesseLineaire(){
+    return getPPAppSettings().maxVelocityMPS();
   }
 
-  //// et on fait les 3 autres, on fait juste callé
-  //// getPPAppSettings().leParamètreSouhaité quand nécessaire.....
+  public double getPPMaxAccelerationLineaire(){
+    return getPPAppSettings().maxAccelerationMPSSq();
+  }
+
+  public double getPPMaxVitesseAngulaire() {
+    return Math.toDegrees(getPPAppSettings().maxAngularVelocityRadPerSec());
+  }
+
+  public double getPPMaxAccelerationAngulaire() {
+    return Math.toDegrees(getPPAppSettings().maxAngularAccelerationRadPerSecSq());
+  }
+
+
 }

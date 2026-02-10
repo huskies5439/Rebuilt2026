@@ -12,8 +12,10 @@ import frc.robot.subsystems.Superstructure;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class SuperStructureDefaut extends Command {
+
   Superstructure superstructure; 
   BasePilotable basePilotable; 
+  
   public SuperStructureDefaut(Superstructure superstructure, BasePilotable basePilotable) {
     this.superstructure = superstructure;
     this.basePilotable = basePilotable;

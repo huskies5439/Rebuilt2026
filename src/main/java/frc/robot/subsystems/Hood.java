@@ -14,7 +14,6 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 import edu.wpi.first.epilogue.Logged;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
-import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -90,12 +89,15 @@ public class Hood extends SubsystemBase {
   /// PID
 
   public void setPID(double cible) {
-    if (cible == Constants.angleHoodLimitSwitch && getAngle() >= (Constants.angleHoodLimitSwitch - 2)) { //si on est proche de la limite switch mais qu'on est pas à l'angle souhaité (de 85 degrés), on l'abaisse
+
+    //Quand on rétracte le hood, on triche dans le derniers degrés pour s'accoter sur la switch
+    if (cible >= Constants.angleHoodLimitSwitch && getAngle() >= (Constants.angleHoodLimitSwitch - 2)) { 
       if (isLimitSwitch()) {
         stop();
       } else {
         rentrer();
       }
+      //PID Normal
     } else {
       double voltage = profiledPID.calculate(getAngle(), cible);
       setVoltage(voltage);

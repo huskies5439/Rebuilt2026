@@ -4,10 +4,7 @@
 
 package frc.robot.subsystems;
 
-import java.util.Optional;
-import java.util.Vector;
 
-import com.ctre.phoenix6.sim.ChassisReference;
 
 import edu.wpi.first.epilogue.Logged;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -17,14 +14,9 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.util.Units;
-import edu.wpi.first.units.Unit;
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.DriverStation.Alliance;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-import frc.robot.Constants.Cible;
+
 @Logged
 public class Superstructure extends SubsystemBase {
 
@@ -101,6 +93,7 @@ public class Superstructure extends SubsystemBase {
   }
 
   public double conversionBallonRouleau() {
+    //Norme vecteur donne la vitesse voulue du BALLON. Il faut convertir pour obtenir la vitesse correspondante du rouleau du lanceur
     return normeVecteurLancer()/(Units.inchesToMeters(4)*Constants.coefficientFrictionBallon);
   }
 
