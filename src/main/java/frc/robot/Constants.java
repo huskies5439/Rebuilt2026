@@ -89,5 +89,9 @@ public final class Constants {
     }
   }
 
+  public static double angleHoodLimitSwitch = 85.0; //à déterminer 
+
+  public static double coefficientFrictionBallon = 1.0;//à déterminer
+
     
 }

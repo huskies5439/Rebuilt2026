@@ -14,8 +14,11 @@ import frc.robot.subsystems.Superstructure;
 public class SuperStructureDefaut extends Command {
   Superstructure superstructure; 
   BasePilotable basePilotable; 
-  public SuperStructureDefaut() {
-    
+  public SuperStructureDefaut(Superstructure superstructure, BasePilotable basePilotable) {
+    this.superstructure = superstructure;
+    this.basePilotable = basePilotable;
+
+    addRequirements(superstructure);
   }
 
   @Override

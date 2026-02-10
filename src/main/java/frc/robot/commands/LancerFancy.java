@@ -23,7 +23,7 @@ public class LancerFancy extends ParallelCommandGroup {
   public LancerFancy(BasePilotable basePilotable, Lanceur lanceur, Hood hood, Tourelle tourelle, Kickeur kickeur, Carroussel carroussel, Superstructure superstructure) {
  
     addCommands(
-     lanceur.lancerPIDCommand(superstructure.normeVecteurLancer(basePilotable.getPose())/(Units.inchesToMeters(4) * 1)), //1 étant le facteur de friction)
+      lanceur.lancerPIDCommand(superstructure.conversionBallonRouleau()),
       hood.goToAnglePIDCommand(
       superstructure.pitchVecteurLancer(basePilotable.getPose())),
       new ViserTourelle(tourelle,basePilotable,superstructure), 

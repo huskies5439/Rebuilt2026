@@ -17,6 +17,7 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.units.Unit;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -99,7 +100,9 @@ public class Superstructure extends SubsystemBase {
     return vitesseBallon;
   }
 
-
+  public double conversionBallonRouleau() {
+    return normeVecteurLancer()/(Units.inchesToMeters(4)*Constants.coefficientFrictionBallon);
+  }
 
   //pitch 
   public double pitchVecteurLancer(Pose2d poseRobot){ //ajouter un clamp pour éviter de briser le hood 

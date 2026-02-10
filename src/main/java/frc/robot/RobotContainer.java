@@ -13,6 +13,7 @@ import frc.robot.lib.FancyPathGeneration;
 import frc.robot.subsystems.BasePilotable;
 import frc.robot.subsystems.Coude;
 import frc.robot.subsystems.Gobeur;
+import frc.robot.subsystems.Hood;
 import frc.robot.subsystems.Lanceur;
 import frc.robot.subsystems.Superstructure;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -30,7 +31,7 @@ public class RobotContainer {
   private final Gobeur gobeur;
   //private final Carroussel indexeur;
   private final Coude coude;
-  //private final Hood hood; 
+  private final Hood hood; 
   //private final Kickeur kickeur; 
 
   private final FancyPathGeneration fancyPathGeneration;
@@ -43,7 +44,7 @@ public class RobotContainer {
     gobeur = new Gobeur();
     //indexeur = new Carroussel();
     coude = new Coude();
-    //hood = new Hood(); 
+    hood = new Hood(); 
     //kickeur = new Kickeur(); 
 
     fancyPathGeneration = new FancyPathGeneration(basePilotable.getPoseSupplier(),
@@ -56,7 +57,8 @@ public class RobotContainer {
 
     coude.setDefaultCommand(coude.holdCommand());
 
-    superstructure.setDefaultCommand(new SuperStructureDefaut()); 
+    superstructure.setDefaultCommand(new SuperStructureDefaut(superstructure, basePilotable)); 
+    hood.setDefaultCommand(hood.goToAnglePIDCommand(Constants.angleHoodLimitSwitch)); //à réactiver après que tout soit débogger 
 
   }
 

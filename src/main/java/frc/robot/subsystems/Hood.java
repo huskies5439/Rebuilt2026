@@ -58,16 +58,16 @@ public class Hood extends SubsystemBase {
     return moteur.getEncoder().getPosition();
   }
 
-   public double getVitesse(){
-    return moteur.getEncoder().getVelocity(); 
+  public double getVitesse() {
+    return moteur.getEncoder().getVelocity();
   }
 
-    public void resetEncodeur() {
+  public void resetEncodeur() {
     moteur.getEncoder().setPosition(0);// à determiner
   }
 
-
   public void stop() {
+    resetPID();
     moteur.setVoltage(0);
   }
 
@@ -78,8 +78,6 @@ public class Hood extends SubsystemBase {
   public void rentrer() {
     setVoltage(-2);
   }
-
-
 
   public Command rentrerCommand() {
     return Commands.runEnd(this::rentrer, this::stop, this);
@@ -92,9 +90,16 @@ public class Hood extends SubsystemBase {
   /// PID
 
   public void setPID(double cible) {
-    double voltage = profiledPID.calculate(getAngle(), cible);
-
-    setVoltage(voltage);
+    if (cible == Constants.angleHoodLimitSwitch && getAngle() >= (Constants.angleHoodLimitSwitch - 2)) { //si on est proche de la limite switch mais qu'on est pas à l'angle souhaité (de 85 degrés), on l'abaisse
+      if (isLimitSwitch()) {
+        stop();
+      } else {
+        rentrer();
+      }
+    } else {
+      double voltage = profiledPID.calculate(getAngle(), cible);
+      setVoltage(voltage);
+    }
   }
 
   public void resetPID() {
@@ -111,10 +116,8 @@ public class Hood extends SubsystemBase {
     return !limitSwitch.get();
   }
 
-  
-
-  public Command goToAnglePIDCommand(double cible){
+  public Command goToAnglePIDCommand(double cible) {
     return Commands.runEnd(() -> setPID(cible), this::stop, this);
   }
-  
+
 }
