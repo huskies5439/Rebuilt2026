@@ -34,6 +34,14 @@ public class Superstructure extends SubsystemBase {
   private Pose2d poseRobot = new Pose2d(); 
   private ChassisSpeeds chassisSpeedsRobot = new ChassisSpeeds();
 
+  public enum Mode{
+    HUB, 
+    SOUFFLEUSE,
+    GRIMPEUR
+  }
+
+  Mode mode = Mode.HUB; 
+
   public Superstructure() {
  
   }
@@ -44,9 +52,9 @@ public class Superstructure extends SubsystemBase {
   }
 
 //Mettre en commande par défaut
-  public void setCible(boolean isHub){
+  public void setCible(){
     if(Constants.isRedAlliance()){
-      if(isHub){
+      if(mode == Mode.HUB){
         cible = Constants.Cible.hubRouge;
       }else if(poseRobot.getY() > 4 ){
         cible = Constants.Cible.souffleuseOutPostRouge;
@@ -54,7 +62,7 @@ public class Superstructure extends SubsystemBase {
         cible = Constants.Cible.souffleuseDepotRouge;
       }
     }else{
-      if(isHub){
+      if(mode == Mode.HUB){
         cible = Constants.Cible.hubBleu;
       }else if(poseRobot.getY() > 4){
         cible = Constants.Cible.souffleuseDepotBleu;
@@ -125,6 +133,22 @@ public class Superstructure extends SubsystemBase {
     return getAngleCible().getDegrees(); //ajouter la correction pour la vitesse ici 
   }
 
+  //Modes 
+  public Mode getMode(){
+    return mode; 
+  }
+
+  public void setModeHub(){
+    mode = Mode.HUB; 
+  }
+
+  public void setModeSouffleuse(){
+    mode = Mode.SOUFFLEUSE; 
+  }
+
+  public void setModeGrimpeur(){
+    mode = Mode.GRIMPEUR; 
+  }
   
 
 }

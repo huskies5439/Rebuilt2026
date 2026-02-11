@@ -93,6 +93,8 @@ public class Lanceur extends SubsystemBase {
   }
 
   public void resetPID() {
+    setVraieCible(0);
+    stop();
     pid.reset();
   }
 

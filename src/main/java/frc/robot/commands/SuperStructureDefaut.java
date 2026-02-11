@@ -30,7 +30,7 @@ public class SuperStructureDefaut extends Command {
   @Override
   public void execute() {
     superstructure.setPoseRobot(basePilotable.getPose());
-    superstructure.setCible(true); //trouver comment changer le mode de cible 
+    superstructure.setCible(); 
     superstructure.setChassisSpeed(basePilotable.getChassisSpeeds());
     
   }

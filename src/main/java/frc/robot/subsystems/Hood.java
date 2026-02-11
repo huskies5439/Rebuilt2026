@@ -25,7 +25,11 @@ import frc.robot.Constants;
 public class Hood extends SubsystemBase {
   private SparkMax moteur = new SparkMax(41, MotorType.kBrushless);
   private SparkMaxConfig config = new SparkMaxConfig();
-  private double conversion = 1.0;
+
+  // moteur avec maxPlanetary, enngrenage 40 vers 24, 16 * dent utiliser/nombre de dents théorique * 360 degrées
+  private double maxPlanetary = (1/5)*(1/5);
+  private int totalDent=1; /////////à enlever////////
+  private double conversion = maxPlanetary*(40/24)*(16/totalDent)*360.0;
 
   private DigitalInput limitSwitch = new DigitalInput(2);
 
