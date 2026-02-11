@@ -4,7 +4,6 @@
 
 package frc.robot;
 
-import edu.wpi.first.epilogue.Epilogue;
 import edu.wpi.first.epilogue.Logged;
 import frc.robot.commands.BasePilotableDefaut;
 import frc.robot.commands.CoudePID;

@@ -32,9 +32,10 @@ public class Superstructure extends SubsystemBase {
     GRIMPEUR
   }
 
-  Mode mode = Mode.HUB; 
+  private Mode mode;
 
   public Superstructure() {
+    setMode(Mode.HUB);
  
   }
 
@@ -106,7 +107,7 @@ public class Superstructure extends SubsystemBase {
   }
 
   //pitch 
-  public double pitchVecteurLancer(Pose2d poseRobot){ //ajouter un clamp pour éviter de briser le hood 
+  public double pitchVecteurLancer(){ //ajouter un clamp pour éviter de briser le hood 
     double vitesseBallon = normeVecteurLancer(); 
     double distance = getDistanceCibleTourelle(); 
     double hauteur = cible.getZ(); 
@@ -122,7 +123,7 @@ public class Superstructure extends SubsystemBase {
   } 
 
   //Yaw 
-  public double yawVecteurLancer(Pose2d poseRobot){
+  public double yawVecteurLancer(){
     return getAngleCible().getDegrees(); //ajouter la correction pour la vitesse ici 
   }
 
@@ -131,16 +132,8 @@ public class Superstructure extends SubsystemBase {
     return mode; 
   }
 
-  public void setModeHub(){
-    mode = Mode.HUB; 
-  }
-
-  public void setModeSouffleuse(){
-    mode = Mode.SOUFFLEUSE; 
-  }
-
-  public void setModeGrimpeur(){
-    mode = Mode.GRIMPEUR; 
+  public void setMode(Mode mode){
+    this.mode = mode; 
   }
   
 

@@ -21,8 +21,8 @@ public class LancerFancy extends ParallelCommandGroup {
     addCommands(
       lanceur.lancerPIDCommand(superstructure.conversionBallonRouleau()),
       hood.goToAnglePIDCommand(
-      superstructure.pitchVecteurLancer(basePilotable.getPose())),
-      new ViserTourelle(tourelle,basePilotable,superstructure), 
+      superstructure.pitchVecteurLancer()),
+      new ViserTourelle(tourelle,superstructure), 
       kickeur.tournerCommand(),
       new TournerCarroussel()
       

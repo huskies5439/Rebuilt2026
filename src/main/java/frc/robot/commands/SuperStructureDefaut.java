@@ -4,8 +4,6 @@
 
 package frc.robot.commands;
 
-import com.fasterxml.jackson.databind.JsonSerializable.Base;
-
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.BasePilotable;
 import frc.robot.subsystems.Superstructure;
@@ -15,7 +13,7 @@ public class SuperStructureDefaut extends Command {
 
   Superstructure superstructure; 
   BasePilotable basePilotable; 
-  
+
   public SuperStructureDefaut(Superstructure superstructure, BasePilotable basePilotable) {
     this.superstructure = superstructure;
     this.basePilotable = basePilotable;
@@ -31,10 +29,12 @@ public class SuperStructureDefaut extends Command {
 
   @Override
   public void execute() {
+    //Feed Superstructure les données de la BasePilotable nécessaire au calcul du lanceur
     superstructure.setPoseRobot(basePilotable.getPose());
-    superstructure.setCible(); 
     superstructure.setChassisSpeed(basePilotable.getChassisSpeeds());
-    
+
+    //Mets à jour la cible actuelle
+    superstructure.setCible();
   }
 
  
