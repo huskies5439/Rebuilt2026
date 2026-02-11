@@ -55,10 +55,10 @@ public class RobotContainer {
     basePilotable.setDefaultCommand(new BasePilotableDefaut(manette::getLeftY,
         manette::getLeftX, manette::getRightX, basePilotable));
 
-    coude.setDefaultCommand(coude.holdCommand());
+    //coude.setDefaultCommand(coude.holdCommand());
 
     superstructure.setDefaultCommand(new SuperStructureDefaut(superstructure, basePilotable)); 
-    hood.setDefaultCommand(hood.goToAnglePIDCommand(Constants.angleHoodLimitSwitch)); //à réactiver après que tout soit débogger 
+    //hood.setDefaultCommand(hood.goToAnglePIDCommand(Constants.angleHoodLimitSwitch)); 
 
   }
 
