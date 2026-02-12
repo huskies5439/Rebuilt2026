@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 13.859500713266762,
-        "y": 4.041469329529244
+        "x": 0.7954457831344768,
+        "y": 6.012915662650602
       },
       "prevControl": null,
       "nextControl": {
-        "x": 17.31942842410728,
-        "y": 1.36517414880766
+        "x": 2.128626506024096,
+        "y": 6.034771084337349
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "PickupDepot"
     },
     {
       "anchor": {
-        "x": 2.175891583452211,
-        "y": 4.041469329529244
+        "x": 1.1342048192771081,
+        "y": 4.5923132530120485
       },
       "prevControl": {
-        "x": 8.67533355962938,
-        "y": 4.369648415345343
+        "x": 1.2106987951807227,
+        "y": 5.324469879518071
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "EchelleDepot"
     }
   ],
   "rotationTargets": [],
@@ -42,13 +42,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 0.0
+    "rotation": 180.0
   },
   "reversed": false,
-  "folder": "config",
+  "folder": "path",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 0.0
+    "rotation": 180.0
   },
   "useDefaultConstraints": true
 }
