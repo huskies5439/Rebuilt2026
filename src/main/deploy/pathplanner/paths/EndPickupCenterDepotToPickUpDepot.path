@@ -3,48 +3,53 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 0.7954457831344768,
-        "y": 6.012915662650602
+        "x": 7.581554216868476,
+        "y": 4.9638554216867465
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.7954457831344768,
-        "y": 6.012915662650602
+        "x": 7.395783132530121,
+        "y": 5.455602409638555
       },
       "isLocked": false,
-      "linkedName": "PickupDepot"
+      "linkedName": "EndPickupCenterDepot"
     },
     {
       "anchor": {
-        "x": 3.95355421686747,
-        "y": 7.433518072289157
+        "x": 3.5581135857219657,
+        "y": 7.396893857298884
       },
       "prevControl": {
-        "x": 2.95355421686747,
-        "y": 7.433518072289157
+        "x": 7.2865060240963855,
+        "y": 8.231240963855422
       },
       "nextControl": {
-        "x": 4.95355421686747,
-        "y": 7.433518072289157
+        "x": 2.6116712897311998,
+        "y": 7.18509710997823
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "StartTrenchDepot"
     },
     {
       "anchor": {
-        "x": 6.608987951807228,
-        "y": 7.357024096385541
+        "x": 0.7845180722892706,
+        "y": 5.914566265060375
       },
       "prevControl": {
-        "x": 5.781271084337349,
-        "y": 7.395271084337349
+        "x": 3.9098433734940903,
+        "y": 5.859927710843508
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "PickupDepot"
     }
   ],
-  "rotationTargets": [],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.9477178423236432,
+      "rotationDegrees": 180.0
+    }
+  ],
   "constraintZones": [],
   "pointTowardsZones": [],
   "eventMarkers": [],
@@ -64,7 +69,7 @@
   "folder": "path",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 180.0
+    "rotation": -90.0
   },
   "useDefaultConstraints": true
 }

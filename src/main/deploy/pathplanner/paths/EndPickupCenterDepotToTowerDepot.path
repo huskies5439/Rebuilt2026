@@ -3,16 +3,32 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 0.7845180722892706,
-        "y": 5.914566265060375
+        "x": 7.581554216868476,
+        "y": 4.9638554216867465
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.1176987951788906,
-        "y": 5.936421686747122
+        "x": 7.395783132530121,
+        "y": 5.455602409638555
       },
       "isLocked": false,
-      "linkedName": "PickupDepot"
+      "linkedName": "EndPickupCenterDepot"
+    },
+    {
+      "anchor": {
+        "x": 3.5581135857219657,
+        "y": 7.396893857298884
+      },
+      "prevControl": {
+        "x": 7.2865060240963855,
+        "y": 8.231240963855422
+      },
+      "nextControl": {
+        "x": 2.6116712897311998,
+        "y": 7.18509710997823
+      },
+      "isLocked": false,
+      "linkedName": "StartTrenchDepot"
     },
     {
       "anchor": {
@@ -20,15 +36,20 @@
         "y": 4.5923132530120485
       },
       "prevControl": {
-        "x": 1.2106987951807227,
-        "y": 5.324469879518071
+        "x": 4.259530120481928,
+        "y": 4.537674698795182
       },
       "nextControl": null,
       "isLocked": false,
       "linkedName": "TowerDepot"
     }
   ],
-  "rotationTargets": [],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.9477178423236432,
+      "rotationDegrees": 180.0
+    }
+  ],
   "constraintZones": [],
   "pointTowardsZones": [],
   "eventMarkers": [],
@@ -48,7 +69,7 @@
   "folder": "path",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 180.0
+    "rotation": -90.0
   },
   "useDefaultConstraints": true
 }
