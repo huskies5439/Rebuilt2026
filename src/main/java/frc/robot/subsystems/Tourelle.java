@@ -23,7 +23,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class Tourelle extends SubsystemBase {
 
   //moteur 
-  private SparkFlex moteurTourelle = new SparkFlex(71, MotorType.kBrushless); 
+  private SparkFlex moteurTourelle = new SparkFlex(52, MotorType.kBrushless); //Max CAN ID = 62
   private SparkFlexConfig configTourelle = new SparkFlexConfig(); 
   private double conversionTourelle = 20.0 / 200.0 * 360.0; //moteur gear 20 dents tourelle 200 dents, 360 degrés
 
