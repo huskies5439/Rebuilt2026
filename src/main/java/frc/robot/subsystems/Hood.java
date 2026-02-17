@@ -26,9 +26,9 @@ public class Hood extends SubsystemBase {
   private SparkMaxConfig config = new SparkMaxConfig();
 
   // moteur avec maxPlanetary, enngrenage 40 vers 24, 16 * dent utiliser/nombre de dents théorique * 360 degrées
-  private double maxPlanetary = (1/5)*(1/5);
+  private double maxPlanetary = (1.0/5.0)*(1.0/5.0);
 
-  private double conversion = maxPlanetary*(40/24)*(16/240)*360.0;
+  private double conversion = maxPlanetary*(40.0/24.0)*(16.0/240.0)*360.0;
 
   private DigitalInput limitSwitch = new DigitalInput(2);
 

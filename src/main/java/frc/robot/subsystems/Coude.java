@@ -47,7 +47,7 @@ public class Coude extends SubsystemBase {
   /** Creates a new Coude. */
   public Coude() {
 
-    boolean inverted = false;
+    boolean inverted = true;
     moteurConfig.inverted(inverted);
     moteurConfig.idleMode(IdleMode.kBrake);
     moteurConfig.encoder.positionConversionFactor(conversionCoude);
