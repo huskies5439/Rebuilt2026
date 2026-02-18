@@ -33,7 +33,7 @@ public class TournerCarroussel extends Command {
   public void execute() {
     boolean condition = lanceur.atCible() && hood.atCible() && tourelle.atCible();
     if(condition){
-      carroussel.tournerHoraire();
+      carroussel.tourner();
     }else{
       carroussel.stop();
     }
