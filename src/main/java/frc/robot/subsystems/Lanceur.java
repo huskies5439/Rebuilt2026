@@ -89,8 +89,8 @@ public class Lanceur extends SubsystemBase {
         ff.calculate(cibleCorriger) + pid.calculate(getVitesse(), cibleCorriger));
   }
 
-  public boolean atCible() {
-    return Math.abs(getVitesse() - getVraieCible()) >= 1; // 1 RPS
+    public boolean atCible() {
+      return Math.abs(getVitesse() - getVraieCible()) >= 1; // 1 RPS
   }
 
   public void resetPID() {

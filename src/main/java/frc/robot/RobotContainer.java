@@ -68,8 +68,10 @@ public class RobotContainer {
     manette.povRight().whileTrue(coude.descendreCommand());
     manette.povLeft().whileTrue(coude.monterCommand());
 
-   manette.x().whileTrue(carroussel.tournerCommand());
-    manette.b().toggleOnTrue(kickeur.tournerCommand().alongWith(lanceur.lancerPIDCommand()));
+   manette.x().whileTrue(carroussel.tournerHorairePIDCommand());
+   manette.y().whileTrue(carroussel.tournerAntiHoraireCommand());
+    manette.b().toggleOnTrue(kickeur.KickerPIDCommand().alongWith(lanceur.lancerPIDCommand()));
+  
 
     //manette.leftBumper().whileTrue(tourelle.tournerAntiHoraire());
     //manette.rightBumper().whileTrue(tourelle.tournerHoraire());

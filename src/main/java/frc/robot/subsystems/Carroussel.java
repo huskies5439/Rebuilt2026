@@ -11,9 +11,14 @@ import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.config.SparkFlexConfig;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 
+import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.SimpleMotorFeedforward;
+import edu.wpi.first.math.filter.SlewRateLimiter;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.Cible;
 
 public class Carroussel extends SubsystemBase {
 
@@ -25,6 +30,10 @@ public class Carroussel extends SubsystemBase {
   private double maxPlanetary = 9.0;
   private double conversion = (1.0 / maxPlanetary) * (36.0 / 72.0) * 360;
 
+  private PIDController pid = new PIDController(0, 0, 0);
+  private SimpleMotorFeedforward ff = new SimpleMotorFeedforward(0, 0);
+  private SlewRateLimiter limiter = new SlewRateLimiter(10);
+  private double vraieCible = 0.0;
   public Carroussel() {
 
     config.inverted(false);
@@ -48,15 +57,56 @@ public class Carroussel extends SubsystemBase {
     setVoltage(7);
   }
 
+  
+  public void tournerAntiHoraire() {
+    setVoltage(-2);
+  }
+
   public void stop() {
     setVoltage(0);
+  }
+  public double getVitesse(){
+    return moteur.getEncoder().getVelocity();
   }
 
   ////// Commandes
 
-  public Command tournerCommand() {
+  public Command tournerHoraireCommand() {
     return Commands.runEnd(this::tournerHoraire, this::stop, this);
   }
 
+  public Command tournerAntiHoraireCommand() {
+    return Commands.runEnd(this::tournerAntiHoraire, this::stop, this);
+  }
+
+  public Command tournerHorairePIDCommand(){
+    return Commands.runOnce(()-> limiter.reset(getVitesse()))
+    .andThen(Commands.runEnd(() -> setPID(SmartDashboard.getNumber("cible Carrousel", 0)), this::stop,this ));
+  }
+
+  /////PID
+  
+  private void setVraieCible(double cible){
+    vraieCible = cible;
+  }
+  public double getVraieCible() {
+      return vraieCible;
+  }
+  public void setPID(double cible){
+    setVraieCible(cible);
+    double cibleCorriger = limiter.calculate(cible);
+     setVoltage(
+        ff.calculate(cibleCorriger) + pid.calculate(getVitesse(), cibleCorriger));
+  }
+  public boolean atCible(){
+    return Math.abs(getVitesse() - getVraieCible()) >= 1;
+  }
+  public void resetPID() {
+    setVraieCible(0);
+    pid.reset();
+  }
+  public double getPosition(){
+    return (moteur.getEncoder().getPosition());
+  }
 
 }
