@@ -45,11 +45,7 @@ public class Carroussel extends SubsystemBase {
   }
 
   public void tournerHoraire() {
-    setVoltage(1);
-  }
-
-  public void tournerAntiHoraire() {
-    setVoltage(-1);
+    setVoltage(7);
   }
 
   public void stop() {
@@ -58,12 +54,9 @@ public class Carroussel extends SubsystemBase {
 
   ////// Commandes
 
-  public Command tournerHoraireCommand() {
+  public Command tournerCommand() {
     return Commands.runEnd(this::tournerHoraire, this::stop, this);
   }
 
-  public Command tournerAntiHoraireCommand() {
-    return Commands.runEnd(this::tournerAntiHoraire, this::stop, this);
-  }
 
 }

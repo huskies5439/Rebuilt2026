@@ -30,11 +30,11 @@ public class Lanceur extends SubsystemBase {
 
   private double conversionLanceur = 1.0;
 
-  private PIDController pid = new PIDController(0, 0, 0);
-  private SimpleMotorFeedforward ff = new SimpleMotorFeedforward(0, 0); // Les valeurs sont clairement définitives pour
+  private PIDController pid = new PIDController(0.1, 0, 0.001);
+  private SimpleMotorFeedforward ff = new SimpleMotorFeedforward(0.1, 0.108); // Les valeurs sont clairement définitives pour
                                                                         // toujours! Elles ne devraient changer sous
                                                                         // aucune circomstances!
-  private SlewRateLimiter limiter = new SlewRateLimiter(25); // Pour limiter l'accélération du lanceur
+  private SlewRateLimiter limiter = new SlewRateLimiter(200); // Pour limiter l'accélération du lanceur
 
   private double vraieCible = 0.0;
 
@@ -48,6 +48,8 @@ public class Lanceur extends SubsystemBase {
 
     config.inverted(!inverted);
     moteurDroit.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+
+    SmartDashboard.putNumber("cible lanceur", 45);
   }
 
   @Override
@@ -100,6 +102,8 @@ public class Lanceur extends SubsystemBase {
     return (moteurGauche.getEncoder().getPosition() + moteurDroit.getEncoder().getPosition()) / 2.0;
   }
 
+
+  @Logged (name = "Vitesse Lanceur")
   public double getVitesse() {
     return (moteurGauche.getEncoder().getVelocity() + moteurDroit.getEncoder().getVelocity()) / 2.0;
   }
@@ -114,6 +118,11 @@ public class Lanceur extends SubsystemBase {
   public Command lancerPIDCommand(double cible) {
     return Commands.runOnce(() -> limiter.reset(getVitesse()))
         .andThen(Commands.runEnd(() -> setPID(cible), this::stop, this));
+  }
+
+  public Command lancerPIDCommand() {
+    return Commands.runOnce(() -> limiter.reset(getVitesse()))
+        .andThen(Commands.runEnd(() -> setPID(SmartDashboard.getNumber("cible lanceur", 0)), this::stop, this));
   }
 
 }

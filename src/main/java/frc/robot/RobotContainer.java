@@ -29,7 +29,7 @@ public class RobotContainer {
   private final Superstructure superstructure; 
   //private final Tourelle tourelle;
   private final Lanceur lanceur;
-  private final Gobeur gobeur;
+  //private final Gobeur gobeur;
   private final Carroussel carroussel;
   private final Coude coude;
   private final Hood hood; 
@@ -43,7 +43,7 @@ public class RobotContainer {
     //tourelle = new Tourelle();
     carroussel = new Carroussel(); 
     lanceur = new Lanceur();
-    gobeur = new Gobeur();
+    //gobeur = new Gobeur();
     coude = new Coude();
     hood = new Hood(); 
     kickeur = new Kickeur(); 
@@ -64,12 +64,12 @@ public class RobotContainer {
   }
 
   private void configureBindings() {
-   manette.a().whileTrue(gobeur.goberCommand());
+   //manette.a().whileTrue(gobeur.goberCommand());
     manette.povRight().whileTrue(coude.descendreCommand());
     manette.povLeft().whileTrue(coude.monterCommand());
 
-   manette.x().whileTrue(carroussel.tournerAntiHoraireCommand());
-    manette.b().whileTrue(kickeur.tournerCommand());
+   manette.x().whileTrue(carroussel.tournerCommand());
+    manette.b().toggleOnTrue(kickeur.tournerCommand().alongWith(lanceur.lancerPIDCommand()));
 
     //manette.leftBumper().whileTrue(tourelle.tournerAntiHoraire());
     //manette.rightBumper().whileTrue(tourelle.tournerHoraire());

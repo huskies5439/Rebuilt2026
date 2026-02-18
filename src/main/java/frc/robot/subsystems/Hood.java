@@ -66,7 +66,7 @@ public class Hood extends SubsystemBase {
   }
 
   public void resetEncodeur() {
-    moteur.getEncoder().setPosition(0);// à determiner
+    moteur.getEncoder().setPosition(68);//plus ou moins 1 
   }
 
   public void stop() {
