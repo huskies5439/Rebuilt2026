@@ -41,48 +41,49 @@ public class Kickeur extends SubsystemBase {
     moteur.configure(config, ResetMode.kResetSafeParameters,
         PersistMode.kPersistParameters);
 
-    SmartDashboard.putNumber("voltage kickeur",  5);
+    SmartDashboard.putNumber("voltage kickeur",  5);//Initialise input open loop dans le dashboard
+    SmartDashboard.putNumber("cible kickeur", 0);////Initialise input PID dans le dashboard
     
-    resetEncodeur();
+    resetEncodeur();/////Nécessaire ?????
   }
 
   @Override
   public void periodic() {}
 
+
+  //MOTEUR
   public void setVoltage(double voltage) {
     moteur.setVoltage(voltage);
-  }
-
-
-  @Logged (name = "Vitesse Kickeur")
-  public double getVitesse() {
-    return moteur.getEncoder().getVelocity();
-  }
-
-  @Logged (name = "Position Kickeur")
-  public double getPosition() {
-    return moteur.getEncoder().getPosition();
   }
 
   public void tourner() {
     setVoltage(SmartDashboard.getNumber("voltage kickeur", 0));
   }
 
-  public void tournerAntiHoraire(){
+   public void debloquer(){
     setVoltage(-2);
   }
 
   public void stop() {
     setVoltage(0);
+    resetPID();
+  }
+
+  ///////ENCODEUR
+  
+  public double getPosition() {//////nécessaire ??
+    return moteur.getEncoder().getPosition();
+  }
+
+  @Logged (name = "Vitesse Kickeur")
+  public double getVitesse() {
+    return moteur.getEncoder().getVelocity();
   }
 
   public void resetEncodeur() {
     moteur.getEncoder().setPosition(0);
   }
 
-  public Command tournerCommand() {
-    return Commands.runEnd(this::tourner, this::stop, this);
-  }
 
   //PID 
   // vraie cible pour déterminer si le lanceur est vraiment à le Kickeur plutot que
@@ -102,8 +103,9 @@ public class Kickeur extends SubsystemBase {
         ff.calculate(cibleCorriger) + pid.calculate(getVitesse(), cibleCorriger));
   }
 
+  @Logged(name = "At Cible Kickeur")
   public boolean atCible() {
-    return Math.abs(getVitesse() - getVraieCible()) >= 1; // 1 RPS
+    return Math.abs(getVitesse() - getVraieCible()) <= 1; // 1 RPS
   }
 
    public void resetPID() {
@@ -111,9 +113,18 @@ public class Kickeur extends SubsystemBase {
     pid.reset();
   }
 
-  public Command KickerPIDCommand(){
+  ////////COMMAND
+  public Command tournerCommand() {
+    return Commands.runEnd(this::tourner, this::stop, this);
+  }
+
+  public Command kickerPIDCommand(double cible){
     return Commands.runOnce(() -> limiter.reset(getVitesse()))
-        .andThen(Commands.runEnd(() -> setPID(SmartDashboard.getNumber("cible kickeur", 0)), this::stop, this));
+        .andThen(Commands.runEnd(() -> setPID(cible), this::stop, this));
+  }
+
+  public Command kickerPIDCommand(){//Version Dashboard
+    return kickerPIDCommand(SmartDashboard.getNumber("cible kickeur", 0));
   }
 
 

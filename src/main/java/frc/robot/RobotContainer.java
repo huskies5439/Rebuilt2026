@@ -28,7 +28,7 @@ public class RobotContainer {
   private final BasePilotable basePilotable;
   private final Superstructure superstructure; 
   //private final Tourelle tourelle;
-  private final Lanceur lanceur;
+  //private final Lanceur lanceur;
   //private final Gobeur gobeur;
   private final Carroussel carroussel;
   private final Coude coude;
@@ -42,7 +42,7 @@ public class RobotContainer {
     superstructure = new Superstructure(); 
     //tourelle = new Tourelle();
     carroussel = new Carroussel(); 
-    lanceur = new Lanceur();
+    //lanceur = new Lanceur();
     //gobeur = new Gobeur();
     coude = new Coude();
     hood = new Hood(); 
@@ -68,15 +68,16 @@ public class RobotContainer {
     manette.povRight().whileTrue(coude.descendreCommand());
     manette.povLeft().whileTrue(coude.monterCommand());
 
-   manette.x().whileTrue(carroussel.tournerHorairePIDCommand());
-   manette.y().whileTrue(carroussel.tournerAntiHoraireCommand());
-    manette.b().toggleOnTrue(kickeur.KickerPIDCommand().alongWith(lanceur.lancerPIDCommand()));
+    manette.x().whileTrue(carroussel.tournerCommand());
+    manette.y().whileTrue(carroussel.debloquerCommand());
+    //manette.b().toggleOnTrue(kickeur.kickerPIDCommand().alongWith(lanceur.lancerPIDCommand()));
   
+    manette.a().whileTrue(kickeur.tournerCommand());
 
     //manette.leftBumper().whileTrue(tourelle.tournerAntiHoraire());
     //manette.rightBumper().whileTrue(tourelle.tournerHoraire());
 
-    manette.rightTrigger(0.5).whileTrue(lanceur.lancerSimpleCommand()); 
+    //manette.rightTrigger(0.5).whileTrue(lanceur.lancerSimpleCommand()); 
     manette.povUp().whileTrue(hood.sortirCommand()); 
     manette.povDown().whileTrue(hood.rentrerCommand());
   
