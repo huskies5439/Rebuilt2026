@@ -35,12 +35,16 @@ public class Hood extends SubsystemBase {
   private ProfiledPIDController profiledPID = new ProfiledPIDController(0, 0, 0,
       new TrapezoidProfile.Constraints(0, 0));
 
+  private final double angleDepart = 68.0;//plus ou moins 1 
+
   public Hood() {
 
     config.inverted(false);
     config.idleMode(IdleMode.kBrake);
     config.encoder.positionConversionFactor(conversion);
     config.encoder.velocityConversionFactor(conversion / 60.0);
+    config.softLimit.forwardSoftLimit(100).reverseSoftLimit(-10); // à verifier
+    config.softLimit.forwardSoftLimitEnabled(true).reverseSoftLimitEnabled(true);
     moteur.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
   }
 
@@ -66,7 +70,7 @@ public class Hood extends SubsystemBase {
   }
 
   public void resetEncodeur() {
-    moteur.getEncoder().setPosition(68);//plus ou moins 1 
+    moteur.getEncoder().setPosition(angleDepart);
   }
 
   public void stop() {

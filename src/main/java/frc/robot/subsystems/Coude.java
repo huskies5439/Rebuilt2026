@@ -37,12 +37,16 @@ public class Coude extends SubsystemBase {
   private double conversionCoude = (1 / 5.0) * (1 / 5.0) * (1 / 3.0) * 360.0;
 
   /// PID et feedForward
+  
+  private final double kp = 0.1;
+  private final double maxVelocity = 360;
+  private final double maxAcceleration = 720;
 
-  private ProfiledPIDController pidGauche = new ProfiledPIDController(0.1, 0, 0,
-      new TrapezoidProfile.Constraints(360, 720));
+  private ProfiledPIDController pidGauche = new ProfiledPIDController(kp, 0, 0,
+      new TrapezoidProfile.Constraints(maxVelocity, maxAcceleration));
 
-  private ProfiledPIDController pidDroit = new ProfiledPIDController(0.1, 0, 0,
-      new TrapezoidProfile.Constraints(360, 720));
+  private ProfiledPIDController pidDroit = new ProfiledPIDController(kp, 0, 0,
+      new TrapezoidProfile.Constraints(maxVelocity, maxAcceleration));
 
   private ArmFeedforward feedforward = new ArmFeedforward(0.0, 0.2, 0.0);// valeur à déterminer
 
@@ -102,7 +106,8 @@ public class Coude extends SubsystemBase {
   }
 
   public void hold() {
-    setVoltage(feedforward.calculate(Math.toRadians(getAngleDroit()), 0));
+    setVoltage(feedforward.calculate(Math.toRadians(getAngleGauche()), 0),
+                feedforward.calculate(Math.toRadians(getAngleDroit()), 0));
   }
 
   /// Encodeur Gauche

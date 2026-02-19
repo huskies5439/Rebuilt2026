@@ -12,6 +12,7 @@ import com.revrobotics.spark.config.SparkFlexConfig;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 
 import edu.wpi.first.epilogue.Logged;
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.filter.SlewRateLimiter;
@@ -98,6 +99,7 @@ public class Lanceur extends SubsystemBase {
   }
 
   public void setPID(double cible) {
+    cible = MathUtil.clamp(cible, 0, 100);
     setVraieCible(cible);
     double cibleCorriger = limiter.calculate(cible);
     setVoltage(
