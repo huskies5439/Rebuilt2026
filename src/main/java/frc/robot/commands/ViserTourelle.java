@@ -10,77 +10,71 @@ import frc.robot.subsystems.Tourelle;
 
 public class ViserTourelle extends Command {
 
-  Superstructure superstructure; 
+  Superstructure superstructure;
   Tourelle tourelle;
   double deltaAngleAbsolu;
-  double deltaAngleCourt;
 
   double angleActuelAbsolu;
   double angleCibleAbsolu;
 
   double angleCibleReel;
-  
-  double limiteFil = 180; // à vérifier
 
-  public ViserTourelle(Tourelle tourelle,  Superstructure superstructure) {
+  double limiteFil = 270; // à vérifier
+
+  public ViserTourelle(Tourelle tourelle, Superstructure superstructure) {
     this.tourelle = tourelle;
 
-    this.superstructure = superstructure; 
+    this.superstructure = superstructure;
 
     addRequirements(tourelle);
-    
+
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    getInitialInfos();
-  }
-
-  private void getInitialInfos() {
-    angleCibleAbsolu = superstructure.yawVecteurLancer();
-    angleActuelAbsolu = tourelle.getAngleAbsolu();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    getInitialInfos();
+
+    angleCibleAbsolu = superstructure.yawVecteurLancer();
+    angleActuelAbsolu = tourelle.getAngleAbsolu();
 
     deltaAngleAbsolu = angleCibleAbsolu - angleActuelAbsolu;
     if (Math.abs(deltaAngleAbsolu) > 180.0) {
 
-      deltaAngleCourt = trouverDeltaAngleCourt();
-      angleCibleReel = tourelle.getAngleReel() + deltaAngleCourt;
+      angleCibleReel = tourelle.getAngleReel() + angleComplementaire360(deltaAngleAbsolu);
 
-      if (Math.abs(angleCibleReel) < limiteFil) {
-        tourelle.setPID(angleCibleReel);
-      } else {
-        demi_tour();
-      }
     } else {
-      demi_tour();
+      angleCibleReel = tourelle.getAngleReel() + deltaAngleAbsolu;
     }
-
+    if (Math.abs(angleCibleReel) < limiteFil) {
+      tourelle.setPID(angleCibleReel);
+    } else {
+      grandTour();
+    }
   }
 
-  private void demi_tour() {
+  private void grandTour() {
     angleCibleReel = angleActuelAbsolu + deltaAngleAbsolu;
 
     if (!(Math.abs(angleCibleReel) < limiteFil)) {
-      angleCibleReel = (Math.abs(angleCibleReel) - 360) * Math.signum(angleCibleReel);
+      angleCibleReel = angleComplementaire360(angleCibleReel);
     }
 
     tourelle.setPID(angleCibleReel);
   }
 
-  private double trouverDeltaAngleCourt() {
-    return (Math.abs(deltaAngleAbsolu) - 360.0) * (Math.signum(deltaAngleAbsolu));
+  private double angleComplementaire360(double angleLong) {
+    return (Math.abs(angleLong) - 360.0) * (Math.signum(angleLong));
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    tourelle.stop();
   }
 
   // Returns true when the command should end.

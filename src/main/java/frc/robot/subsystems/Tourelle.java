@@ -12,7 +12,9 @@ import com.revrobotics.spark.config.SparkFlexConfig;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 
 import edu.wpi.first.epilogue.Logged;
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.ProfiledPIDController;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -28,22 +30,23 @@ public class Tourelle extends SubsystemBase {
   private double conversionTourelle = 20.0 / 200.0 * 360.0; //moteur gear 20 dents tourelle 200 dents, 360 degrés
 
   //PID 
-  private ProfiledPIDController pidTourelle = new ProfiledPIDController(0, 0, 0, //Valeurs à déterminer
-    new TrapezoidProfile.Constraints(0, 0)); 
+  private ProfiledPIDController pidTourelle = new ProfiledPIDController(0.1, 0, 0, //Valeurs à déterminer
+    new TrapezoidProfile.Constraints(90, 45)); 
 
 
   public Tourelle() {
     //Moteur + config 
-    configTourelle.inverted(false); 
+    configTourelle.inverted(true); 
     configTourelle.idleMode(IdleMode.kBrake); 
     configTourelle.encoder.positionConversionFactor(conversionTourelle);
     configTourelle.encoder.velocityConversionFactor(conversionTourelle / 60.0);
-    configTourelle.softLimit.forwardSoftLimit(90.0).reverseSoftLimit(-90.0); //Faudrait peut être call la fonction pour l'enable? 
+    configTourelle.softLimit.forwardSoftLimit(270.0).reverseSoftLimit(-270.0); //Faudrait peut être call la fonction pour l'enable? 
+    configTourelle.softLimit.forwardSoftLimitEnabled(true).reverseSoftLimitEnabled(true);
     moteurTourelle.configure(configTourelle, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters); 
 
     //PID 
     pidTourelle.setTolerance(0); //À déterminer
-
+    resetEncoder();
   }
 
 
@@ -57,14 +60,15 @@ public class Tourelle extends SubsystemBase {
   }
 
   private void setVoltageHoraire(){
-    setVoltage(-2);
+    setVoltage(-1);
   }
   private void setVoltageAntiHoraire(){
-    setVoltage(2);
+    setVoltage(1);
   }
 
   public void stop(){
     setVoltage(0);
+    resetPID();
   }
 
   public double getAngleReel(){
@@ -72,12 +76,7 @@ public class Tourelle extends SubsystemBase {
   } 
 
   public double getAngleAbsolu(){
-    if (Math.abs(getAngleReel())< 180.0) {
-      return getAngleReel();
-    }
-    else {
-      return (Math.abs(getAngleReel())-360.0) * Math.signum(getAngleReel());
-    }
+    return MathUtil.inputModulus(getAngleReel(),-180.0,180.0);
   }
 
 
@@ -85,7 +84,7 @@ public class Tourelle extends SubsystemBase {
     return moteurTourelle.getEncoder().getVelocity(); 
   } 
 
-  public void resetEncoders(){
+  public void resetEncoder(){
     moteurTourelle.getEncoder().setPosition(0); 
   }
 
@@ -114,6 +113,8 @@ public class Tourelle extends SubsystemBase {
   public Command tournerAntiHoraire(){
     return Commands.runEnd(this::setVoltageAntiHoraire,this::stop,this); 
   }
-
+  public Command PIDCommand(){
+    return Commands.runEnd(()->this.setPID(0),this::stop,this);
+  }
 
 }

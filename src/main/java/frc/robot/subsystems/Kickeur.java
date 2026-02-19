@@ -31,13 +31,13 @@ public class Kickeur extends SubsystemBase {
   private SlewRateLimiter limiter = new SlewRateLimiter(10); 
   private double vraieCible = 0.0; 
 
-  double conversionKikeur = (18.0 / 36.0);
+  double conversionKickeur = (18.0 / 36.0);
 
   public Kickeur() {
     config.inverted(false);
     config.idleMode(IdleMode.kCoast);
-    config.encoder.positionConversionFactor(conversionKikeur);
-    config.encoder.velocityConversionFactor(conversionKikeur / 60.0);
+    config.encoder.positionConversionFactor(conversionKickeur);
+    config.encoder.velocityConversionFactor(conversionKickeur / 60.0);
     moteur.configure(config, ResetMode.kResetSafeParameters,
         PersistMode.kPersistParameters);
 
