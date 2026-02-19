@@ -4,6 +4,8 @@
 
 package frc.robot.subsystems;
 
+import org.ejml.dense.row.decomposition.chol.CholeskyDecomposition_FDRB_to_FDRM;
+
 import com.revrobotics.PersistMode;
 import com.revrobotics.ResetMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
@@ -36,13 +38,13 @@ public class Coude extends SubsystemBase {
 
   /// PID et feedForward
 
-  private ProfiledPIDController pidGauche = new ProfiledPIDController(0, 0, 0,
-      new TrapezoidProfile.Constraints(1, 1));
+  private ProfiledPIDController pidGauche = new ProfiledPIDController(0.1, 0, 0,
+      new TrapezoidProfile.Constraints(360, 720));
 
-  private ProfiledPIDController pidDroit = new ProfiledPIDController(0, 0, 0,
-      new TrapezoidProfile.Constraints(1, 1));
+  private ProfiledPIDController pidDroit = new ProfiledPIDController(0.1, 0, 0,
+      new TrapezoidProfile.Constraints(360, 720));
 
-  private ArmFeedforward feedforward = new ArmFeedforward(0.0, 0.0, 0.0);// valeur à déterminer
+  private ArmFeedforward feedforward = new ArmFeedforward(0.0, 0.2, 0.0);// valeur à déterminer
 
   /** Creates a new Coude. */
   public Coude() {
@@ -187,6 +189,10 @@ public class Coude extends SubsystemBase {
 
   public Command holdCommand() {
     return Commands.run(this::hold, this);
+  }
+
+  public Command PIDCommand(double cible) {
+    return Commands.run(()->this.setPID(cible), this);
   }
 
 }

@@ -58,7 +58,7 @@ public class RobotContainer {
     basePilotable.setDefaultCommand(new BasePilotableDefaut(manette::getLeftY,
         manette::getLeftX, manette::getRightX, basePilotable));
 
-    //coude.setDefaultCommand(coude.holdCommand());
+    coude.setDefaultCommand(coude.holdCommand());
 
     superstructure.setDefaultCommand(new SuperStructureDefaut(superstructure, basePilotable)); 
     //hood.setDefaultCommand(hood.goToAnglePIDCommand(Constants.angleHoodLimitSwitch)); 
@@ -71,12 +71,15 @@ public class RobotContainer {
 
     manette.povRight().whileTrue(coude.descendreCommand());
     manette.povLeft().whileTrue(coude.monterCommand());
+    
+    manette.b().whileTrue(coude.PIDCommand(0));
+    manette.y().whileTrue(coude.PIDCommand(90));
 
-    manette.x().whileTrue(carroussel.tournerCommand());
+    //manette.x().whileTrue(carroussel.tournerCommand());
 
     //manette.b().toggleOnTrue(kickeur.kickerPIDCommand().alongWith(lanceur.lancerPIDCommand()));
   
-    manette.b().whileTrue(kickeur.tournerCommand());
+    //manette.b().whileTrue(kickeur.tournerCommand());
 
     // manette.leftBumper().whileTrue(tourelle.tournerAntiHoraire());
     // manette.rightBumper().whileTrue(tourelle.tournerHoraire());

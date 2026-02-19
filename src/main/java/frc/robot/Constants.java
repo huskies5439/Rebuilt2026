@@ -59,7 +59,7 @@ public final class Constants {
     public static final double trenchHaut = 7.4; 
   }
 
-  public static final double kAngleCoudeDepart = 90.0;
+  public static final double kAngleCoudeDepart = -8.0;
 
   public static final class PidBasePilotable {
     public static final double kPLineaire = 2.0;

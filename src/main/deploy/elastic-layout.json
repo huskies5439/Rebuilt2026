@@ -41,176 +41,7 @@
     {
       "name": "Epilogue",
       "grid_layout": {
-        "layouts": [
-          {
-            "title": "getChassisSpeeds",
-            "x": 512.0,
-            "y": 288.0,
-            "width": 288.0,
-            "height": 256.0,
-            "type": "List Layout",
-            "properties": {
-              "label_position": "TOP"
-            },
-            "children": [
-              {
-                "title": "omega",
-                "x": 0.0,
-                "y": 0.0,
-                "width": 128.0,
-                "height": 128.0,
-                "type": "Text Display",
-                "properties": {
-                  "topic": "Robot/m_robotContainer/basePilotable/getChassisSpeeds",
-                  "period": 0.06,
-                  "data_type": "double",
-                  "struct_meta": {
-                    "path": [
-                      "omega"
-                    ],
-                    "schema_name": "ChassisSpeeds",
-                    "type": "double"
-                  },
-                  "show_submit_button": false
-                }
-              },
-              {
-                "title": "vx",
-                "x": 0.0,
-                "y": 0.0,
-                "width": 128.0,
-                "height": 128.0,
-                "type": "Text Display",
-                "properties": {
-                  "topic": "Robot/m_robotContainer/basePilotable/getChassisSpeeds",
-                  "period": 0.06,
-                  "data_type": "double",
-                  "struct_meta": {
-                    "path": [
-                      "vx"
-                    ],
-                    "schema_name": "ChassisSpeeds",
-                    "type": "double"
-                  },
-                  "show_submit_button": false
-                }
-              },
-              {
-                "title": "vy",
-                "x": 0.0,
-                "y": 0.0,
-                "width": 128.0,
-                "height": 128.0,
-                "type": "Text Display",
-                "properties": {
-                  "topic": "Robot/m_robotContainer/basePilotable/getChassisSpeeds",
-                  "period": 0.06,
-                  "data_type": "double",
-                  "struct_meta": {
-                    "path": [
-                      "vy"
-                    ],
-                    "schema_name": "ChassisSpeeds",
-                    "type": "double"
-                  },
-                  "show_submit_button": false
-                }
-              }
-            ]
-          },
-          {
-            "title": "rotation",
-            "x": 0.0,
-            "y": 288.0,
-            "width": 256.0,
-            "height": 256.0,
-            "type": "List Layout",
-            "properties": {
-              "label_position": "TOP"
-            },
-            "children": [
-              {
-                "title": "value",
-                "x": 0.0,
-                "y": 0.0,
-                "width": 128.0,
-                "height": 128.0,
-                "type": "Text Display",
-                "properties": {
-                  "topic": "Robot/m_robotContainer/basePilotable/getPose",
-                  "period": 0.06,
-                  "data_type": "double",
-                  "struct_meta": {
-                    "path": [
-                      "rotation",
-                      "value"
-                    ],
-                    "schema_name": "Pose2d",
-                    "type": "double"
-                  },
-                  "show_submit_button": false
-                }
-              }
-            ]
-          },
-          {
-            "title": "translation",
-            "x": 256.0,
-            "y": 288.0,
-            "width": 256.0,
-            "height": 256.0,
-            "type": "List Layout",
-            "properties": {
-              "label_position": "TOP"
-            },
-            "children": [
-              {
-                "title": "x",
-                "x": 0.0,
-                "y": 0.0,
-                "width": 128.0,
-                "height": 128.0,
-                "type": "Text Display",
-                "properties": {
-                  "topic": "Robot/m_robotContainer/basePilotable/getPose",
-                  "period": 0.06,
-                  "data_type": "double",
-                  "struct_meta": {
-                    "path": [
-                      "translation",
-                      "x"
-                    ],
-                    "schema_name": "Pose2d",
-                    "type": "double"
-                  },
-                  "show_submit_button": false
-                }
-              },
-              {
-                "title": "y",
-                "x": 0.0,
-                "y": 0.0,
-                "width": 128.0,
-                "height": 128.0,
-                "type": "Text Display",
-                "properties": {
-                  "topic": "Robot/m_robotContainer/basePilotable/getPose",
-                  "period": 0.06,
-                  "data_type": "double",
-                  "struct_meta": {
-                    "path": [
-                      "translation",
-                      "y"
-                    ],
-                    "schema_name": "Pose2d",
-                    "type": "double"
-                  },
-                  "show_submit_button": false
-                }
-              }
-            ]
-          }
-        ],
+        "layouts": [],
         "containers": [
           {
             "title": "gyro",
@@ -320,6 +151,34 @@
             "type": "Text Display",
             "properties": {
               "topic": "Robot/m_robotContainer/kickeur/Position Kickeur",
+              "period": 0.06,
+              "data_type": "double",
+              "show_submit_button": false
+            }
+          },
+          {
+            "title": "getAngleAbsolu",
+            "x": 672.0,
+            "y": 256.0,
+            "width": 128.0,
+            "height": 128.0,
+            "type": "Text Display",
+            "properties": {
+              "topic": "Robot/m_robotContainer/tourelle/getAngleAbsolu",
+              "period": 0.06,
+              "data_type": "double",
+              "show_submit_button": false
+            }
+          },
+          {
+            "title": "getAngleReel",
+            "x": 544.0,
+            "y": 256.0,
+            "width": 128.0,
+            "height": 128.0,
+            "type": "Text Display",
+            "properties": {
+              "topic": "Robot/m_robotContainer/tourelle/getAngleReel",
               "period": 0.06,
               "data_type": "double",
               "show_submit_button": false
