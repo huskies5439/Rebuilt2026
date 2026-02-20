@@ -6,7 +6,6 @@ package frc.robot;
 
 import edu.wpi.first.epilogue.Logged;
 import frc.robot.commands.BasePilotableDefaut;
-import frc.robot.commands.CoudePID;
 import frc.robot.commands.SuperStructureDefaut;
 import frc.robot.commands.ViserTourelle;
 import frc.robot.lib.FancyPathGeneration;
@@ -29,12 +28,12 @@ public class RobotContainer {
 
   private final BasePilotable basePilotable;
   private final Superstructure superstructure; 
-  private final Tourelle tourelle;
-  //private final Lanceur lanceur;
+  //private final Tourelle tourelle;
+  private final Lanceur lanceur;
   private final Gobeur gobeur;
   private final Carroussel carroussel;
   private final Coude coude;
-  //private final Hood hood; 
+  private final Hood hood; 
   private final Kickeur kickeur; 
 
   private final FancyPathGeneration fancyPathGeneration;
@@ -42,12 +41,12 @@ public class RobotContainer {
   public RobotContainer() {
     basePilotable = new BasePilotable();
     superstructure = new Superstructure(); 
-    tourelle = new Tourelle();
+    //tourelle = new Tourelle();
     carroussel = new Carroussel(); 
-    //lanceur = new Lanceur();
+    lanceur = new Lanceur();
     gobeur = new Gobeur();
     coude = new Coude();
-    //hood = new Hood(); 
+    hood = new Hood(); 
     kickeur = new Kickeur(); 
 
     fancyPathGeneration = new FancyPathGeneration(basePilotable.getPoseSupplier(),
@@ -67,19 +66,16 @@ public class RobotContainer {
 
   private void configureBindings() {
 
-    manette.a().whileTrue(gobeur.goberCommand());
+    //manette.a().whileTrue(gobeur.goberCommand());
 
     manette.povRight().whileTrue(coude.descendreCommand());
     manette.povLeft().whileTrue(coude.monterCommand());
     
-    manette.b().whileTrue(coude.PIDCommand(0));
-    manette.y().whileTrue(coude.PIDCommand(90));
 
-    //manette.x().whileTrue(carroussel.tournerCommand());
+    manette.a().whileTrue(carroussel.tournerCommand());
 
-    //manette.b().toggleOnTrue(kickeur.kickerPIDCommand().alongWith(lanceur.lancerPIDCommand()));
+    manette.b().toggleOnTrue(kickeur.kickerPIDCommand().alongWith(lanceur.lancerPIDCommand()).alongWith(hood.goToAnglePIDCommand()));
   
-    //manette.b().whileTrue(kickeur.tournerCommand());
 
     // manette.leftBumper().whileTrue(tourelle.tournerAntiHoraire());
     // manette.rightBumper().whileTrue(tourelle.tournerHoraire());
@@ -87,15 +83,17 @@ public class RobotContainer {
     // manette.a().whileTrue(new ViserTourelle(tourelle, superstructure));
 
     //manette.rightTrigger(0.5).whileTrue(lanceur.lancerSimpleCommand()); 
-   //manette.povUp().whileTrue(hood.sortirCommand()); 
-    //manette.povDown().whileTrue(hood.rentrerCommand());
-  
+    manette.povUp().whileTrue(hood.sortirCommand()); 
+    manette.povDown().whileTrue(hood.rentrerCommand());
 
+
+
+  
     //Gober
-    //manette.leftBumper().whileTrue(new CoudePID(0, coude).alongWith(gobeur.goberCommand())); //à déterminer s'il faut lever légerment le gobeur
+    manette.leftBumper().whileTrue(coude.PIDCommand(0).alongWith(gobeur.goberCommand())).onFalse(coude.PIDCommand(10.0)); //à déterminer s'il faut lever légerment le gobeur
 
     //Protection coude
-   // manette.x().onTrue(new CoudePID(Constants.kAngleCoudeDepart, coude));
+    manette.x().onTrue(coude.PIDCommand(90));
   }
 
   public Command getAutonomousCommand() {

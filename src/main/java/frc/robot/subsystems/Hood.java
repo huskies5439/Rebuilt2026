@@ -15,6 +15,7 @@ import edu.wpi.first.epilogue.Logged;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -26,16 +27,16 @@ public class Hood extends SubsystemBase {
   private SparkMaxConfig config = new SparkMaxConfig();
 
   // moteur avec maxPlanetary, enngrenage 40 vers 24, 16 * dent utiliser/nombre de dents théorique * 360 degrées
-  private double maxPlanetary = (1.0/5.0)*(1.0/5.0);
+  private double maxPlanetary = (1.0/5.0)*(1.0/5.0)*(1.0/4.0);
 
   private double conversion = maxPlanetary*(40.0/24.0)*(16.0/240.0)*360.0;
 
   private DigitalInput limitSwitch = new DigitalInput(2);
 
-  private ProfiledPIDController profiledPID = new ProfiledPIDController(0, 0, 0,
-      new TrapezoidProfile.Constraints(0, 0));
+  private ProfiledPIDController profiledPID = new ProfiledPIDController(1.0, 0, 0,
+      new TrapezoidProfile.Constraints(60, 180));
 
-  private final double angleDepart = 68.0;//plus ou moins 1 
+  private final double angleDepart = 74.0; 
 
   public Hood() {
 
@@ -43,9 +44,14 @@ public class Hood extends SubsystemBase {
     config.idleMode(IdleMode.kBrake);
     config.encoder.positionConversionFactor(conversion);
     config.encoder.velocityConversionFactor(conversion / 60.0);
-    config.softLimit.forwardSoftLimit(100).reverseSoftLimit(-10); // à verifier
+    config.softLimit.forwardSoftLimit(angleDepart).reverseSoftLimit(40); 
     config.softLimit.forwardSoftLimitEnabled(true).reverseSoftLimitEnabled(true);
     moteur.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+
+    SmartDashboard.putNumber("Cible Hood",angleDepart);
+
+    resetEncodeur();
+
   }
 
   @Override
@@ -54,6 +60,10 @@ public class Hood extends SubsystemBase {
     if (isLimitSwitch()) {
       resetEncodeur();
     }
+
+      SmartDashboard.putNumber("Goal Hood", profiledPID.getGoal().position);
+      SmartDashboard.putNumber("Setpoint", profiledPID.getSetpoint().velocity);
+       
 
   }
 
@@ -74,16 +84,16 @@ public class Hood extends SubsystemBase {
   }
 
   public void stop() {
-    resetPID();
-    moteur.setVoltage(0);
+    //resetPID();
+    setVoltage(0);
   }
 
   public void sortir() {
-    setVoltage(2);
+    setVoltage(-3);
   }
 
   public void rentrer() {
-    setVoltage(-2);
+    setVoltage(3);
   }
 
   public Command rentrerCommand() {
@@ -99,17 +109,17 @@ public class Hood extends SubsystemBase {
   public void setPID(double cible) {
 
     //Quand on rétracte le hood, on triche dans le derniers degrés pour s'accoter sur la switch
-    if (cible >= Constants.angleHoodLimitSwitch && getAngle() >= (Constants.angleHoodLimitSwitch - 2)) { 
+    /*if (cible >= Constants.angleHoodLimitSwitch && getAngle() >= (Constants.angleHoodLimitSwitch - 2)) { 
       if (isLimitSwitch()) {
         stop();
       } else {
         rentrer();
       }
       //PID Normal
-    } else {
+    } else {*/
       double voltage = profiledPID.calculate(getAngle(), cible);
       setVoltage(voltage);
-    }
+    //}
   }
 
   public void resetPID() {
@@ -127,7 +137,14 @@ public class Hood extends SubsystemBase {
   }
 
   public Command goToAnglePIDCommand(double cible) {
-    return Commands.runEnd(() -> setPID(cible), this::stop, this);
+    return Commands.runOnce(this::resetPID, this).andThen(Commands.runEnd(() -> this.setPID(cible),this::stop , this));
   }
+
+    public Command goToAnglePIDCommand() {
+    return Commands.runOnce(this::resetPID, this).andThen(Commands.runEnd(() -> this.setPID(SmartDashboard.getNumber("Cible Hood", 0)),this::stop , this));
+  }
+  
+  
+ 
 
 }

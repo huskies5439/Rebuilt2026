@@ -56,6 +56,7 @@ public class Lanceur extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+
   }
 
   /////Moteur
@@ -116,7 +117,6 @@ public class Lanceur extends SubsystemBase {
     pid.reset();
   }
 
-  
   /////////////////COMMANDES
 
   public Command lancerSimpleCommand() {
@@ -129,7 +129,9 @@ public class Lanceur extends SubsystemBase {
   }
 
   public Command lancerPIDCommand() {//Version Dashboard
-      return lancerPIDCommand(SmartDashboard.getNumber("cible lanceur", 0));
+      return Commands.runOnce(() -> limiter.reset(getVitesse()))
+        .andThen(Commands.runEnd(() -> setPID(SmartDashboard.getNumber("cible lanceur", 0)), this::stop, this));
+      
   }
 
 }

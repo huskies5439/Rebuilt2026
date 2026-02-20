@@ -26,9 +26,9 @@ public class Kickeur extends SubsystemBase {
   private SparkFlex moteur = new SparkFlex(51, MotorType.kBrushless);
   private SparkFlexConfig config = new SparkFlexConfig();
 
-  private PIDController pid = new PIDController(0, 0, 0); 
-  private SimpleMotorFeedforward ff = new SimpleMotorFeedforward(0, 0); 
-  private SlewRateLimiter limiter = new SlewRateLimiter(10); 
+  private PIDController pid = new PIDController(0.05, 0, 0.001); 
+  private SimpleMotorFeedforward ff = new SimpleMotorFeedforward(0.203, 0.216); 
+  private SlewRateLimiter limiter = new SlewRateLimiter(100); 
   private double vraieCible = 0.0; 
 
   double conversionKickeur = (18.0 / 36.0);
@@ -42,7 +42,7 @@ public class Kickeur extends SubsystemBase {
         PersistMode.kPersistParameters);
 
     SmartDashboard.putNumber("voltage kickeur",  5);//Initialise input open loop dans le dashboard
-    SmartDashboard.putNumber("cible kickeur", 0);////Initialise input PID dans le dashboard
+    SmartDashboard.putNumber("cible kickeur", 20);////Initialise input PID dans le dashboard
     
     resetEncodeur();/////Nécessaire ?????
   }
@@ -124,7 +124,8 @@ public class Kickeur extends SubsystemBase {
   }
 
   public Command kickerPIDCommand(){//Version Dashboard
-    return kickerPIDCommand(SmartDashboard.getNumber("cible kickeur", 0));
+    return Commands.runOnce(() -> limiter.reset(getVitesse()))
+        .andThen(Commands.runEnd(() -> setPID(SmartDashboard.getNumber("cible kickeur", conversionKickeur)), this::stop, this));
   }
 
 

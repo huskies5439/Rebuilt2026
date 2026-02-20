@@ -18,6 +18,7 @@ import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -82,6 +83,7 @@ public class Coude extends SubsystemBase {
       resetEncodeurLimitSwitchDroite();
     }
     
+
   }
 
   public void setVoltage(double voltageGauche, double voltageDroit) {
