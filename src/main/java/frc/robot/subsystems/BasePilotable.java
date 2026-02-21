@@ -135,8 +135,7 @@ public class BasePilotable extends SubsystemBase {
     SmartDashboard.putData("Field", field2d);
 
     setLimelightRobotOrientation();
-    addVisionPosition("limelight-haut");
-    addVisionPosition("limelight-bas");
+    addVisionPosition("limelight");
   }
 
   /// ////// MÉTHODE DONNANT DES CONSIGNES À CHAQUE MODULE
@@ -238,15 +237,7 @@ public class BasePilotable extends SubsystemBase {
   /// Voir la documentation limelight, il se peut que ça change l'an prochain !
   public void setLimelightRobotOrientation() {
     LimelightHelpers.SetRobotOrientation(
-        "limelight-haut",
-        poseEstimator.getEstimatedPosition().getRotation().getDegrees(),
-        0,
-        0,
-        0,
-        0,
-        0);
-    LimelightHelpers.SetRobotOrientation(
-        "limelight-bas",
+        "limelight",
         poseEstimator.getEstimatedPosition().getRotation().getDegrees(),
         0,
         0,

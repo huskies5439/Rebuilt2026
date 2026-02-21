@@ -6,6 +6,7 @@ package frc.robot;
 
 import edu.wpi.first.epilogue.Logged;
 import frc.robot.commands.BasePilotableDefaut;
+import frc.robot.commands.SnapTrench;
 import frc.robot.commands.SuperStructureDefaut;
 import frc.robot.commands.ViserTourelle;
 import frc.robot.lib.FancyPathGeneration;
@@ -86,6 +87,7 @@ public class RobotContainer {
     manette.povUp().whileTrue(hood.sortirCommand()); 
     manette.povDown().whileTrue(hood.rentrerCommand());
 
+    manette.y().whileTrue(new SnapTrench(manette::getLeftY,basePilotable)); 
 
 
   
