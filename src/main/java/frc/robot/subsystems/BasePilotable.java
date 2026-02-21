@@ -153,6 +153,13 @@ public class BasePilotable extends SubsystemBase {
     };
   }
 
+  public void resetSetpoint() {
+    // Caller à chaque fois que l'on retourne à la commande de conduite téléop
+    // Sinon les premiers mouvements du robot dépendent de la conduite avant la
+    // commande de pathfinding
+    previousSetpoint = new SwerveSetpoint(getChassisSpeeds(), getModuleStates(), DriveFeedforwards.zeros(4));
+  }
+
   /// ///// TÉLÉOP
   public void conduire(double xSpeed, double ySpeed, double rot, boolean fieldRelative, boolean squared) {
 
@@ -205,12 +212,7 @@ public class BasePilotable extends SubsystemBase {
     arriereDroite.setDesiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(45)));
   }
 
-  public void resetSetpoint() {
-    // Caller à chaque fois que l'on retourne à la commande de conduite téléop
-    // Sinon les premiers mouvements du robot dépendent de la conduite avant la
-    // commande de pathfinding
-    previousSetpoint = new SwerveSetpoint(getChassisSpeeds(), getModuleStates(), DriveFeedforwards.zeros(4));
-  }
+
 
   /// ////// Pose estimator
   public Pose2d getPose() {

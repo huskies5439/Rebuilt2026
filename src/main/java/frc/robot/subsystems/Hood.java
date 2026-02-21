@@ -140,7 +140,7 @@ public class Hood extends SubsystemBase {
     return Commands.runOnce(this::resetPID, this).andThen(Commands.runEnd(() -> this.setPID(cible),this::stop , this));
   }
 
-    public Command goToAnglePIDCommand() {
+  public Command goToAnglePIDCommand() {
     return Commands.runOnce(this::resetPID, this).andThen(Commands.runEnd(() -> this.setPID(SmartDashboard.getNumber("Cible Hood", 0)),this::stop , this));
   }
   

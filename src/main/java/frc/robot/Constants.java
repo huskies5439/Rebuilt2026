@@ -16,11 +16,8 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 
 public final class Constants {
 
- public static final double maxVitesseLineaire = 3.75;// Vitesse linéaire max du chassis 
-
-  public static final double maxVitesseRotation = Math.PI * 1.4; // radians per second
-
-  // public static final double maxVitesseModule = 4.46;// Vitesse maximale d'un module en m/s, pas nécessaire si setpoint generator
+ public static final double maxVitesseLineaire = 3.75;
+  public static final double maxVitesseRotation = Math.toRadians(540);
 
   // Chassis configuration
   public static final double kTrackWidth = 0.5972 ;
