@@ -14,12 +14,14 @@ import frc.robot.subsystems.BasePilotable;
 import frc.robot.subsystems.Carroussel;
 import frc.robot.subsystems.Coude;
 import frc.robot.subsystems.Gobeur;
+import frc.robot.subsystems.Grimpeur;
 import frc.robot.subsystems.Hood;
 import frc.robot.subsystems.Kickeur;
 import frc.robot.subsystems.Lanceur;
 import frc.robot.subsystems.Superstructure;
 import frc.robot.subsystems.Tourelle;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 
 @Logged 
@@ -35,7 +37,8 @@ public class RobotContainer {
   private final Carroussel carroussel;
   private final Coude coude;
   private final Hood hood; 
-  private final Kickeur kickeur; 
+  private final Kickeur kickeur;
+  private final Grimpeur grimpeur;
 
   private final FancyPathGeneration fancyPathGeneration;
 
@@ -49,6 +52,8 @@ public class RobotContainer {
     coude = new Coude();
     hood = new Hood(); 
     kickeur = new Kickeur(); 
+    grimpeur = new Grimpeur();
+    
 
     fancyPathGeneration = new FancyPathGeneration(basePilotable.getPoseSupplier(),
         basePilotable.getChassisSpeedsSupplier());
@@ -96,6 +101,11 @@ public class RobotContainer {
 
     //Protection coude
     manette.x().onTrue(coude.PIDCommand(90));
+
+    //Grimpeur
+    // manette.povUp().whileTrue(grimpeur.monterCommand(false));
+    // manette.povUp().whileTrue(grimpeur.descendreCommand(false));
+    // manette.y().toggleOnTrue(Commands.startEnd(grimpeur::barrer, grimpeur::debarrer, grimpeur));
   }
 
   public Command getAutonomousCommand() {
