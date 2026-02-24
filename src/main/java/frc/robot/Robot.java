@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import com.ctre.phoenix6.SignalLogger;
+
 import edu.wpi.first.epilogue.Epilogue;
 import edu.wpi.first.epilogue.Logged;
 import edu.wpi.first.net.WebServer;
@@ -31,6 +33,8 @@ public class Robot extends TimedRobot {
 
     //pour sauvegarder le layout Elastic dans le robot
     WebServer.start(5800, Filesystem.getDeployDirectory().getPath());
+
+    SignalLogger.enableAutoLogging(false);
   }
 
   /**

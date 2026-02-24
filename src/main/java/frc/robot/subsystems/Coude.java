@@ -199,7 +199,7 @@ public class Coude extends SubsystemBase {
   }
 
   public Command PIDCommand(double cible) {
-    return Commands.run(()->this.setPID(cible), this);
+    return Commands.runOnce(this::resetPID, this).andThen(Commands.run(()->this.setPID(cible), this));
   }
 
 }

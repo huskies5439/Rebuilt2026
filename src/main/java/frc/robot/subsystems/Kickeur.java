@@ -4,6 +4,8 @@
 
 package frc.robot.subsystems;
 
+import java.util.Set;
+
 import com.revrobotics.PersistMode;
 import com.revrobotics.ResetMode;
 import com.revrobotics.spark.SparkFlex;
@@ -124,8 +126,7 @@ public class Kickeur extends SubsystemBase {
   }
 
   public Command kickerPIDCommand(){//Version Dashboard
-    return Commands.runOnce(() -> limiter.reset(getVitesse()))
-        .andThen(Commands.runEnd(() -> setPID(SmartDashboard.getNumber("cible kickeur", conversionKickeur)), this::stop, this));
+    return Commands.defer(()->{return kickerPIDCommand(SmartDashboard.getNumber("cible kickeur", 0));}, Set.of());
   }
 
 

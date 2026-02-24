@@ -4,6 +4,8 @@
 
 package frc.robot.subsystems;
 
+import java.util.Set;
+
 import com.revrobotics.PersistMode;
 import com.revrobotics.ResetMode;
 import com.revrobotics.spark.SparkFlex;
@@ -128,10 +130,8 @@ public class Lanceur extends SubsystemBase {
         .andThen(Commands.runEnd(() -> setPID(cible), this::stop, this));
   }
 
-  public Command lancerPIDCommand() {//Version Dashboard
-      return Commands.runOnce(() -> limiter.reset(getVitesse()))
-        .andThen(Commands.runEnd(() -> setPID(SmartDashboard.getNumber("cible lanceur", 0)), this::stop, this));
-      
+  public Command lancerPIDCommand() {//Version Dashboard  
+    return Commands.defer(()->{return lancerPIDCommand(SmartDashboard.getNumber("cible lanceur", 0));}, Set.of());
   }
 
 }
