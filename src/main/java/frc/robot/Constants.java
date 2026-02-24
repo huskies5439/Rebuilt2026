@@ -6,6 +6,7 @@ package frc.robot;
 
 import java.util.Optional;
 
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
@@ -51,12 +52,19 @@ public final class Constants {
     public static double facteurAngleLoin = 15.0; 
   }
 
-  public static final class PositionYTrench {
-    public static final double trenchBas = 0.65; 
-    public static final double trenchHaut = 7.4; 
+  public static final class PoseTrench {
+
+    public static final Translation2d trenchBleuDepot = new Translation2d(4.65, 7.4);
+    public static final Translation2d trenchBleuOutpost = new Translation2d(4.65, 0.65);
+    public static final Translation2d trenchRougeDepot = new Translation2d(11.93, 7.4);
+    public static final Translation2d trenchRougeOutpost = new Translation2d(11.93, 0.65);
+
+
   }
 
   public static final double kAngleCoudeDepart = -8.0;
+
+  public static final double kAngleHoodDepart = 74.0; 
 
   public static final class PidBasePilotable {
     public static final double kPLineaire = 2.0;

@@ -6,6 +6,7 @@ package frc.robot;
 
 import edu.wpi.first.epilogue.Logged;
 import frc.robot.commands.BasePilotableDefaut;
+import frc.robot.commands.LancerFancy;
 import frc.robot.commands.SnapTrench;
 import frc.robot.commands.SuperStructureDefaut;
 import frc.robot.commands.ViserTourelle;
@@ -23,6 +24,7 @@ import frc.robot.subsystems.Tourelle;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 @Logged 
 public class RobotContainer {
@@ -42,6 +44,8 @@ public class RobotContainer {
 
   private final FancyPathGeneration fancyPathGeneration;
 
+  private Trigger protectionTrench;
+
   public RobotContainer() {
     basePilotable = new BasePilotable();
     superstructure = new Superstructure(); 
@@ -53,6 +57,9 @@ public class RobotContainer {
     hood = new Hood(); 
     kickeur = new Kickeur(); 
     grimpeur = new Grimpeur();
+
+
+    protectionTrench = new Trigger(superstructure::isProcheTrench).negate();
     
 
     fancyPathGeneration = new FancyPathGeneration(basePilotable.getPoseSupplier(),
@@ -66,7 +73,7 @@ public class RobotContainer {
     coude.setDefaultCommand(coude.holdCommand());
 
     superstructure.setDefaultCommand(new SuperStructureDefaut(superstructure, basePilotable)); 
-    //hood.setDefaultCommand(hood.goToAnglePIDCommand(Constants.angleHoodLimitSwitch)); 
+    hood.setDefaultCommand(hood.goToAnglePIDCommand(Constants.kAngleHoodDepart)); 
 
   }
 
@@ -94,6 +101,7 @@ public class RobotContainer {
 
     manette.y().whileTrue(new SnapTrench(manette::getLeftY,basePilotable)); 
 
+    //manette.rightBumper().and(protectionTrench).whileTrue(new LancerFancy(basePilotable, lanceur, hood, null, kickeur, carroussel, superstructure));
 
   
     //Gober

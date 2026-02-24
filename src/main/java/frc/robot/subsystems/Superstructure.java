@@ -16,6 +16,7 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.Constants.PoseTrench;
 
 @Logged
 public class Superstructure extends SubsystemBase {
@@ -135,6 +136,35 @@ public class Superstructure extends SubsystemBase {
   public void setMode(Mode mode){
     this.mode = mode; 
   }
+
+
+  ////////Protection Tourelle Trench
+  
+  public boolean isProche(Translation2d cible, double rayon, boolean checkTourelle){
+    
+    Pose2d pose = poseRobot;
+
+    if(checkTourelle){
+      pose = poseRobot.plus(deplacementTourelle);
+    }
+    
+    return cible.minus(pose.getTranslation()).getNorm() < rayon;
+
+  }
+
+  public boolean isProche(Pose2d cible, double rayon, boolean checkTourelle){
+    return isProche(cible.getTranslation(), rayon, checkTourelle);
+  }
+
+
+  public boolean isProcheTrench(){
+    double rayon = 1.0;
+    return isProche(PoseTrench.trenchBleuDepot, rayon, true) ||
+      isProche(PoseTrench.trenchBleuOutpost, rayon, true) ||
+      isProche(PoseTrench.trenchRougeDepot, rayon, true) ||
+      isProche(PoseTrench.trenchRougeOutpost, rayon, true);
+  }
+    
   
 
 }

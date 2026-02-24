@@ -14,7 +14,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.Constants.PidBasePilotable;
-import frc.robot.Constants.PositionYTrench;
+import frc.robot.Constants.PoseTrench;
 import frc.robot.subsystems.BasePilotable;
 
 @Logged
@@ -49,9 +49,9 @@ public class SnapTrench extends Command {
     pidAngle.reset();
 
     if (basePilotable.getPose().getY() >= 4.0) {
-      cibleY = PositionYTrench.trenchHaut;
+      cibleY = PoseTrench.trenchBleuDepot.getY();
     } else {
-      cibleY = PositionYTrench.trenchBas;
+      cibleY = PoseTrench.trenchBleuOutpost.getY();
     }
 
     if (Constants.isRedAlliance()) {

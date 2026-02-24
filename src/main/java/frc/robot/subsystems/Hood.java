@@ -38,7 +38,7 @@ public class Hood extends SubsystemBase {
   private ProfiledPIDController profiledPID = new ProfiledPIDController(1.0, 0, 0,
       new TrapezoidProfile.Constraints(60, 180));
 
-  private final double angleDepart = 74.0; 
+
 
   public Hood() {
 
@@ -46,11 +46,11 @@ public class Hood extends SubsystemBase {
     config.idleMode(IdleMode.kBrake);
     config.encoder.positionConversionFactor(conversion);
     config.encoder.velocityConversionFactor(conversion / 60.0);
-    config.softLimit.forwardSoftLimit(angleDepart).reverseSoftLimit(40); 
+    config.softLimit.forwardSoftLimit(Constants.kAngleHoodDepart).reverseSoftLimit(40); 
     config.softLimit.forwardSoftLimitEnabled(true).reverseSoftLimitEnabled(true);
     moteur.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
-    SmartDashboard.putNumber("Cible Hood",angleDepart);
+    SmartDashboard.putNumber("Cible Hood",Constants.kAngleHoodDepart);
 
     resetEncodeur();
 
@@ -82,7 +82,7 @@ public class Hood extends SubsystemBase {
   }
 
   public void resetEncodeur() {
-    moteur.getEncoder().setPosition(angleDepart);
+    moteur.getEncoder().setPosition(Constants.kAngleHoodDepart);
   }
 
   public void stop() {
