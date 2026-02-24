@@ -4,6 +4,8 @@
 
 package frc.robot.subsystems;
 
+import java.util.Set;
+
 import com.revrobotics.PersistMode;
 import com.revrobotics.ResetMode;
 import com.revrobotics.spark.SparkFlex;
@@ -128,7 +130,7 @@ public class Carroussel extends SubsystemBase {
   }
 
   public Command tournerPIDCommand(){
-    return tournerPIDCommand(SmartDashboard.getNumber("cible carroussel", 0));
+     return Commands.defer(()->{return tournerPIDCommand(SmartDashboard.getNumber("cible carroussel", 0));}, Set.of());
   }
 
   

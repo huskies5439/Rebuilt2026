@@ -4,6 +4,8 @@
 
 package frc.robot.subsystems;
 
+import java.util.Set;
+
 import com.revrobotics.PersistMode;
 import com.revrobotics.ResetMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
@@ -141,7 +143,7 @@ public class Hood extends SubsystemBase {
   }
 
   public Command goToAnglePIDCommand() {
-    return Commands.runOnce(this::resetPID, this).andThen(Commands.runEnd(() -> this.setPID(SmartDashboard.getNumber("Cible Hood", 0)),this::stop , this));
+    return Commands.defer(()->{return goToAnglePIDCommand(SmartDashboard.getNumber("Cible Hood", 0));}, Set.of());
   }
   
   
