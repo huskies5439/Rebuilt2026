@@ -14,10 +14,11 @@ import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import edu.wpi.first.epilogue.Logged;
 import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 @Logged
 public class Grimpeur extends SubsystemBase {
-  private SparkFlex moteur = new SparkFlex(53, MotorType.kBrushless);
+  private SparkFlex moteur = new SparkFlex(59, MotorType.kBrushless);
   private SparkFlexConfig config = new SparkFlexConfig();
 
   private Servo servo = new Servo(3);
@@ -41,8 +42,8 @@ public class Grimpeur extends SubsystemBase {
     conversion = 1;
     config.encoder.positionConversionFactor(conversion); //// à vérifier
     config.encoder.velocityConversionFactor(conversion / 60);
-    config.softLimit.forwardSoftLimit(maxPosition).reverseSoftLimit(0);
-    config.softLimit.forwardSoftLimitEnabled(true).reverseSoftLimitEnabled(true);
+    //config.softLimit.forwardSoftLimit(maxPosition).reverseSoftLimit(0);
+    //config.softLimit.forwardSoftLimitEnabled(true).reverseSoftLimitEnabled(true);
     moteur.configure(config, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters);
 
     debarrer();
@@ -71,11 +72,11 @@ public class Grimpeur extends SubsystemBase {
   }
 
   public void monter() {
-    setVoltage(1);
+    setVoltage(3);
   }
 
   public void descendre() {
-    setVoltage(-1);
+    setVoltage(-3);
   }
 
   ///// ENCODEUR
@@ -100,12 +101,12 @@ public class Grimpeur extends SubsystemBase {
 
   /// COMMANDES
 
-  public Command monterCommand(boolean rapide) {
-    return this.startEnd(() -> this.setVoltage(rapide ? voltageRapide : volatgeLent), this::stop);
+  public Command monterCommand() {
+    return Commands.runEnd(this::monter, this::stop, this);
   }
 
-  public Command descendreCommand(boolean rapide) {
-    return this.startEnd(() -> this.setVoltage(rapide ? -voltageRapide : -volatgeLent), this::stop);
+  public Command descendreCommand() {
+    return Commands.runEnd(this::descendre, this::stop, this);
   }
 
 }

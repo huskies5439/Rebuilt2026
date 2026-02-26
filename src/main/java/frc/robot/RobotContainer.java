@@ -96,10 +96,10 @@ public class RobotContainer {
     // manette.a().whileTrue(new ViserTourelle(tourelle, superstructure));
 
     //manette.rightTrigger(0.5).whileTrue(lanceur.lancerSimpleCommand()); 
-    manette.povUp().whileTrue(hood.sortirCommand()); 
-    manette.povDown().whileTrue(hood.rentrerCommand());
+   // manette.povUp().whileTrue(hood.sortirCommand()); 
+   // manette.povDown().whileTrue(hood.rentrerCommand());
 
-    manette.y().whileTrue(new SnapTrench(manette::getLeftY,basePilotable)); 
+   // manette.a().whileTrue(new SnapTrench(manette::getLeftY,basePilotable)); 
 
     //manette.rightBumper().and(protectionTrench).whileTrue(new LancerFancy(basePilotable, lanceur, hood, null, kickeur, carroussel, superstructure));
 
@@ -111,9 +111,9 @@ public class RobotContainer {
     manette.x().onTrue(coude.PIDCommand(90));
 
     //Grimpeur
-    // manette.povUp().whileTrue(grimpeur.monterCommand(false));
-    // manette.povUp().whileTrue(grimpeur.descendreCommand(false));
-    // manette.y().toggleOnTrue(Commands.startEnd(grimpeur::barrer, grimpeur::debarrer, grimpeur));
+     manette.povUp().whileTrue(grimpeur.monterCommand());
+     manette.povDown().whileTrue(grimpeur.descendreCommand());
+     manette.y().toggleOnTrue(Commands.startEnd(grimpeur::barrer, grimpeur::debarrer, grimpeur));
   }
 
   public Command getAutonomousCommand() {

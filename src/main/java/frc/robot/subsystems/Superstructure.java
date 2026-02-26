@@ -16,6 +16,7 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.Constants.Cible;
 import frc.robot.Constants.PoseTrench;
 
 @Logged
@@ -27,16 +28,10 @@ public class Superstructure extends SubsystemBase {
   private Pose2d poseRobot = new Pose2d(); 
   private ChassisSpeeds chassisSpeedsRobot = new ChassisSpeeds();
 
-  public enum Mode{
-    HUB, 
-    SOUFFLEUSE,
-    GRIMPEUR
-  }
 
-  private Mode mode;
+
 
   public Superstructure() {
-    setMode(Mode.HUB);
  
   }
 
@@ -48,17 +43,17 @@ public class Superstructure extends SubsystemBase {
 //Mettre en commande par défaut
   public void setCible(){
     if(Constants.isRedAlliance()){
-      if(mode == Mode.HUB){
+      if(poseRobot.getX() > Constants.Cible.hubRouge.getX()){
         cible = Constants.Cible.hubRouge;
-      }else if(poseRobot.getY() > 4 ){
+      }else if(poseRobot.getY() > Constants.Cible.hubRouge.getY() ){
         cible = Constants.Cible.souffleuseOutPostRouge;
       }else{
         cible = Constants.Cible.souffleuseDepotRouge;
       }
     }else{
-      if(mode == Mode.HUB){
+      if(poseRobot.getX() < Constants.Cible.hubBleu.getX()){
         cible = Constants.Cible.hubBleu;
-      }else if(poseRobot.getY() > 4){
+      }else if(poseRobot.getY() > Constants.Cible.hubBleu.getY()){
         cible = Constants.Cible.souffleuseDepotBleu;
       }else{
         cible = Constants.Cible.souffleuseOutPostBleu;
@@ -128,14 +123,7 @@ public class Superstructure extends SubsystemBase {
     return getAngleCible().getDegrees(); //ajouter la correction pour la vitesse ici 
   }
 
-  //Modes 
-  public Mode getMode(){
-    return mode; 
-  }
 
-  public void setMode(Mode mode){
-    this.mode = mode; 
-  }
 
 
   ////////Protection Tourelle Trench
@@ -165,6 +153,26 @@ public class Superstructure extends SubsystemBase {
       isProche(PoseTrench.trenchRougeOutpost, rayon, true);
   }
     
+
+
+  ///calculs compliqués
+
+  public Translation2d getDeplacementTourelleRotation(){
+    return deplacementTourelle.getTranslation().rotateBy(poseRobot.getRotation());
+  }
+
+  public ChassisSpeeds getComposanteRotationTourelle(){
+    Translation2d deplacementTourelleRotation = getDeplacementTourelleRotation(); 
+    double vitesseX = -deplacementTourelleRotation.getY() * chassisSpeedsRobot.omegaRadiansPerSecond; 
+    double vitesseY = deplacementTourelleRotation.getX() * chassisSpeedsRobot.omegaRadiansPerSecond; 
+    return new ChassisSpeeds(vitesseX,vitesseY,0); 
+  }
+
+  public ChassisSpeeds getVitesseTourelle(){
+    ChassisSpeeds composanteRotationTourelle = getComposanteRotationTourelle(); 
+    return ChassisSpeeds.fromRobotRelativeSpeeds(chassisSpeedsRobot, poseRobot.getRotation()).plus(composanteRotationTourelle); 
+  }
+
   
 
 }
