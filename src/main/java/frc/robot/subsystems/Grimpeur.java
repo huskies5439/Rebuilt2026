@@ -37,7 +37,7 @@ public class Grimpeur extends SubsystemBase {
     
   public Grimpeur() {
 
-    config.inverted(false);
+    config.inverted(true);
     config.idleMode(IdleMode.kBrake);
     conversion = 1;
     config.encoder.positionConversionFactor(conversion); //// à vérifier
