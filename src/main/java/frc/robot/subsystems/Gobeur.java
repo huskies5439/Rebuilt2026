@@ -27,7 +27,7 @@ public class Gobeur extends SubsystemBase {
   
 
   public Gobeur() {
-    moteurConfig.inverted(false);
+    moteurConfig.inverted(true);
     moteurConfig.idleMode(IdleMode.kCoast);
     moteur.configure(moteurConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 

@@ -72,11 +72,11 @@ public class Grimpeur extends SubsystemBase {
   }
 
   public void monter() {
-    setVoltage(3);
+    setVoltage(6);
   }
 
   public void descendre() {
-    setVoltage(-3);
+    setVoltage(-6);
   }
 
   ///// ENCODEUR

@@ -33,7 +33,7 @@ public class Lanceur extends SubsystemBase {
 
   private double conversionLanceur = 1.0;
 
-  private PIDController pid = new PIDController(0.1, 0, 0.001);
+  private PIDController pid = new PIDController(0.1, 0, 0.0001);
   private SimpleMotorFeedforward ff = new SimpleMotorFeedforward(0.1, 0.108); 
                                                                      
   private SlewRateLimiter limiter = new SlewRateLimiter(200); // Pour limiter l'accélération du lanceur

@@ -33,7 +33,7 @@ public class RobotContainer {
 
   private final BasePilotable basePilotable;
   private final Superstructure superstructure; 
-  //private final Tourelle tourelle;
+  private final Tourelle tourelle;
   private final Lanceur lanceur;
   private final Gobeur gobeur;
   private final Carroussel carroussel;
@@ -49,14 +49,14 @@ public class RobotContainer {
   public RobotContainer() {
     basePilotable = new BasePilotable();
     superstructure = new Superstructure(); 
-    //tourelle = new Tourelle();
+    tourelle = new Tourelle();
     carroussel = new Carroussel(); 
     lanceur = new Lanceur();
     gobeur = new Gobeur();
     coude = new Coude();
     hood = new Hood(); 
     kickeur = new Kickeur(); 
-    grimpeur = new Grimpeur();
+     grimpeur = new Grimpeur();
 
 
     protectionTrench = new Trigger(superstructure::isProcheTrench).negate();
@@ -73,7 +73,8 @@ public class RobotContainer {
     coude.setDefaultCommand(coude.holdCommand());
 
     superstructure.setDefaultCommand(new SuperStructureDefaut(superstructure, basePilotable)); 
-    hood.setDefaultCommand(hood.goToAnglePIDCommand(Constants.kAngleHoodDepart)); 
+    //hood.setDefaultCommand(hood.goToAnglePIDCommand(Constants.kAngleHoodDepart)); //mauvaise intéraction avec les defer commande
+
 
   }
 
@@ -87,8 +88,8 @@ public class RobotContainer {
 
     manette.a().whileTrue(carroussel.tournerCommand());
 
-    manette.b().toggleOnTrue(kickeur.kickerPIDCommand().alongWith(lanceur.lancerPIDCommand()).alongWith(hood.goToAnglePIDCommand()));
-  
+     manette.b().toggleOnTrue(kickeur.kickerPIDCommand().alongWith(lanceur.lancerPIDCommand()).alongWith(hood.goToAnglePIDCommand(64)));
+    manette.b().whileTrue(hood.goToAnglePIDCommand());
 
     // manette.leftBumper().whileTrue(tourelle.tournerAntiHoraire());
     // manette.rightBumper().whileTrue(tourelle.tournerHoraire());
@@ -113,7 +114,6 @@ public class RobotContainer {
     //Grimpeur
      manette.povUp().whileTrue(grimpeur.monterCommand());
      manette.povDown().whileTrue(grimpeur.descendreCommand());
-     manette.y().toggleOnTrue(Commands.startEnd(grimpeur::barrer, grimpeur::debarrer, grimpeur));
   }
 
   public Command getAutonomousCommand() {

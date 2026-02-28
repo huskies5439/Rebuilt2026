@@ -35,7 +35,7 @@ public class Hood extends SubsystemBase {
 
   private DigitalInput limitSwitch = new DigitalInput(2);
 
-  private ProfiledPIDController profiledPID = new ProfiledPIDController(1.0, 0, 0,
+  private ProfiledPIDController profiledPID = new ProfiledPIDController(1, 0, 0,
       new TrapezoidProfile.Constraints(60, 180));
 
 
@@ -49,6 +49,8 @@ public class Hood extends SubsystemBase {
     config.softLimit.forwardSoftLimit(Constants.kAngleHoodDepart).reverseSoftLimit(40); 
     config.softLimit.forwardSoftLimitEnabled(true).reverseSoftLimitEnabled(true);
     moteur.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+
+    profiledPID.setTolerance(0.5);
 
     SmartDashboard.putNumber("Cible Hood",Constants.kAngleHoodDepart);
 
