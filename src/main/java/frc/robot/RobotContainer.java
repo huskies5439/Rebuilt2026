@@ -8,7 +8,6 @@ import edu.wpi.first.epilogue.Logged;
 import frc.robot.commands.BasePilotableDefaut;
 import frc.robot.commands.LancerFancy;
 import frc.robot.commands.SnapTrench;
-import frc.robot.commands.SuperStructureDefaut;
 import frc.robot.commands.ViserTourelle;
 import frc.robot.lib.FancyPathGeneration;
 import frc.robot.subsystems.BasePilotable;
@@ -42,13 +41,13 @@ public class RobotContainer {
   private final Kickeur kickeur;
   private final Grimpeur grimpeur;
 
-  private final FancyPathGeneration fancyPathGeneration;
+  private final FancyPathGeneration fancyPath;
 
   private Trigger protectionTrench;
 
   public RobotContainer() {
     basePilotable = new BasePilotable();
-    superstructure = new Superstructure(); 
+    superstructure = new Superstructure(basePilotable.getPoseSupplier(), basePilotable.getChassisSpeedsSupplier()); 
     tourelle = new Tourelle();
     carroussel = new Carroussel(); 
     lanceur = new Lanceur();
@@ -62,7 +61,7 @@ public class RobotContainer {
     protectionTrench = new Trigger(superstructure::isProcheTrench).negate();
     
 
-    fancyPathGeneration = new FancyPathGeneration(basePilotable.getPoseSupplier(),
+    fancyPath = new FancyPathGeneration(basePilotable.getPoseSupplier(),
         basePilotable.getChassisSpeedsSupplier());
 
     configureBindings();
@@ -72,7 +71,6 @@ public class RobotContainer {
 
     coude.setDefaultCommand(coude.holdCommand());
 
-    superstructure.setDefaultCommand(new SuperStructureDefaut(superstructure, basePilotable)); 
     //hood.setDefaultCommand(hood.goToAnglePIDCommand(Constants.kAngleHoodDepart)); //mauvaise intéraction avec les defer commande
 
 

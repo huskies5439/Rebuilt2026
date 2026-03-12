@@ -6,22 +6,31 @@ package frc.robot.commands;
 
 import java.util.function.DoubleSupplier;
 
+import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants;
 import frc.robot.subsystems.BasePilotable;
 
 public class BasePilotableDefaut extends Command {
 
   private BasePilotable basePilotable;
-  private DoubleSupplier vx;
-  private DoubleSupplier vy;
-  private DoubleSupplier omega;
+  private DoubleSupplier joystickVX;
+  private DoubleSupplier joystickVY;
+  private DoubleSupplier joystickOmega;
 
-  public BasePilotableDefaut(DoubleSupplier vx, DoubleSupplier vy, DoubleSupplier omega, BasePilotable basePilotable) {
+  private double deadband = 0.05;
+
+  private double vx;
+  private double vy;
+  private double omega;
+
+  public BasePilotableDefaut(DoubleSupplier joystickVX, DoubleSupplier joystickVY, DoubleSupplier joystickOmega, BasePilotable basePilotable) {
     this.basePilotable = basePilotable;
 
-    this.vx = vx;
-    this.vy = vy;
-    this.omega = omega;
+    this.joystickVX = joystickVX;
+    this.joystickVY = joystickVY;
+    this.joystickOmega = joystickOmega;
 
     addRequirements(basePilotable);
   }
@@ -33,7 +42,42 @@ public class BasePilotableDefaut extends Command {
 
   @Override
   public void execute() {
-    basePilotable.conduire(vx.getAsDouble(),vy.getAsDouble(), omega.getAsDouble(), true, true);
+    //Lecture des joysticks
+    vx = joystickVX.getAsDouble();
+    vy = joystickVY.getAsDouble();
+    omega = joystickOmega.getAsDouble();
+
+    // appliquer une deadband sur les joysticks et corriger la direction
+    vx = -MathUtil.applyDeadband(vx, deadband);
+    vy = -MathUtil.applyDeadband(vy, deadband);
+    omega = -MathUtil.applyDeadband(omega, deadband);
+
+    // Mettre les joysticks "au carré" pour adoucir les déplacements
+    vx = vx * Math.abs(vx);
+    vy = vy * Math.abs(vy);
+    omega = omega * Math.abs(omega);
+
+    // Convertir les valeurs des Joysticks selon les vitesses maximales du robot en téléop
+    vx = vx * Constants.maxVitesseLineaire;
+    vy = vy * Constants.maxVitesseLineaire;
+    omega = omega * Constants.maxVitesseRotation;
+    
+    // inversion du field oriented selon l'alliance
+    double invert = 1;
+    if (Constants.isRedAlliance()) {
+      invert = -1;
+    }
+
+    //Création du ChassisSpeed en field Oriented.
+    ChassisSpeeds speeds = ChassisSpeeds.fromFieldRelativeSpeeds(
+              vx * invert,
+              vy * invert,
+              omega,
+              basePilotable.getPose().getRotation());
+
+    //Envoyer les vitesses aux modules
+    basePilotable.conduireChassisSetPoint(speeds);
+
   }
 
   @Override

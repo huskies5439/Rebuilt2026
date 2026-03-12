@@ -6,7 +6,6 @@ package frc.robot;
 
 import java.util.Optional;
 
-import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
@@ -71,11 +70,7 @@ public final class Constants {
     public static final double kDLineaire = 1.0;
     public static final double kPRot = 10.0;
     public static final double kDRot = 1.0;
-    //////Si possible, remplacer ces variables par une fonctions qui va chercher les paramètres PP.
-    public static final double kMaxVitesseLineaire = 3.0;
-    public static final double kMaxAccelLineaire = 1.5;
-    public static final double kMaxVitesseRot = Math.toRadians(360);
-    public static final double kMaxAccelRot = Math.toRadians(360);
+
   }
 
   public static final double g  = 9.81; 

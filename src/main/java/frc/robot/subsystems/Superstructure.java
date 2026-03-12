@@ -4,7 +4,7 @@
 
 package frc.robot.subsystems;
 
-
+import java.util.function.Supplier;
 
 import edu.wpi.first.epilogue.Logged;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -22,157 +22,156 @@ import frc.robot.Constants.PoseTrench;
 @Logged
 public class Superstructure extends SubsystemBase {
 
- Transform2d deplacementTourelle = new Transform2d(-0.153, -0.153, Rotation2d.kZero);
+  Transform2d deplacementTourelle = new Transform2d(-0.153, -0.153, Rotation2d.kZero);
 
   private Translation3d cible = new Translation3d();
-  private Pose2d poseRobot = new Pose2d(); 
+  private Pose2d poseRobot = new Pose2d();
   private ChassisSpeeds chassisSpeedsRobot = new ChassisSpeeds();
 
+  //////Pour obtenir les valeurs de la Base Pilotable
+  private final Supplier<Pose2d> poseSupplier;
+  private final Supplier<ChassisSpeeds> speedSupplier;
 
-
-
-  public Superstructure() {
- 
+  public Superstructure(Supplier<Pose2d> poseSupplier, Supplier<ChassisSpeeds> speedSupplier) {
+    this.poseSupplier = poseSupplier;
+    this.speedSupplier = speedSupplier;
   }
 
   @Override
   public void periodic() {
-    
+
+    //Mise à jour des valeurs critiques de contrôle
+    poseRobot = poseSupplier.get();
+    chassisSpeedsRobot = speedSupplier.get();
+
+    setCible();
+
   }
 
-//Mettre en commande par défaut
-  public void setCible(){
-    if(Constants.isRedAlliance()){
-      if(poseRobot.getX() > Constants.Cible.hubRouge.getX()){
-        cible = Constants.Cible.hubRouge;
-      }else if(poseRobot.getY() > Constants.Cible.hubRouge.getY() ){
-        cible = Constants.Cible.souffleuseOutPostRouge;
-      }else{
-        cible = Constants.Cible.souffleuseDepotRouge;
+
+  public void setCible() {
+    if (Constants.isRedAlliance()) {
+      if (poseRobot.getX() > Cible.hubRouge.getX()) {
+        cible = Cible.hubRouge;
+      } else if (poseRobot.getY() > Cible.hubRouge.getY()) {
+        cible = Cible.souffleuseOutPostRouge;
+      } else {
+        cible = Cible.souffleuseDepotRouge;
       }
-    }else{
-      if(poseRobot.getX() < Constants.Cible.hubBleu.getX()){
-        cible = Constants.Cible.hubBleu;
-      }else if(poseRobot.getY() > Constants.Cible.hubBleu.getY()){
-        cible = Constants.Cible.souffleuseDepotBleu;
-      }else{
-        cible = Constants.Cible.souffleuseOutPostBleu;
+    } else {
+      if (poseRobot.getX() < Cible.hubBleu.getX()) {
+        cible = Cible.hubBleu;
+      } else if (poseRobot.getY() > Cible.hubBleu.getY()) {
+        cible = Cible.souffleuseDepotBleu;
+      } else {
+        cible = Cible.souffleuseOutPostBleu;
       }
     }
   }
 
-  public void setPoseRobot(Pose2d poseRobot) {
-      this.poseRobot = poseRobot;
-  }
 
-  public void setChassisSpeed(ChassisSpeeds chassisSpeeds){
-    this.chassisSpeedsRobot = chassisSpeeds;
-  }
 
   public Translation2d getVecteurCibleTourelle() {
-    Translation2d poseTourelle = poseRobot.plus(deplacementTourelle).getTranslation(); 
+    Translation2d poseTourelle = poseRobot.plus(deplacementTourelle).getTranslation();
     return cible.toTranslation2d().minus(poseTourelle);
   }
 
-  public double getDistanceCibleTourelle(){
-    return getVecteurCibleTourelle().getNorm(); 
+  public double getDistanceCibleTourelle() {
+    return getVecteurCibleTourelle().getNorm();
   }
 
-  
   public Rotation2d getAngleCible() {
     Rotation2d angleVecteurCible = getVecteurCibleTourelle().getAngle();
-    Rotation2d angleTourelle = poseRobot.getRotation().rotateBy(Rotation2d.k180deg); 
-    return angleVecteurCible.minus(angleTourelle);  
+    Rotation2d angleTourelle = poseRobot.getRotation().rotateBy(Rotation2d.k180deg);
+    return angleVecteurCible.minus(angleTourelle);
   }
 
-  public double normeVecteurLancer() { 
+  public double normeVecteurLancer() {
     double vitesseBallon;
     if (getDistanceCibleTourelle() < 1) {
       vitesseBallon = Constants.RegimeLanceur.vitesseProche;
     } else {
-      vitesseBallon = Constants.RegimeLanceur.vitesseLoin; 
+      vitesseBallon = Constants.RegimeLanceur.vitesseLoin;
     }
-    //Ajouter la correction de la vitesse ici sur la vitesse Ballonn
+    // Ajouter la correction de la vitesse ici sur la vitesse Ballonn
 
     return vitesseBallon;
   }
 
   public double conversionBallonRouleau() {
-    //Norme vecteur donne la vitesse voulue du BALLON. Il faut convertir pour obtenir la vitesse correspondante du rouleau du lanceur
-    return normeVecteurLancer()/(Units.inchesToMeters(4)*Constants.coefficientFrictionBallon);
+    // Norme vecteur donne la vitesse voulue du BALLON. Il faut convertir pour
+    // obtenir la vitesse correspondante du rouleau du lanceur
+    return normeVecteurLancer() / (Units.inchesToMeters(4) * Constants.coefficientFrictionBallon);
   }
 
-  //pitch 
-  public double pitchVecteurLancer(){ //ajouter un clamp pour éviter de briser le hood 
-    double vitesseBallon = normeVecteurLancer(); 
-    double distance = getDistanceCibleTourelle(); 
-    double hauteur = cible.getZ(); 
+  // pitch
+  public double pitchVecteurLancer() { // ajouter un clamp pour éviter de briser le hood
+    double vitesseBallon = normeVecteurLancer();
+    double distance = getDistanceCibleTourelle();
+    double hauteur = cible.getZ();
     return Math.toDegrees(
-      Math.atan(
-        (Math.pow(vitesseBallon, 2) 
-        + Math.sqrt(
-            Math.pow(vitesseBallon, 4)
-            -Math.pow(Constants.g,2) * Math.pow(distance,2) 
-            - 2 * Constants.g * Math.pow(vitesseBallon, 2) * hauteur)) 
-        / Constants.g * distance
-        )); 
-  } 
-
-  //Yaw 
-  public double yawVecteurLancer(){
-    return getAngleCible().getDegrees(); //ajouter la correction pour la vitesse ici 
+        Math.atan(
+            (Math.pow(vitesseBallon, 2)
+                + Math.sqrt(
+                    Math.pow(vitesseBallon, 4)
+                        - Math.pow(Constants.g, 2) * Math.pow(distance, 2)
+                        - 2 * Constants.g * Math.pow(vitesseBallon, 2) * hauteur))
+                / Constants.g * distance));
   }
 
+  // Yaw
+  public double yawVecteurLancer() {
+    return getAngleCible().getDegrees(); // ajouter la correction pour la vitesse ici
+  }
 
+  //////// Protection Tourelle Trench
 
+  public boolean isProche(Translation2d cible, double rayon, boolean checkTourelle) {
 
-  ////////Protection Tourelle Trench
-  
-  public boolean isProche(Translation2d cible, double rayon, boolean checkTourelle){
-    
     Pose2d pose = poseRobot;
 
-    if(checkTourelle){
+    if (checkTourelle) {
       pose = poseRobot.plus(deplacementTourelle);
     }
-    
+
     return cible.minus(pose.getTranslation()).getNorm() < rayon;
 
   }
 
-  public boolean isProche(Pose2d cible, double rayon, boolean checkTourelle){
+  public boolean isProche(Pose2d cible, double rayon, boolean checkTourelle) {
     return isProche(cible.getTranslation(), rayon, checkTourelle);
   }
 
+  public boolean isProche(Pose2d cible, double rayon) {// Si on ne spécifie pas de checkTourelle, on veut le centre du
+                                                       // robot !
+    return isProche(cible.getTranslation(), rayon, false);
+  }
 
-  public boolean isProcheTrench(){
+  public boolean isProcheTrench() {
     double rayon = 1.0;
     return isProche(PoseTrench.trenchBleuDepot, rayon, true) ||
-      isProche(PoseTrench.trenchBleuOutpost, rayon, true) ||
-      isProche(PoseTrench.trenchRougeDepot, rayon, true) ||
-      isProche(PoseTrench.trenchRougeOutpost, rayon, true);
+        isProche(PoseTrench.trenchBleuOutpost, rayon, true) ||
+        isProche(PoseTrench.trenchRougeDepot, rayon, true) ||
+        isProche(PoseTrench.trenchRougeOutpost, rayon, true);
   }
-    
 
+  /// calculs compliqués
 
-  ///calculs compliqués
-
-  public Translation2d getDeplacementTourelleRotation(){
+  public Translation2d getDeplacementTourelleRotation() {
     return deplacementTourelle.getTranslation().rotateBy(poseRobot.getRotation());
   }
 
-  public ChassisSpeeds getComposanteRotationTourelle(){
-    Translation2d deplacementTourelleRotation = getDeplacementTourelleRotation(); 
-    double vitesseX = -deplacementTourelleRotation.getY() * chassisSpeedsRobot.omegaRadiansPerSecond; 
-    double vitesseY = deplacementTourelleRotation.getX() * chassisSpeedsRobot.omegaRadiansPerSecond; 
-    return new ChassisSpeeds(vitesseX,vitesseY,0); 
+  public ChassisSpeeds getComposanteRotationTourelle() {
+    Translation2d deplacementTourelleRotation = getDeplacementTourelleRotation();
+    double vitesseX = -deplacementTourelleRotation.getY() * chassisSpeedsRobot.omegaRadiansPerSecond;
+    double vitesseY = deplacementTourelleRotation.getX() * chassisSpeedsRobot.omegaRadiansPerSecond;
+    return new ChassisSpeeds(vitesseX, vitesseY, 0);
   }
 
-  public ChassisSpeeds getVitesseTourelle(){
-    ChassisSpeeds composanteRotationTourelle = getComposanteRotationTourelle(); 
-    return ChassisSpeeds.fromRobotRelativeSpeeds(chassisSpeedsRobot, poseRobot.getRotation()).plus(composanteRotationTourelle); 
+  public ChassisSpeeds getVitesseTourelle() {
+    ChassisSpeeds composanteRotationTourelle = getComposanteRotationTourelle();
+    return ChassisSpeeds.fromRobotRelativeSpeeds(chassisSpeedsRobot, poseRobot.getRotation())
+        .plus(composanteRotationTourelle);
   }
-
-  
 
 }

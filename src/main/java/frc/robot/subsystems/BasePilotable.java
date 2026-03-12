@@ -4,7 +4,6 @@
 
 package frc.robot.subsystems;
 
-
 import java.util.function.Supplier;
 
 import com.ctre.phoenix6.hardware.Pigeon2;
@@ -12,7 +11,6 @@ import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
-import com.pathplanner.lib.path.PathConstraints;
 import com.pathplanner.lib.path.PathPlannerPath;
 import com.pathplanner.lib.trajectory.PathPlannerTrajectoryState;
 import com.pathplanner.lib.util.DriveFeedforwards;
@@ -20,7 +18,6 @@ import com.pathplanner.lib.util.swerve.SwerveSetpoint;
 import com.pathplanner.lib.util.swerve.SwerveSetpointGenerator;
 
 import edu.wpi.first.epilogue.Logged;
-import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -58,14 +55,12 @@ public class BasePilotable extends SubsystemBase {
       new PIDConstants(PidBasePilotable.kPRot, 0, PidBasePilotable.kDRot));
 
   /*
-   * Setpoint genetator est une fonction de PathPlanner qui permet de valider
+   * Setpoint generator est une fonction de PathPlanner qui permet de valider
    * si les vitesses demandées en téléop respectent les contraintes mécaniques
    * du robot telles que définies la RobotConfig
    */
   private final SwerveSetpointGenerator setpointGenerator;
   private SwerveSetpoint previousSetpoint;
-
-  PathConstraints pathConstraints;
 
   // Initialisation PoseEstimator
   SwerveDrivePoseEstimator poseEstimator = new SwerveDrivePoseEstimator(
@@ -98,8 +93,6 @@ public class BasePilotable extends SubsystemBase {
     } catch (Exception e) {
       e.printStackTrace();
     }
-
-    pathConstraints = getPPAppSettings();
 
     // AutoBuilder permet de générer les trajets autonomes et de followPath
     AutoBuilder.configure(
@@ -138,7 +131,8 @@ public class BasePilotable extends SubsystemBase {
     addVisionPosition("limelight");
   }
 
-  /// ////// MÉTHODE DONNANT DES CONSIGNES À CHAQUE MODULE
+  ///////// FONCTIONS QUI PARLENT DIRECTEMENT AUX MODULES SWERVES
+  /// ModuleState = Vitesse de la roue, angle de la roue
 
   public void setModuleStates(SwerveModuleState[] desiredStates) {
     avantGauche.setDesiredState(desiredStates[0]);
@@ -153,57 +147,6 @@ public class BasePilotable extends SubsystemBase {
     };
   }
 
-  public void resetSetpoint() {
-    // Caller à chaque fois que l'on retourne à la commande de conduite téléop
-    // Sinon les premiers mouvements du robot dépendent de la conduite avant la
-    // commande de pathfinding
-    previousSetpoint = new SwerveSetpoint(getChassisSpeeds(), getModuleStates(), DriveFeedforwards.zeros(4));
-  }
-
-  /// ///// TÉLÉOP
-  public void conduire(double xSpeed, double ySpeed, double rot, boolean fieldRelative, boolean squared) {
-
-    double deadband = 0.05;
-    // appliquer une deadband sur les joysticks et corriger la direction
-    xSpeed = -MathUtil.applyDeadband(xSpeed, deadband);
-    ySpeed = -MathUtil.applyDeadband(ySpeed, deadband);
-    rot = -MathUtil.applyDeadband(rot, deadband);
-
-    if (squared) { // Mettre les joysticks "au carré" pour adoucir les déplacements
-      xSpeed = xSpeed * Math.abs(xSpeed);
-      ySpeed = ySpeed * Math.abs(ySpeed);
-      rot = rot * Math.abs(rot);
-    }
-
-    // Convert the commanded speeds into the correct units for the drivetrain
-    double xSpeedDelivered = xSpeed * Constants.maxVitesseLineaire;
-    double ySpeedDelivered = ySpeed * Constants.maxVitesseLineaire;
-    double rotDelivered = rot * Constants.maxVitesseRotation;
-
-    // inversion du field oriented selon l'alliance
-    double invert = 1;
-    if (Constants.isRedAlliance()) {
-      invert = -1;
-    }
-
-    ChassisSpeeds speeds = fieldRelative
-        ? ChassisSpeeds.fromFieldRelativeSpeeds(
-            xSpeedDelivered * invert,
-            ySpeedDelivered * invert,
-            rotDelivered,
-            getPose().getRotation())
-        : new ChassisSpeeds(xSpeedDelivered, ySpeedDelivered, rotDelivered);
-
-    // Actualiser le setpoint generator pour corriger le mouvement si nécessaire
-    previousSetpoint = setpointGenerator.generateSetpoint(previousSetpoint, speeds, 0.02);
-
-    setModuleStates(previousSetpoint.moduleStates());
-  }
-
-  public void stop() {
-    conduire(0, 0, 0, false, false);
-  }
-
   // Sets the wheels into an X formation to prevent movement.
   public void setX() {
     avantGauche.setDesiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(45)));
@@ -212,14 +155,46 @@ public class BasePilotable extends SubsystemBase {
     arriereDroite.setDesiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(45)));
   }
 
+  ///////// FONCTIONS QUI PARLENT DIRECTEMENT AU CHASSIS
+  /// ChassisSpeeds = Vx, Vy, Omega
 
+  public ChassisSpeeds getChassisSpeeds() {
+    return Constants.kDriveKinematics.toChassisSpeeds(
+        avantDroite.getState(), avantGauche.getState(), arriereDroite.getState(), arriereGauche.getState());
+  }
 
-  /// ////// Pose estimator
+  public void conduireChassis(ChassisSpeeds chassisSpeeds) {
+    // Ramene la vitesse en intervale de 20 ms
+    ChassisSpeeds targetSpeed = ChassisSpeeds.discretize(chassisSpeeds, 0.02);
+
+    SwerveModuleState[] swerveModuleState = Constants.kDriveKinematics.toSwerveModuleStates(targetSpeed);
+    setModuleStates(swerveModuleState);
+  }
+
+  public void stop() {
+    conduireChassis(new ChassisSpeeds(0, 0, 0));
+  }
+
+  //////////// FONCTIONS QUI PARLENT AU CHASSIS AVEC LA CORRECTION DU SWERVE
+  //////////// SETPOINT GENERATOR
+  /// Nécessite swerveSetPointGenerator, donc robotConfig d'un projet PP
+
+  public void conduireChassisSetPoint(ChassisSpeeds speeds) {
+    previousSetpoint = setpointGenerator.generateSetpoint(previousSetpoint, speeds, 0.02);
+
+    setModuleStates(previousSetpoint.moduleStates());
+  }
+
+  public void resetSetpoint() {
+    // Nécessaire quand on alterne entre des déplacements autonomes et des
+    // déplacements téléop
+    previousSetpoint = new SwerveSetpoint(getChassisSpeeds(), getModuleStates(), DriveFeedforwards.zeros(4));
+  }
+
+  ///////// Pose estimator
   public Pose2d getPose() {
     return poseEstimator.getEstimatedPosition();
   }
-
-  
 
   public void resetOdometry(Pose2d pose) { // pose est à la pose où reset, c'est typiquement l'origine du terrain
     poseEstimator.resetPosition(
@@ -233,7 +208,7 @@ public class BasePilotable extends SubsystemBase {
         pose);
   }
 
-  /// ///////////////// limelight
+  //////////////////// Limelight
   /// MegaTag2 : il faut connaître l'angle du robot
   /// Donc TOUJOURS ouvrir le robot/compiler en pointant 0°
   /// Voir la documentation limelight, il se peut que ça change l'an prochain !
@@ -294,40 +269,8 @@ public class BasePilotable extends SubsystemBase {
     gyro.setYaw(0);
   }
 
-
-
-  /// ///////////// Path Planner
-  public ChassisSpeeds getChassisSpeeds() {
-    return Constants.kDriveKinematics.toChassisSpeeds(
-        avantDroite.getState(), avantGauche.getState(), arriereDroite.getState(), arriereGauche.getState());
-  }
-
-  public void conduireChassis(ChassisSpeeds chassisSpeeds) {
-    // Ramene la vitesse en intervale de 20 ms
-    ChassisSpeeds targetSpeed = ChassisSpeeds.discretize(chassisSpeeds, 0.02);
-
-    SwerveModuleState[] swerveModuleState = Constants.kDriveKinematics.toSwerveModuleStates(targetSpeed);
-    setModuleStates(swerveModuleState);
-  }
-
-  /////////////////////// EN BAS DE CE POINT, CES FONCTIONS NE SONT PEUT-ÊTRE PAS
-  /////////////////////// PERTINENTES.
-  /// CE SONT DES RESTES DE REEFSCAPE2025 ET DE DEVELOPPMENTAUTOMNE2025 (PID APRÈS
-  /////////////////////// FOLLOWPATH)
-  /// À VALIDER AU FUR ET À MESURE QUE LES COMMANDES SE PRÉCISENT
-
-  /////////////// On the fly
-
-  public Command followPath(PathPlannerPath path) {
-
-    return AutoBuilder.followPath(path);
-    // return AutoBuilder.pathfindToPoseFlipped(cible, constraints);
-
-  }
-
-  public void resetPID() {
-    ppHolonomicDriveController.reset(getPose(), getChassisSpeeds());
-  }
+  ///////// FONCTION POUR ENVOYER LA POSE ET LA VITESSE AUX AUTRES SOUS-SYSTÈMES
+  /// Nécessaire pour FancyPath et Superstructure
 
   public Supplier<Pose2d> getPoseSupplier() {
     return this::getPose;
@@ -337,11 +280,14 @@ public class BasePilotable extends SubsystemBase {
     return this::getChassisSpeeds;
   }
 
-  ////////////// isProche permet de vérifier la position du robot
-  /// Seule fois où on a besoin des Pose2D de l'alliance rouge car on ne passe pas
-  ////////////// par PathPlanner
-  public boolean isProche(Pose2d cible, double distanceMin) {
-    return getPose().getTranslation().getDistance(cible.getTranslation()) < distanceMin;
+  ///////////// FONCTIONS POUR LE FANCY PATH GENERATOR
+  public Command followPath(PathPlannerPath path) {
+
+    return AutoBuilder.followPath(path);
+  }
+
+  public void resetPID() {
+    ppHolonomicDriveController.reset(getPose(), getChassisSpeeds());
   }
 
   public void setPID(Pose2d cible) {
@@ -354,41 +300,5 @@ public class BasePilotable extends SubsystemBase {
     ChassisSpeeds chassisSpeeds = ppHolonomicDriveController.calculateRobotRelativeSpeeds(current, stateCible);
     conduireChassis(chassisSpeeds);
   }
-
-  public void conduireChassisSetPoint(ChassisSpeeds speeds){
-     previousSetpoint = setpointGenerator.generateSetpoint(previousSetpoint, speeds, 0.02);
-
-    setModuleStates(previousSetpoint.moduleStates());
-  }
-
-///////Obtenir les paramètres de Pathplanner automatiquement
-  public PathConstraints getPPAppSettings() {
-    PathPlannerPath pathConfig = null;
-
-    try {
-      pathConfig = PathPlannerPath.fromPathFile("config");
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
-
-    return pathConfig.getGlobalConstraints();
-  }
-
-  public double getPPMaxVitesseLineaire(){
-    return getPPAppSettings().maxVelocityMPS();
-  }
-
-  public double getPPMaxAccelerationLineaire(){
-    return getPPAppSettings().maxAccelerationMPSSq();
-  }
-
-  public double getPPMaxVitesseAngulaire() {
-    return Math.toDegrees(getPPAppSettings().maxAngularVelocityRadPerSec());
-  }
-
-  public double getPPMaxAccelerationAngulaire() {
-    return Math.toDegrees(getPPAppSettings().maxAngularAccelerationRadPerSecSq());
-  }
-
 
 }

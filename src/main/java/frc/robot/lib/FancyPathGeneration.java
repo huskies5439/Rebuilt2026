@@ -20,20 +20,24 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.units.measure.LinearVelocity;
-import frc.robot.Constants.PidBasePilotable;
 
 public class FancyPathGeneration {
     private final Supplier<Pose2d> poseSupplier;
     private final Supplier<ChassisSpeeds> speedSupplier;
 
+    private PathConstraints pathConstraints;
+
     public FancyPathGeneration(Supplier<Pose2d> poseSupplier,
             Supplier<ChassisSpeeds> speedSupplier) {
         this.poseSupplier = poseSupplier;
         this.speedSupplier = speedSupplier;
+
+        pathConstraints = getPPAppConstraints();
     }
 
     public PathPlannerPath genererPath(Pose2d cible) {
-        PathConstraints constraints = new PathConstraints(PidBasePilotable.kMaxVitesseLineaire, PidBasePilotable.kMaxAccelLineaire, PidBasePilotable.kMaxVitesseRot, PidBasePilotable.kMaxAccelRot);
+    
+
         // Hyper Important : Il faut mettre la méthode "flipped" pour ajuster pour
         // RedAlliance
         // Fonction pas mentionnée dans la doc !!
@@ -54,7 +58,7 @@ public class FancyPathGeneration {
         // Utilise le déplacement et la vitesse actuelle pour le début du path
         PathPlannerPath path = new PathPlannerPath(
                 waypoints,
-                constraints,
+                pathConstraints, 
                 new IdealStartingState(getVitesseRobot(), rotation2d),
                 new GoalEndState(0.0, cible.getRotation()));
         return path;
@@ -96,5 +100,18 @@ public class FancyPathGeneration {
         // Si le robot est proche, on pointe vers la cible ou dans le sens de la cible
         Double distanceMinimum = 0.10;
         return (distance.getNorm() < distanceMinimum) ? cible.getRotation() : distance.getAngle();
+    }
+
+    /////// Obtenir les paramètres de Pathplanner automatiquement
+    public PathConstraints getPPAppConstraints() {
+        PathPlannerPath pathConfig = null;
+
+        try {
+            pathConfig = PathPlannerPath.fromPathFile("config");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return pathConfig.getGlobalConstraints();
     }
 }
