@@ -39,7 +39,7 @@ public class Superstructure extends SubsystemBase {
   private Pose2d poseRobot = new Pose2d();
   private ChassisSpeeds chassisSpeedsRobot = new ChassisSpeeds();
 
-  //////Pour obtenir les valeurs de la Base Pilotable
+  ////// Pour obtenir les valeurs de la Base Pilotable
   private final Supplier<Pose2d> poseSupplier;
   private final Supplier<ChassisSpeeds> speedSupplier;
 
@@ -57,7 +57,7 @@ public class Superstructure extends SubsystemBase {
   @Override
   public void periodic() {
 
-     try {
+    try {
       FileReader fileReader = new FileReader(new File(Filesystem.getDeployDirectory(), "shooter.csv"));
 
       CSVReader csvReader = new CSVReaderBuilder(fileReader)
@@ -76,14 +76,13 @@ public class Superstructure extends SubsystemBase {
       e.printStackTrace();
     }
 
-    //Mise à jour des valeurs critiques de contrôle
+    // Mise à jour des valeurs critiques de contrôle
     poseRobot = poseSupplier.get();
     chassisSpeedsRobot = speedSupplier.get();
 
     setCible();
 
   }
-
 
   public void setCible() {
     if (Constants.isRedAlliance()) {
@@ -104,8 +103,6 @@ public class Superstructure extends SubsystemBase {
       }
     }
   }
-
-
 
   public Translation2d getVecteurCibleTourelle() {
     Translation2d poseTourelle = poseRobot.plus(deplacementTourelle).getTranslation();
@@ -210,12 +207,34 @@ public class Superstructure extends SubsystemBase {
         .plus(composanteRotationTourelle);
   }
 
-   public ShotParams cibleLanceur(double distance) {
+  public ShotParams getLancer(double distance) {
     return lutShotParams.get(distance);
   }
 
-  public double cibleTOF(double distance) {
+  public double getTOF(double distance) {
     return lutTOF.get(distance);
+  }
+
+  public double calculAjustementVitesse(double distance, double timeOfFlight) {
+    double vitesseTourelle = 2; 
+    return distance + vitesseTourelle * timeOfFlight;
+  }
+
+  public double calculRecursif(double distance) {
+    double timeOfFlight = 0.0;
+    double lastDistance = 0.0;
+
+    for (int i = 0; i < 5; i++) {
+      timeOfFlight = getTOF(distance);
+      distance = calculAjustementVitesse(distance, timeOfFlight);
+
+      if (Math.abs(distance - lastDistance) <= 0.05) {
+        break;
+      }
+      lastDistance = distance;
+    }
+
+    return distance;
   }
 
 }
