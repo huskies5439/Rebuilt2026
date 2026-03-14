@@ -4,7 +4,13 @@
 
 package frc.robot.subsystems;
 
+import java.io.File;
+import java.io.FileReader;
+import java.util.List;
 import java.util.function.Supplier;
+
+import com.opencsv.CSVReader;
+import com.opencsv.CSVReaderBuilder;
 
 import edu.wpi.first.epilogue.Logged;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -12,12 +18,17 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Translation3d;
+import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
+import edu.wpi.first.math.interpolation.InterpolatingTreeMap;
+import edu.wpi.first.math.interpolation.InverseInterpolator;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.Cible;
 import frc.robot.Constants.PoseTrench;
+import frc.robot.lib.ShotParams;
 
 @Logged
 public class Superstructure extends SubsystemBase {
@@ -32,6 +43,12 @@ public class Superstructure extends SubsystemBase {
   private final Supplier<Pose2d> poseSupplier;
   private final Supplier<ChassisSpeeds> speedSupplier;
 
+  InterpolatingDoubleTreeMap lutTOF = new InterpolatingDoubleTreeMap();
+
+  InterpolatingTreeMap<Double, ShotParams> lutShotParams = new InterpolatingTreeMap<>(
+      InverseInterpolator.forDouble(),
+      ShotParams::interpolate);
+
   public Superstructure(Supplier<Pose2d> poseSupplier, Supplier<ChassisSpeeds> speedSupplier) {
     this.poseSupplier = poseSupplier;
     this.speedSupplier = speedSupplier;
@@ -39,6 +56,25 @@ public class Superstructure extends SubsystemBase {
 
   @Override
   public void periodic() {
+
+     try {
+      FileReader fileReader = new FileReader(new File(Filesystem.getDeployDirectory(), "shooter.csv"));
+
+      CSVReader csvReader = new CSVReaderBuilder(fileReader)
+          .withSkipLines(1)
+          .build();
+
+      List<String[]> allData = csvReader.readAll();
+      for (String[] row : allData) {
+        lutTOF.put(Double.valueOf(row[0]), Double.valueOf(row[1]));
+
+        lutShotParams.put(Double.valueOf(row[0]), new ShotParams(row[2], row[3], row[4]));
+
+      }
+
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
 
     //Mise à jour des valeurs critiques de contrôle
     poseRobot = poseSupplier.get();
@@ -172,6 +208,14 @@ public class Superstructure extends SubsystemBase {
     ChassisSpeeds composanteRotationTourelle = getComposanteRotationTourelle();
     return ChassisSpeeds.fromRobotRelativeSpeeds(chassisSpeedsRobot, poseRobot.getRotation())
         .plus(composanteRotationTourelle);
+  }
+
+   public ShotParams cibleLanceur(double distance) {
+    return lutShotParams.get(distance);
+  }
+
+  public double cibleTOF(double distance) {
+    return lutTOF.get(distance);
   }
 
 }
