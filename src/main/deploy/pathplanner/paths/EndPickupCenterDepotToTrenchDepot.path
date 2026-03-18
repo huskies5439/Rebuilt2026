@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 7.581554216868476,
-        "y": 4.9638554216867465
+        "x": 7.778253012048193,
+        "y": 4.789012048192771
       },
       "prevControl": null,
       "nextControl": {
-        "x": 7.395783132530121,
-        "y": 5.455602409638555
+        "x": 7.592481927709838,
+        "y": 5.2807590361445795
       },
       "isLocked": false,
       "linkedName": "EndPickupCenterDepot"
@@ -20,33 +20,17 @@
         "y": 7.396893857298884
       },
       "prevControl": {
-        "x": 7.2865060240963855,
-        "y": 8.231240963855422
-      },
-      "nextControl": {
-        "x": 2.6116712897311998,
-        "y": 7.18509710997823
-      },
-      "isLocked": false,
-      "linkedName": "StartTrenchDepot"
-    },
-    {
-      "anchor": {
-        "x": 0.7845180722892706,
-        "y": 5.914566265060375
-      },
-      "prevControl": {
-        "x": 3.9098433734940903,
-        "y": 5.859927710843508
+        "x": 7.887530120481928,
+        "y": 8.089180722891566
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "PickupDepot"
+      "linkedName": "transitionTrenchDepot"
     }
   ],
   "rotationTargets": [
     {
-      "waypointRelativePos": 0.9477178423236432,
+      "waypointRelativePos": 0.8605809128630695,
       "rotationDegrees": 180.0
     }
   ],
@@ -62,14 +46,14 @@
     "unlimited": false
   },
   "goalEndState": {
-    "velocity": 0,
+    "velocity": 1.5,
     "rotation": 180.0
   },
   "reversed": false,
   "folder": "path",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -90.0
+    "rotation": -125.00000000000001
   },
   "useDefaultConstraints": true
 }

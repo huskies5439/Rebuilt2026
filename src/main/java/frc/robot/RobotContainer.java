@@ -4,6 +4,9 @@
 
 package frc.robot;
 
+import com.pathplanner.lib.auto.NamedCommands;
+import com.pathplanner.lib.commands.FollowPathCommand;
+
 import edu.wpi.first.epilogue.Logged;
 import frc.robot.commands.BasePilotableDefaut;
 import frc.robot.commands.LancerFancy;
@@ -22,6 +25,7 @@ import frc.robot.subsystems.Superstructure;
 import frc.robot.subsystems.Tourelle;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
@@ -72,6 +76,16 @@ public class RobotContainer {
     coude.setDefaultCommand(coude.holdCommand());
 
     //hood.setDefaultCommand(hood.goToAnglePIDCommand(Constants.kAngleHoodDepart)); //mauvaise intéraction avec les defer commande
+
+
+    FollowPathCommand.warmupCommand().schedule();
+
+    NamedCommands.registerCommand("gober", new WaitCommand(10.0));
+    NamedCommands.registerCommand("preShoot", new WaitCommand(10.0));
+    NamedCommands.registerCommand("shoot", new WaitCommand(10.0));
+    NamedCommands.registerCommand("grimper", new WaitCommand(10.0));
+
+
 
 
   }
