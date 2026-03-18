@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 7.5,
-        "y": 3.0
+        "x": 7.898457831325301,
+        "y": 3.193566265060241
       },
       "prevControl": null,
       "nextControl": {
-        "x": 5.542820443612898,
-        "y": 0.5093948146954919
+        "x": 5.941278274938199,
+        "y": 0.7029610797557329
       },
       "isLocked": true,
       "linkedName": "EndPickupCenterOutpost"
@@ -32,16 +32,16 @@
     },
     {
       "anchor": {
-        "x": 3.4618072289156623,
+        "x": 4.379734939759036,
         "y": 0.669265060240964
       },
       "prevControl": {
-        "x": 3.8059550663649104,
+        "x": 4.723882777208284,
         "y": 0.7189123747608105
       },
       "nextControl": null,
-      "isLocked": true,
-      "linkedName": null
+      "isLocked": false,
+      "linkedName": "EndTrenchOutpost"
     }
   ],
   "rotationTargets": [
@@ -73,7 +73,7 @@
   "folder": "path",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 90.0
+    "rotation": 113.0
   },
   "useDefaultConstraints": true
 }
