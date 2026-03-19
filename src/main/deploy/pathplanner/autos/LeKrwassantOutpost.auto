@@ -40,9 +40,9 @@
           "data": {
             "commands": [
               {
-                "type": "wait",
+                "type": "path",
                 "data": {
-                  "waitTime": 6.0
+                  "pathName": "EndTrenchOutpostToTowerOutpost"
                 }
               },
               {
@@ -55,40 +55,9 @@
           }
         },
         {
-          "type": "wait",
-          "data": {
-            "waitTime": 1.0
-          }
-        },
-        {
-          "type": "deadline",
-          "data": {
-            "commands": [
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "EndTrenchOutpostToPickupOutpostBump"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "gober"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "PickupBumpOutpostToTrenchOutpost"
-          }
-        },
-        {
           "type": "named",
           "data": {
-            "name": "shoot"
+            "name": "grimper"
           }
         }
       ]

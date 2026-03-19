@@ -8,30 +8,30 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 7.592481927709838,
-        "y": 5.2807590361445795
+        "x": 7.647465504587693,
+        "y": 5.137237555733125
       },
       "isLocked": false,
       "linkedName": "EndPickupCenterDepot"
     },
     {
       "anchor": {
-        "x": 3.558,
-        "y": 7.397
+        "x": 3.942626506024096,
+        "y": 7.367951807228916
       },
       "prevControl": {
-        "x": 7.8874165347599625,
-        "y": 8.089286865592682
+        "x": 6.532493975903613,
+        "y": 7.805060240963856
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "transitionTrenchDepot"
+      "linkedName": "ShootTrenchDepot"
     }
   ],
   "rotationTargets": [
     {
-      "waypointRelativePos": 0.8605809128630695,
-      "rotationDegrees": 180.0
+      "waypointRelativePos": 0.4190871369294599,
+      "rotationDegrees": 145.0
     }
   ],
   "constraintZones": [],
