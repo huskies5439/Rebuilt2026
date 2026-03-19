@@ -32,9 +32,10 @@ import frc.robot.lib.ShotParams;
 public class Superstructure extends SubsystemBase {
 
 	Transform2d deplacementTourelle = new Transform2d(-0.153, -0.153, Rotation2d.kZero);
+	
 
-	private Translation2d cibleReelle = new Translation2d();
-	private Translation2d cibleVirtuelle = new Translation2d();
+	private Translation2d cibleReelle = new Translation2d(); 
+	private Translation2d cibleVirtuelle = new Translation2d(); //Ajustée en fonction de la vitesse du robot
 	private Pose2d poseRobot = new Pose2d();
 	private ChassisSpeeds chassisSpeedsRobot = new ChassisSpeeds();
 
@@ -42,16 +43,25 @@ public class Superstructure extends SubsystemBase {
 	private final Supplier<Pose2d> poseSupplier;
 	private final Supplier<ChassisSpeeds> speedSupplier;
 
-	InterpolatingDoubleTreeMap lutTOF = new InterpolatingDoubleTreeMap();
 
+	//Look-Up-Table séparée des paramètres de tir afin d'itérer plus rapidement
+	InterpolatingDoubleTreeMap lutTOF = new InterpolatingDoubleTreeMap(); 
+
+	//Look-Up-Table custom (voir lib) pour interpoler sur 3 doubles à la fois
+	//Il faut spécifier une fonction d'interpolation inverse pour trouver où on se trouve entre deux distances.
+	//C'est déjà implémenté pour les doubles.
 	InterpolatingTreeMap<Double, ShotParams> lutShotParams = new InterpolatingTreeMap<>(
 			InverseInterpolator.forDouble(),
 			ShotParams::interpolate);
+
+
 
 	public Superstructure(Supplier<Pose2d> poseSupplier, Supplier<ChassisSpeeds> speedSupplier) {
 		this.poseSupplier = poseSupplier;
 		this.speedSupplier = speedSupplier;
 
+		//Création de la LUT
+		//Il faut ajouter la librairie OpenCSV dans le build.gradle
 		try {
 			FileReader fileReader = new FileReader(new File(Filesystem.getDeployDirectory(), "shooter.csv"));
 
@@ -77,11 +87,12 @@ public class Superstructure extends SubsystemBase {
 		poseRobot = poseSupplier.get();
 		chassisSpeedsRobot = speedSupplier.get();
 
-		setCible();
+		//Mise à jour de la cibleRéelle et de la cible virtuelle
+		setCibleReelle();
 		calculCibleVirtuelle();
 	}
 
-	public void setCible() {
+	public void setCibleReelle() {
 		if (Constants.isRedAlliance()) {
 			if (poseRobot.getX() > Cible.hubRouge.getX()) {
 				cibleReelle = Cible.hubRouge;
@@ -101,12 +112,13 @@ public class Superstructure extends SubsystemBase {
 		}
 	}
 
+
 	public void calculCibleVirtuelle(){
 		double lastDistance = Double.MAX_VALUE;
 		Translation2d cibleTemporaire = cibleReelle;
 
 		for (int i = 0; i < 5; i++) {
-			double distance = getDistanceCibleTourelle(cibleTemporaire);
+			double distance = getDistanceCible(cibleTemporaire);
 			double timeOfFlight = getTOF(distance);
 
 			ChassisSpeeds tourrelleSpeeds = getVitesseTourelle();
@@ -115,7 +127,7 @@ public class Superstructure extends SubsystemBase {
 
 			Translation2d projectionFutur = new Translation2d(vxTourelle * timeOfFlight, vyTourelle * timeOfFlight);
 
-			cibleTemporaire = cibleReelle.plus(projectionFutur);
+			cibleTemporaire = cibleReelle.minus(projectionFutur);
 
 			if (Math.abs(distance - lastDistance) <= 0.25) {
 				break;
@@ -126,37 +138,132 @@ public class Superstructure extends SubsystemBase {
 		cibleVirtuelle = cibleTemporaire;
 	}
 
-	public Translation2d getVecteurCibleTourelle() {
-		Translation2d poseTourelle = poseRobot.plus(deplacementTourelle).getTranslation();
 
-		return cibleVirtuelle.minus(poseTourelle);
-	}
-
-	public Translation2d getVecteurCibleTourelle(Translation2d cible) {
+	///////////Vecteur entre la tourelle et une cible générique
+	public Translation2d getVecteurCible(Translation2d cible) {
 		Translation2d poseTourelle = poseRobot.plus(deplacementTourelle).getTranslation();
 
 		return cible.minus(poseTourelle);
 	}
 
-	public double getDistanceCibleTourelle() {
-		return getVecteurCibleTourelle().getNorm();
+	public double getDistanceCible(Translation2d cible) {
+		return getVecteurCible(cible).getNorm();
 	}
 
-	public double getDistanceCibleTourelle(Translation2d cible) {
-		return getVecteurCibleTourelle(cible).getNorm();
-	}
-
-	public Rotation2d getAngleCible() {
-		Rotation2d angleVecteurCible = getVecteurCibleTourelle().getAngle();
-		Rotation2d angleTourelle = poseRobot.getRotation().rotateBy(Rotation2d.k180deg);
+	public Rotation2d getAngleCible(Translation2d cible) {/////C'est l'angle par rapport à l'origine de la tourelle.
+		Rotation2d angleVecteurCible = getVecteurCible(cible).getAngle();
+		Rotation2d angleTourelle = poseRobot.getRotation().rotateBy(Rotation2d.k180deg);//Tourelle pointe par en arrière
 		return angleVecteurCible.minus(angleTourelle);
 	}
 
-	public Rotation2d getAngleCible(Translation2d cible) {
-		Rotation2d angleVecteurCible = getVecteurCibleTourelle(cible).getAngle();
-		Rotation2d angleTourelle = poseRobot.getRotation().rotateBy(Rotation2d.k180deg);
-		return angleVecteurCible.minus(angleTourelle);
+	///////Vecteur avec la cible virtuelle calculée par itération
+	public Translation2d getVecteurCibleVirtuelle() {
+		return getVecteurCible(cibleVirtuelle);
 	}
+
+	public double getDistanceCibleVirtuelle(){
+		return getDistanceCible(cibleVirtuelle);
+	}
+
+	public Rotation2d getAngleCibleVirtuelle(){
+		return getAngleCible(cibleVirtuelle);
+	}
+
+
+	////////Vecteur avec la cible réelle (lancer statique)
+	public Translation2d getVecteurCibleReelle() {
+		return getVecteurCible(cibleReelle);
+	}
+
+	public double getDistanceCibleReelle(){
+		return getDistanceCible(cibleReelle);
+	}
+
+
+	public Rotation2d getAngleCibleReelle(){
+		return getAngleCible(cibleReelle);
+	}
+
+
+	///////LOOK-UP-TABLE
+	public ShotParams getGeneriqueShotParams(double distance) {
+		return lutShotParams.get(distance);
+	}
+
+	public ShotParams getShotParams(boolean dynamique){
+		if (dynamique){
+			return getGeneriqueShotParams(getDistanceCibleVirtuelle());
+		}
+		else{
+			return getGeneriqueShotParams(getDistanceCibleReelle());
+		}
+	
+	}
+
+	public double getTOF(double distance) {
+		return lutTOF.get(distance);
+	}
+
+	//////// Protection Tourelle Trench
+
+	public boolean isProche(Translation2d cible, double rayon, boolean checkTourelle) {
+
+		Pose2d pose = poseRobot;
+
+		if (checkTourelle) {
+			pose = poseRobot.plus(deplacementTourelle);
+		}
+
+		return cible.minus(pose.getTranslation()).getNorm() < rayon;
+
+	}
+
+	public boolean isProche(Pose2d cible, double rayon, boolean checkTourelle) {
+		return isProche(cible.getTranslation(), rayon, checkTourelle);
+	}
+
+	public boolean isProche(Pose2d cible, double rayon) {// Si on ne spécifie pas de checkTourelle, on veut le centre du
+															// robot !
+		return isProche(cible.getTranslation(), rayon, false);
+	}
+
+	public boolean isProcheTrench() {
+		double rayon = 1.0;
+		return isProche(PoseTrench.trenchBleuDepot, rayon, true) ||
+				isProche(PoseTrench.trenchBleuOutpost, rayon, true) ||
+				isProche(PoseTrench.trenchRougeDepot, rayon, true) ||
+				isProche(PoseTrench.trenchRougeOutpost, rayon, true);
+	}
+
+
+	///////Cinématique d'un point P (tourelle) sur un corps rigide (robot)
+	/// voir l'équation de la vitesse: https://courses.grainger.illinois.edu/tam212/su2025/rkg.htmll#rkg-er
+	
+	//Correspond à \vect{r}_{PQ}
+	//C'est le vecteur de déplacement du point Q (centre du robot) vers le point P (tourelle), 
+	//rotationné avec le corps rigide (robot)
+	public Translation2d getDeplacementTourelleAvecRotation() {
+		return deplacementTourelle.getTranslation().rotateBy(poseRobot.getRotation());
+	}
+
+	//Correspond à \vect{\omega} \cross \vect{r}_{PQ}
+	public ChassisSpeeds getComposanteRotationTourelle() {
+		Translation2d deplacementTourelleRotation = getDeplacementTourelleAvecRotation();
+		////Formule du produit vectoriel obtenu avec la méthode du déterminant
+		double vitesseX = -deplacementTourelleRotation.getY() * chassisSpeedsRobot.omegaRadiansPerSecond;
+		double vitesseY = deplacementTourelleRotation.getX() * chassisSpeedsRobot.omegaRadiansPerSecond;
+		return new ChassisSpeeds(vitesseX, vitesseY, 0);
+	}
+
+	//Correspond au calcul final de \vect{v}_{Q}
+	public ChassisSpeeds getVitesseTourelle() {
+		ChassisSpeeds composanteRotationTourelle = getComposanteRotationTourelle();
+		return ChassisSpeeds.fromRobotRelativeSpeeds(chassisSpeedsRobot, poseRobot.getRotation())// \vect{v}_{P}
+				.plus(composanteRotationTourelle);
+	}
+
+
+
 
 	// public double normeVecteurLancer() {
 	// double vitesseBallon;
@@ -199,61 +306,7 @@ public class Superstructure extends SubsystemBase {
 	// ici
 	// }
 
-	//////// Protection Tourelle Trench
 
-	public boolean isProche(Translation2d cible, double rayon, boolean checkTourelle) {
 
-		Pose2d pose = poseRobot;
-
-		if (checkTourelle) {
-			pose = poseRobot.plus(deplacementTourelle);
-		}
-
-		return cible.minus(pose.getTranslation()).getNorm() < rayon;
-
-	}
-
-	public boolean isProche(Pose2d cible, double rayon, boolean checkTourelle) {
-		return isProche(cible.getTranslation(), rayon, checkTourelle);
-	}
-
-	public boolean isProche(Pose2d cible, double rayon) {// Si on ne spécifie pas de checkTourelle, on veut le centre du
-															// robot !
-		return isProche(cible.getTranslation(), rayon, false);
-	}
-
-	public boolean isProcheTrench() {
-		double rayon = 1.0;
-		return isProche(PoseTrench.trenchBleuDepot, rayon, true) ||
-				isProche(PoseTrench.trenchBleuOutpost, rayon, true) ||
-				isProche(PoseTrench.trenchRougeDepot, rayon, true) ||
-				isProche(PoseTrench.trenchRougeOutpost, rayon, true);
-	}
-
-	/// calculs compliqués
-
-	public Translation2d getDeplacementTourelleRotation() {
-		return deplacementTourelle.getTranslation().rotateBy(poseRobot.getRotation());
-	}
-
-	public ChassisSpeeds getComposanteRotationTourelle() {
-		Translation2d deplacementTourelleRotation = getDeplacementTourelleRotation();
-		double vitesseX = -deplacementTourelleRotation.getY() * chassisSpeedsRobot.omegaRadiansPerSecond;
-		double vitesseY = deplacementTourelleRotation.getX() * chassisSpeedsRobot.omegaRadiansPerSecond;
-		return new ChassisSpeeds(vitesseX, vitesseY, 0);
-	}
-
-	public ChassisSpeeds getVitesseTourelle() {
-		ChassisSpeeds composanteRotationTourelle = getComposanteRotationTourelle();
-		return ChassisSpeeds.fromRobotRelativeSpeeds(chassisSpeedsRobot, poseRobot.getRotation())
-				.plus(composanteRotationTourelle);
-	}
-
-	public ShotParams getLancer(double distance) {
-		return lutShotParams.get(distance);
-	}
-
-	public double getTOF(double distance) {
-		return lutTOF.get(distance);
-	}
+	
 }

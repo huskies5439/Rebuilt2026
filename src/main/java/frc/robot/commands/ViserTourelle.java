@@ -39,7 +39,7 @@ public class ViserTourelle extends Command {
   @Override
   public void execute() {
 
-    angleCibleAbsolu = superstructure.yawVecteurLancer();
+    angleCibleAbsolu = superstructure.getAngleCibleVirtuelle().getDegrees();
     angleActuelAbsolu = tourelle.getAngleAbsolu();
 
     deltaAngleAbsolu = angleCibleAbsolu - angleActuelAbsolu;
