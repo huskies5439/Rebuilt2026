@@ -3,51 +3,35 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.625722891566265,
-        "y": 0.6583373493975899
+        "x": 3.5581135857219657,
+        "y": 7.396893857298884
       },
       "prevControl": null,
       "nextControl": {
-        "x": 4.625722891566265,
-        "y": 0.6583373493975899
+        "x": 4.064253718700878,
+        "y": 7.347810706588633
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "StartTrenchDepot"
     },
     {
       "anchor": {
-        "x": 7.559698795180722,
-        "y": 1.6746144578313262
+        "x": 7.623067047075606,
+        "y": 7.133808844507846
       },
       "prevControl": {
-        "x": 8.248144578313253,
-        "y": 2.2974939759036137
-      },
-      "nextControl": {
-        "x": 7.167379101916243,
-        "y": 1.3196585448777518
-      },
-      "isLocked": false,
-      "linkedName": null
-    },
-    {
-      "anchor": {
-        "x": 7.5,
-        "y": 0.997
-      },
-      "prevControl": {
-        "x": 10.37398795180723,
-        "y": 1.0188554216867471
+        "x": 6.673293432061568,
+        "y": 7.250543338739918
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "PickupCenterOutpost"
+      "linkedName": "BloupsPickupCenterDepot"
     }
   ],
   "rotationTargets": [
     {
-      "waypointRelativePos": 0.818257261410785,
-      "rotationDegrees": -130.0
+      "waypointRelativePos": 0.33775933609959413,
+      "rotationDegrees": 0.0
     }
   ],
   "constraintZones": [],
@@ -62,8 +46,8 @@
     "unlimited": false
   },
   "goalEndState": {
-    "velocity": 0,
-    "rotation": 113.0
+    "velocity": 1.0,
+    "rotation": -90.0
   },
   "reversed": false,
   "folder": "path",

@@ -3,57 +3,52 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.5581135857219657,
-        "y": 7.396893857298884
+        "x": 7.505060240963855,
+        "y": 0.9752409638554218
       },
       "prevControl": null,
       "nextControl": {
-        "x": 4.064253718700878,
-        "y": 7.347810706588633
+        "x": 7.497092340593864,
+        "y": 2.053780909865578
       },
       "isLocked": false,
-      "linkedName": "StartTrenchDepot"
+      "linkedName": "BloupsPickupCenterOutpost"
     },
     {
       "anchor": {
-        "x": 8.248,
-        "y": 7.357024096385541
+        "x": 7.505,
+        "y": 3.193566265060241
       },
       "prevControl": {
-        "x": 7.298226384985961,
-        "y": 7.473758590617614
+        "x": 7.515680061040181,
+        "y": 2.921405778947414
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "PickupCenterDepot"
+      "linkedName": "BloupsEndPickUpCenterOutpost"
     }
   ],
-  "rotationTargets": [
-    {
-      "waypointRelativePos": 0.33775933609959413,
-      "rotationDegrees": 0.0
-    }
-  ],
+  "rotationTargets": [],
   "constraintZones": [],
   "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 3.0,
+    "maxVelocity": 1.0,
     "maxAcceleration": 3.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
-    "nominalVoltage": 12.0002,
+    "nominalVoltage": 12.0,
     "unlimited": false
   },
   "goalEndState": {
-    "velocity": 1.0,
-    "rotation": -110.0
+    "velocity": 0,
+    "rotation": 90.0
   },
   "reversed": false,
   "folder": "path",
   "idealStartingState": {
-    "velocity": 0,
-    "rotation": 0.0
+    "velocity": 1.0,
+    "rotation": 90.0
   },
-  "useDefaultConstraints": true
+  "useDefaultConstraints": false
 }

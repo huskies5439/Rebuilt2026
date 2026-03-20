@@ -3,51 +3,55 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 0.7845180722892706,
-        "y": 5.914566265060375
+        "x": 7.505,
+        "y": 3.193566265060241
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.7845180722892706,
-        "y": 5.914566265060375
+        "x": 5.547820443612898,
+        "y": 0.7029610797557329
       },
-      "isLocked": false,
-      "linkedName": "PickupDepot"
+      "isLocked": true,
+      "linkedName": "BloupsEndPickUpCenterOutpost"
     },
     {
       "anchor": {
-        "x": 4.598289156626506,
-        "y": 7.466301204819277
+        "x": 5.549,
+        "y": 0.669
       },
       "prevControl": {
-        "x": 3.598289156626506,
-        "y": 7.466301204819277
+        "x": 5.7755451263373425,
+        "y": 0.8244148594792722
       },
       "nextControl": {
-        "x": 5.598289156626506,
-        "y": 7.466301204819277
+        "x": 5.306619825008029,
+        "y": 0.5027219544469648
       },
-      "isLocked": false,
+      "isLocked": true,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 8.248,
-        "y": 7.357024096385541
+        "x": 4.379734939759036,
+        "y": 0.669265060240964
       },
       "prevControl": {
-        "x": 8.013344495248232,
-        "y": 7.443260945178231
+        "x": 4.723882777208284,
+        "y": 0.7189123747608105
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "PickupCenterDepot"
+      "linkedName": "EndTrenchOutpost"
     }
   ],
   "rotationTargets": [
     {
-      "waypointRelativePos": 1.2398340248962627,
-      "rotationDegrees": 180.0
+      "waypointRelativePos": 0.5,
+      "rotationDegrees": 0.0
+    },
+    {
+      "waypointRelativePos": 0.9078838174273903,
+      "rotationDegrees": 0.0
     }
   ],
   "constraintZones": [],
@@ -62,14 +66,14 @@
     "unlimited": false
   },
   "goalEndState": {
-    "velocity": 1.0,
-    "rotation": -110.0
+    "velocity": 1.5,
+    "rotation": 0.0
   },
   "reversed": false,
   "folder": "path",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 180.0
+    "rotation": 90.0
   },
   "useDefaultConstraints": true
 }
