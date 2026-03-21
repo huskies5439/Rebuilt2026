@@ -52,7 +52,7 @@ public class Lanceur extends SubsystemBase {
     moteurDroit.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
     SmartDashboard.putNumber("voltage lanceur", 0);//Initialise input open loop dans le dashboard
-    SmartDashboard.putNumber("cible lanceur", 45);//Initialise input PID dans le dashboard
+    SmartDashboard.putNumber("cible lanceur", 30);//Initialise input PID dans le dashboard
   }
 
   @Override

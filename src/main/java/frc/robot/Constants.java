@@ -61,7 +61,7 @@ public final class Constants {
 
   }
 
-  public static final double kAngleCoudeDepart = -8.0;
+  public static final double kAngleCoudeDepart = 140.0;
 
   public static final double kAngleHoodDepart = 74.0; 
 

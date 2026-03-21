@@ -70,8 +70,8 @@ public class RobotContainer {
 
     configureBindings();
 
-    basePilotable.setDefaultCommand(new BasePilotableDefaut(manette::getLeftY,
-        manette::getLeftX, manette::getRightX, basePilotable));
+    // basePilotable.setDefaultCommand(new BasePilotableDefaut(manette::getLeftY,
+    //     manette::getLeftX, manette::getRightX, basePilotable));
 
     coude.setDefaultCommand(coude.holdCommand());
 
@@ -98,7 +98,7 @@ public class RobotContainer {
     manette.povLeft().whileTrue(coude.monterCommand());
     
 
-    manette.a().whileTrue(carroussel.tournerCommand());
+   manette.a().whileTrue(carroussel.tournerCommand());
 
      manette.b().toggleOnTrue(kickeur.kickerPIDCommand() .alongWith(lanceur.lancerPIDCommand()).alongWith(hood.goToAnglePIDCommand()));
     //  manette.b().whileTrue(hood.goToAnglePIDCommand());
@@ -118,10 +118,10 @@ public class RobotContainer {
 
   
     //Gober
-    manette.leftBumper().whileTrue(coude.PIDCommand(0).alongWith(gobeur.goberCommand())).onFalse(coude.PIDCommand(10.0)); //à déterminer s'il faut lever légerment le gobeur
+   // manette.leftBumper().whileTrue(coude.PIDCommand(0).alongWith(gobeur.goberCommand())).onFalse(coude.PIDCommand(10.0)); //à déterminer s'il faut lever légerment le gobeur
 
     //Protection coude
-    manette.x().onTrue(coude.PIDCommand(90));
+    //manette.x().onTrue(coude.PIDCommand(90));
 
     //Grimpeur
     //  manette.povUp().whileTrue(grimpeur.monterCommand());

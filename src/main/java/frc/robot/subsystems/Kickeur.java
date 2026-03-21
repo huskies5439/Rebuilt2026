@@ -44,7 +44,7 @@ public class Kickeur extends SubsystemBase {
         PersistMode.kPersistParameters);
 
     SmartDashboard.putNumber("voltage kickeur",  5);//Initialise input open loop dans le dashboard
-    SmartDashboard.putNumber("cible kickeur", 40);////Initialise input PID dans le dashboard
+    SmartDashboard.putNumber("cible kickeur", 30);////Initialise input PID dans le dashboard
     
     resetEncodeur();/////Nécessaire ?????
   }
