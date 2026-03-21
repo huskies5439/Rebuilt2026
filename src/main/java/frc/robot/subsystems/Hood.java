@@ -31,7 +31,7 @@ public class Hood extends SubsystemBase {
   // moteur avec maxPlanetary, enngrenage 40 vers 24, 16 * dent utiliser/nombre de dents théorique * 360 degrées
   private double maxPlanetary = (1.0/5.0)*(1.0/5.0)*(1.0/4.0);
 
-  private double conversion = maxPlanetary*(40.0/24.0)*(16.0/240.0)*360.0;
+  private double conversion = maxPlanetary*(40.0/24.0)*(25.0/332.0)*360.0;
 
   private DigitalInput limitSwitch = new DigitalInput(2);
 

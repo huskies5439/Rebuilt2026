@@ -59,7 +59,7 @@ public class RobotContainer {
     coude = new Coude();
     hood = new Hood(); 
     kickeur = new Kickeur(); 
-     grimpeur = new Grimpeur();
+    grimpeur = new Grimpeur();
 
 
     protectionTrench = new Trigger(superstructure::isProcheTrench).negate();
