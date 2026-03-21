@@ -33,7 +33,7 @@ public class Hood extends SubsystemBase {
 
   private double conversion = maxPlanetary*(40.0/24.0)*(25.0/332.0)*360.0;
 
-  private DigitalInput limitSwitch = new DigitalInput(2);
+  private DigitalInput limitSwitch = new DigitalInput(9);
 
   private ProfiledPIDController profiledPID = new ProfiledPIDController(1, 0, 0,
       new TrapezoidProfile.Constraints(60, 180));
@@ -42,11 +42,11 @@ public class Hood extends SubsystemBase {
 
   public Hood() {
 
-    config.inverted(false);
+    config.inverted(true);
     config.idleMode(IdleMode.kBrake);
     config.encoder.positionConversionFactor(conversion);
     config.encoder.velocityConversionFactor(conversion / 60.0);
-    config.softLimit.forwardSoftLimit(Constants.kAngleHoodDepart).reverseSoftLimit(40); 
+    config.softLimit.forwardSoftLimit(Constants.kAngleHoodDepart).reverseSoftLimit(44); 
     config.softLimit.forwardSoftLimitEnabled(true).reverseSoftLimitEnabled(true);
     moteur.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
@@ -112,18 +112,10 @@ public class Hood extends SubsystemBase {
 
   public void setPID(double cible) {
 
-    //Quand on rétracte le hood, on triche dans le derniers degrés pour s'accoter sur la switch
-    /*if (cible >= Constants.angleHoodLimitSwitch && getAngle() >= (Constants.angleHoodLimitSwitch - 2)) { 
-      if (isLimitSwitch()) {
-        stop();
-      } else {
-        rentrer();
-      }
-      //PID Normal
-    } else {*/
+   
       double voltage = profiledPID.calculate(getAngle(), cible);
       setVoltage(voltage);
-    //}
+
   }
 
   public void resetPID() {
@@ -145,7 +137,7 @@ public class Hood extends SubsystemBase {
   }
 
   public Command goToAnglePIDCommand() {
-    return Commands.defer(()->{return goToAnglePIDCommand(SmartDashboard.getNumber("Cible Hood", 0));}, Set.of());
+    return Commands.defer(()->{return goToAnglePIDCommand(SmartDashboard.getNumber("Cible Hood", 0));}, Set.of(this));
   }
   
   

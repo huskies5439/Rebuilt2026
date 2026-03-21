@@ -29,7 +29,7 @@ public class FollowPathDistance extends ParallelRaceGroup {
           PathPlannerPath path = fancyPath.genererPath(cible);
           return basePilotable.followPath(path);
         },
-        Set.of()),//Je suspecte qu'il faudra changer ça pour Set.of(basePilotable)
+        Set.of(basePilotable)),//Je suspecte qu'il faudra changer ça pour Set.of(basePilotable)
 
         new WaitUntilCommand(()-> superstructure.isProche(cible, 1.5))
     );

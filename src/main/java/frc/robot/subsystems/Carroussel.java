@@ -130,7 +130,7 @@ public class Carroussel extends SubsystemBase {
   }
 
   public Command tournerPIDCommand(){
-     return Commands.defer(()->{return tournerPIDCommand(SmartDashboard.getNumber("cible carroussel", 0));}, Set.of());
+     return Commands.defer(()->{return tournerPIDCommand(SmartDashboard.getNumber("cible carroussel", 0));}, Set.of(this));
   }
 
   

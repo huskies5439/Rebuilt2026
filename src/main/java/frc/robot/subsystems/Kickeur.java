@@ -36,7 +36,7 @@ public class Kickeur extends SubsystemBase {
   double conversionKickeur = (18.0 / 36.0);
 
   public Kickeur() {
-    config.inverted(false);
+    config.inverted(true);
     config.idleMode(IdleMode.kCoast);
     config.encoder.positionConversionFactor(conversionKickeur);
     config.encoder.velocityConversionFactor(conversionKickeur / 60.0);
@@ -126,7 +126,7 @@ public class Kickeur extends SubsystemBase {
   }
 
   public Command kickerPIDCommand(){//Version Dashboard
-    return Commands.defer(()->{return kickerPIDCommand(SmartDashboard.getNumber("cible kickeur", 0));}, Set.of());
+    return Commands.defer(()->{return kickerPIDCommand(SmartDashboard.getNumber("cible kickeur", 0));}, Set.of(this));
   }
 
 

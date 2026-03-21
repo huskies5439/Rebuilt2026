@@ -41,7 +41,7 @@ public class Lanceur extends SubsystemBase {
   private double vraieCible = 0.0;
 
   public Lanceur() {
-    boolean inverted = false;
+    boolean inverted = true;
     config.inverted(inverted);
     config.idleMode(IdleMode.kCoast);
     config.encoder.positionConversionFactor(conversionLanceur);
@@ -131,7 +131,7 @@ public class Lanceur extends SubsystemBase {
   }
 
   public Command lancerPIDCommand() {//Version Dashboard  
-    return Commands.defer(()->{return lancerPIDCommand(SmartDashboard.getNumber("cible lanceur", 0));}, Set.of());
+    return Commands.defer(()->{return lancerPIDCommand(SmartDashboard.getNumber("cible lanceur", 0));}, Set.of(this));
   }
 
 }

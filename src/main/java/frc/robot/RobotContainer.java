@@ -75,7 +75,7 @@ public class RobotContainer {
 
     coude.setDefaultCommand(coude.holdCommand());
 
-    //hood.setDefaultCommand(hood.goToAnglePIDCommand(Constants.kAngleHoodDepart)); //mauvaise intéraction avec les defer commande
+    hood.setDefaultCommand(hood.goToAnglePIDCommand(Constants.kAngleHoodDepart)); //mauvaise intéraction avec les defer commande
 
 
     FollowPathCommand.warmupCommand().schedule();
@@ -100,8 +100,8 @@ public class RobotContainer {
 
     manette.a().whileTrue(carroussel.tournerCommand());
 
-     manette.b().toggleOnTrue(kickeur.kickerPIDCommand().alongWith(lanceur.lancerPIDCommand()).alongWith(hood.goToAnglePIDCommand(64)));
-    manette.b().whileTrue(hood.goToAnglePIDCommand());
+     manette.b().toggleOnTrue(kickeur.kickerPIDCommand() .alongWith(lanceur.lancerPIDCommand()).alongWith(hood.goToAnglePIDCommand()));
+    //  manette.b().whileTrue(hood.goToAnglePIDCommand());
 
     // manette.leftBumper().whileTrue(tourelle.tournerAntiHoraire());
     // manette.rightBumper().whileTrue(tourelle.tournerHoraire());
@@ -109,8 +109,8 @@ public class RobotContainer {
     // manette.a().whileTrue(new ViserTourelle(tourelle, superstructure));
 
     //manette.rightTrigger(0.5).whileTrue(lanceur.lancerSimpleCommand()); 
-   // manette.povUp().whileTrue(hood.sortirCommand()); 
-   // manette.povDown().whileTrue(hood.rentrerCommand());
+   manette.povUp().whileTrue(hood.sortirCommand()); 
+   manette.povDown().whileTrue(hood.rentrerCommand());
 
    // manette.a().whileTrue(new SnapTrench(manette::getLeftY,basePilotable)); 
 
@@ -124,8 +124,8 @@ public class RobotContainer {
     manette.x().onTrue(coude.PIDCommand(90));
 
     //Grimpeur
-     manette.povUp().whileTrue(grimpeur.monterCommand());
-     manette.povDown().whileTrue(grimpeur.descendreCommand());
+    //  manette.povUp().whileTrue(grimpeur.monterCommand());
+    //  manette.povDown().whileTrue(grimpeur.descendreCommand());
   }
 
   public Command getAutonomousCommand() {
