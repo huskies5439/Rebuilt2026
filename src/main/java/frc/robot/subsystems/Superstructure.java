@@ -32,10 +32,9 @@ import frc.robot.lib.ShotParams;
 public class Superstructure extends SubsystemBase {
 
 	Transform2d deplacementTourelle = new Transform2d(-0.153, -0.153, Rotation2d.kZero);
-	
 
-	private Translation2d cibleReelle = new Translation2d(); 
-	private Translation2d cibleVirtuelle = new Translation2d(); //Ajustée en fonction de la vitesse du robot
+	private Translation2d cibleReelle = new Translation2d();
+	private Translation2d cibleVirtuelle = new Translation2d(); // Ajustée en fonction de la vitesse du robot
 	private Pose2d poseRobot = new Pose2d();
 	private ChassisSpeeds chassisSpeedsRobot = new ChassisSpeeds();
 
@@ -43,25 +42,23 @@ public class Superstructure extends SubsystemBase {
 	private final Supplier<Pose2d> poseSupplier;
 	private final Supplier<ChassisSpeeds> speedSupplier;
 
+	// Look-Up-Table séparée des paramètres de tir afin d'itérer plus rapidement
+	InterpolatingDoubleTreeMap lutTOF = new InterpolatingDoubleTreeMap();
 
-	//Look-Up-Table séparée des paramètres de tir afin d'itérer plus rapidement
-	InterpolatingDoubleTreeMap lutTOF = new InterpolatingDoubleTreeMap(); 
-
-	//Look-Up-Table custom (voir lib) pour interpoler sur 3 doubles à la fois
-	//Il faut spécifier une fonction d'interpolation inverse pour trouver où on se trouve entre deux distances.
-	//C'est déjà implémenté pour les doubles.
+	// Look-Up-Table custom (voir lib) pour interpoler sur 3 doubles à la fois
+	// Il faut spécifier une fonction d'interpolation inverse pour trouver où on se
+	// trouve entre deux distances.
+	// C'est déjà implémenté pour les doubles.
 	InterpolatingTreeMap<Double, ShotParams> lutShotParams = new InterpolatingTreeMap<>(
 			InverseInterpolator.forDouble(),
 			ShotParams::interpolate);
-
-
 
 	public Superstructure(Supplier<Pose2d> poseSupplier, Supplier<ChassisSpeeds> speedSupplier) {
 		this.poseSupplier = poseSupplier;
 		this.speedSupplier = speedSupplier;
 
-		//Création de la LUT
-		//Il faut ajouter la librairie OpenCSV dans le build.gradle
+		// Création de la LUT
+		// Il faut ajouter la librairie OpenCSV dans le build.gradle
 		try {
 			FileReader fileReader = new FileReader(new File(Filesystem.getDeployDirectory(), "shooter.csv"));
 
@@ -87,7 +84,7 @@ public class Superstructure extends SubsystemBase {
 		poseRobot = poseSupplier.get();
 		chassisSpeedsRobot = speedSupplier.get();
 
-		//Mise à jour de la cibleRéelle et de la cible virtuelle
+		// Mise à jour de la cibleRéelle et de la cible virtuelle
 		setCibleReelle();
 		calculCibleVirtuelle();
 	}
@@ -112,8 +109,7 @@ public class Superstructure extends SubsystemBase {
 		}
 	}
 
-
-	public void calculCibleVirtuelle(){
+	public void calculCibleVirtuelle() {
 		double lastDistance = Double.MAX_VALUE;
 		Translation2d cibleTemporaire = cibleReelle;
 
@@ -138,8 +134,7 @@ public class Superstructure extends SubsystemBase {
 		cibleVirtuelle = cibleTemporaire;
 	}
 
-
-	///////////Vecteur entre la tourelle et une cible générique
+	/////////// Vecteur entre la tourelle et une cible générique
 	public Translation2d getVecteurCible(Translation2d cible) {
 		Translation2d poseTourelle = poseRobot.plus(deplacementTourelle).getTranslation();
 
@@ -150,54 +145,51 @@ public class Superstructure extends SubsystemBase {
 		return getVecteurCible(cible).getNorm();
 	}
 
-	public Rotation2d getAngleCible(Translation2d cible) {/////C'est l'angle par rapport à l'origine de la tourelle.
+	public Rotation2d getAngleCible(Translation2d cible) {///// C'est l'angle par rapport à l'origine de la tourelle.
 		Rotation2d angleVecteurCible = getVecteurCible(cible).getAngle();
-		Rotation2d angleTourelle = poseRobot.getRotation().rotateBy(Rotation2d.k180deg);//Tourelle pointe par en arrière
+		Rotation2d angleTourelle = poseRobot.getRotation().rotateBy(Rotation2d.k180deg);// Tourelle pointe par en
+																						// arrière
 		return angleVecteurCible.minus(angleTourelle);
 	}
 
-	///////Vecteur avec la cible virtuelle calculée par itération
+	/////// Vecteur avec la cible virtuelle calculée par itération
 	public Translation2d getVecteurCibleVirtuelle() {
 		return getVecteurCible(cibleVirtuelle);
 	}
 
-	public double getDistanceCibleVirtuelle(){
+	public double getDistanceCibleVirtuelle() {
 		return getDistanceCible(cibleVirtuelle);
 	}
 
-	public Rotation2d getAngleCibleVirtuelle(){
+	public Rotation2d getAngleCibleVirtuelle() {
 		return getAngleCible(cibleVirtuelle);
 	}
 
-
-	////////Vecteur avec la cible réelle (lancer statique)
+	//////// Vecteur avec la cible réelle (lancer statique)
 	public Translation2d getVecteurCibleReelle() {
 		return getVecteurCible(cibleReelle);
 	}
 
-	public double getDistanceCibleReelle(){
+	public double getDistanceCibleReelle() {
 		return getDistanceCible(cibleReelle);
 	}
 
-
-	public Rotation2d getAngleCibleReelle(){
+	public Rotation2d getAngleCibleReelle() {
 		return getAngleCible(cibleReelle);
 	}
 
-
-	///////LOOK-UP-TABLE
+	/////// LOOK-UP-TABLE
 	public ShotParams getGeneriqueShotParams(double distance) {
 		return lutShotParams.get(distance);
 	}
 
-	public ShotParams getShotParams(boolean dynamique){
-		if (dynamique){
+	public ShotParams getShotParams(boolean dynamique) {
+		if (dynamique) {
 			return getGeneriqueShotParams(getDistanceCibleVirtuelle());
-		}
-		else{
+		} else {
 			return getGeneriqueShotParams(getDistanceCibleReelle());
 		}
-	
+
 	}
 
 	public double getTOF(double distance) {
@@ -235,35 +227,33 @@ public class Superstructure extends SubsystemBase {
 				isProche(PoseTrench.trenchRougeOutpost, rayon, true);
 	}
 
+	/////// Cinématique d'un point P (tourelle) sur un corps rigide (robot)
+	/// voir l'équation de la vitesse:
+	/////// https://courses.grainger.illinois.edu/tam212/su2025/rkg.htmll#rkg-er
 
-	///////Cinématique d'un point P (tourelle) sur un corps rigide (robot)
-	/// voir l'équation de la vitesse: https://courses.grainger.illinois.edu/tam212/su2025/rkg.htmll#rkg-er
-	
-	//Correspond à \vect{r}_{PQ}
-	//C'est le vecteur de déplacement du point Q (centre du robot) vers le point P (tourelle), 
-	//rotationné avec le corps rigide (robot)
+	// Correspond à \vect{r}_{PQ}
+	// C'est le vecteur de déplacement du point Q (centre du robot) vers le point P
+	// (tourelle),
+	// rotationné avec le corps rigide (robot)
 	public Translation2d getDeplacementTourelleAvecRotation() {
 		return deplacementTourelle.getTranslation().rotateBy(poseRobot.getRotation());
 	}
 
-	//Correspond à \vect{\omega} \cross \vect{r}_{PQ}
+	// Correspond à \vect{\omega} \cross \vect{r}_{PQ}
 	public ChassisSpeeds getComposanteRotationTourelle() {
 		Translation2d deplacementTourelleRotation = getDeplacementTourelleAvecRotation();
-		////Formule du produit vectoriel obtenu avec la méthode du déterminant
+		//// Formule du produit vectoriel obtenu avec la méthode du déterminant
 		double vitesseX = -deplacementTourelleRotation.getY() * chassisSpeedsRobot.omegaRadiansPerSecond;
 		double vitesseY = deplacementTourelleRotation.getX() * chassisSpeedsRobot.omegaRadiansPerSecond;
 		return new ChassisSpeeds(vitesseX, vitesseY, 0);
 	}
 
-	//Correspond au calcul final de \vect{v}_{Q}
+	// Correspond au calcul final de \vect{v}_{Q}
 	public ChassisSpeeds getVitesseTourelle() {
 		ChassisSpeeds composanteRotationTourelle = getComposanteRotationTourelle();
 		return ChassisSpeeds.fromRobotRelativeSpeeds(chassisSpeedsRobot, poseRobot.getRotation())// \vect{v}_{P}
 				.plus(composanteRotationTourelle);
 	}
-
-
-
 
 	// public double normeVecteurLancer() {
 	// double vitesseBallon;
@@ -306,7 +296,4 @@ public class Superstructure extends SubsystemBase {
 	// ici
 	// }
 
-
-
-	
 }
