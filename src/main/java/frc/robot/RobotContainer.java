@@ -29,19 +29,19 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
-@Logged 
+@Logged
 public class RobotContainer {
 
   private final CommandXboxController manette = new CommandXboxController(0);
 
   private final BasePilotable basePilotable;
-  private final Superstructure superstructure; 
+  private final Superstructure superstructure;
   private final Tourelle tourelle;
   private final Lanceur lanceur;
   private final Gobeur gobeur;
   private final Carroussel carroussel;
   private final Coude coude;
-  private final Hood hood; 
+  private final Hood hood;
   private final Kickeur kickeur;
   private final Grimpeur grimpeur;
 
@@ -51,32 +51,30 @@ public class RobotContainer {
 
   public RobotContainer() {
     basePilotable = new BasePilotable();
-    superstructure = new Superstructure(basePilotable.getPoseSupplier(), basePilotable.getChassisSpeedsSupplier()); 
+    superstructure = new Superstructure(basePilotable::getPose, basePilotable::getChassisSpeeds);
     tourelle = new Tourelle();
-    carroussel = new Carroussel(); 
+    carroussel = new Carroussel();
     lanceur = new Lanceur();
     gobeur = new Gobeur();
     coude = new Coude();
-    hood = new Hood(); 
-    kickeur = new Kickeur(); 
+    hood = new Hood();
+    kickeur = new Kickeur();
     grimpeur = new Grimpeur();
 
-
     protectionTrench = new Trigger(superstructure::isProcheTrench).negate();
-    
 
-    fancyPath = new FancyPathGeneration(basePilotable.getPoseSupplier(),
-        basePilotable.getChassisSpeedsSupplier());
+    fancyPath = new FancyPathGeneration(basePilotable::getPose,
+        basePilotable::getChassisSpeeds);
 
     configureBindings();
 
     // basePilotable.setDefaultCommand(new BasePilotableDefaut(manette::getLeftY,
-    //     manette::getLeftX, manette::getRightX, basePilotable));
+    // manette::getLeftX, manette::getRightX, basePilotable));
 
     coude.setDefaultCommand(coude.holdCommand());
 
-    hood.setDefaultCommand(hood.goToAnglePIDCommand(Constants.kAngleHoodDepart)); //mauvaise intéraction avec les defer commande
-
+    hood.setDefaultCommand(hood.goToAnglePIDCommand(Constants.kAngleHoodDepart)); // mauvaise intéraction avec les defer
+                                                                                  // commande
 
     FollowPathCommand.warmupCommand().schedule();
 
@@ -85,47 +83,46 @@ public class RobotContainer {
     NamedCommands.registerCommand("shoot", new WaitCommand(10.0));
     NamedCommands.registerCommand("grimper", new WaitCommand(10.0));
 
-
-
-
   }
 
   private void configureBindings() {
 
-    //manette.a().whileTrue(gobeur.goberCommand());
+    // manette.a().whileTrue(gobeur.goberCommand());
 
     manette.povRight().whileTrue(coude.descendreCommand());
     manette.povLeft().whileTrue(coude.monterCommand());
-    
 
-   manette.a().whileTrue(carroussel.tournerCommand());
+    manette.a().whileTrue(carroussel.tournerCommand()/* .alongWith(gobeur.goberCommand()) */);
 
-     manette.b().toggleOnTrue(kickeur.kickerPIDCommand() .alongWith(lanceur.lancerPIDCommand()).alongWith(hood.goToAnglePIDCommand()));
-    //  manette.b().whileTrue(hood.goToAnglePIDCommand());
+    manette.b().toggleOnTrue(
+        kickeur.kickerPIDCommand().alongWith(lanceur.lancerPIDCommand()).alongWith(hood.goToAnglePIDCommand()));
+    // manette.b().whileTrue(hood.goToAnglePIDCommand());
 
     // manette.leftBumper().whileTrue(tourelle.tournerAntiHoraire());
     // manette.rightBumper().whileTrue(tourelle.tournerHoraire());
 
     // manette.a().whileTrue(new ViserTourelle(tourelle, superstructure));
 
-    //manette.rightTrigger(0.5).whileTrue(lanceur.lancerSimpleCommand()); 
-   manette.povUp().whileTrue(hood.sortirCommand()); 
-   manette.povDown().whileTrue(hood.rentrerCommand());
+    // manette.rightTrigger(0.5).whileTrue(lanceur.lancerSimpleCommand());
+    manette.povUp().whileTrue(hood.sortirCommand());
+    manette.povDown().whileTrue(hood.rentrerCommand());
 
-   // manette.a().whileTrue(new SnapTrench(manette::getLeftY,basePilotable)); 
+    // manette.a().whileTrue(new SnapTrench(manette::getLeftY,basePilotable));
 
-    //manette.rightBumper().and(protectionTrench).whileTrue(new LancerFancy(basePilotable, lanceur, hood, null, kickeur, carroussel, superstructure));
+    // manette.rightBumper().and(protectionTrench).whileTrue(new
+    // LancerFancy(basePilotable, lanceur, hood, null, kickeur, carroussel,
+    // superstructure));
 
-  
-    //Gober
-   // manette.leftBumper().whileTrue(coude.PIDCommand(0).alongWith(gobeur.goberCommand())).onFalse(coude.PIDCommand(10.0)); //à déterminer s'il faut lever légerment le gobeur
+    // Gober
+    // manette.leftBumper().whileTrue(coude.PIDCommand(0).alongWith(gobeur.goberCommand())).onFalse(coude.PIDCommand(10.0));
+    // //à déterminer s'il faut lever légerment le gobeur
 
-    //Protection coude
-    //manette.x().onTrue(coude.PIDCommand(90));
+    // Protection coude
+    // manette.x().onTrue(coude.PIDCommand(90));
 
-    //Grimpeur
-    //  manette.povUp().whileTrue(grimpeur.monterCommand());
-    //  manette.povDown().whileTrue(grimpeur.descendreCommand());
+    // Grimpeur
+    // manette.povUp().whileTrue(grimpeur.monterCommand());
+    // manette.povDown().whileTrue(grimpeur.descendreCommand());
   }
 
   public Command getAutonomousCommand() {

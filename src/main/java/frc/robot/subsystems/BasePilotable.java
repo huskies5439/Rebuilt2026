@@ -269,16 +269,7 @@ public class BasePilotable extends SubsystemBase {
     gyro.setYaw(0);
   }
 
-  ///////// FONCTION POUR ENVOYER LA POSE ET LA VITESSE AUX AUTRES SOUS-SYSTÈMES
-  /// Nécessaire pour FancyPath et Superstructure
 
-  public Supplier<Pose2d> getPoseSupplier() {
-    return this::getPose;
-  }
-
-  public Supplier<ChassisSpeeds> getChassisSpeedsSupplier() {
-    return this::getChassisSpeeds;
-  }
 
   ///////////// FONCTIONS POUR LE FANCY PATH GENERATOR
   public Command followPath(PathPlannerPath path) {
