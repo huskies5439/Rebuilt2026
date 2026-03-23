@@ -5,7 +5,6 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
-import frc.robot.lib.ShotParams;
 import frc.robot.subsystems.BasePilotable;
 import frc.robot.subsystems.Carroussel;
 import frc.robot.subsystems.Hood;
@@ -18,15 +17,10 @@ public class LancerFancy extends ParallelCommandGroup {
 
   public LancerFancy(BasePilotable basePilotable, Lanceur lanceur, Hood hood, Tourelle tourelle, Kickeur kickeur,
       Carroussel carroussel, Superstructure superstructure) {
-
-    boolean dynamique = true;
-    ShotParams shotParams = superstructure.getShotParams(dynamique);
-
+   
 
     addCommands(
-        lanceur.lancerPIDCommand(shotParams.getVitesseLanceur()),
-        hood.goToAnglePIDCommand(shotParams.getAngleHood()),
-        kickeur.kickerPIDCommand(shotParams.getVitesseKickeur()),
+        new EnvoyerShotParams(lanceur, hood, kickeur, superstructure),
         new ViserTourelle(tourelle, superstructure),
         new TournerCarroussel());
   }

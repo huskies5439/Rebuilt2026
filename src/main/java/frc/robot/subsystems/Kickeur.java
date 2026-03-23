@@ -98,7 +98,7 @@ public class Kickeur extends SubsystemBase {
     return vraieCible;
   }
 
-  private void setPID(double cible){
+  public void setPID(double cible){
     setVraieCible(cible);
     double cibleCorriger = limiter.calculate(cible); 
     setVoltage(
