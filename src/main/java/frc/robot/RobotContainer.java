@@ -4,12 +4,15 @@
 
 package frc.robot;
 
+import org.apache.commons.lang3.time.StopWatch;
+
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.FollowPathCommand;
 
 import edu.wpi.first.epilogue.Logged;
 import frc.robot.commands.BasePilotableDefaut;
 import frc.robot.commands.LancerFancy;
+import frc.robot.commands.PostShooting;
 import frc.robot.commands.SnapTrench;
 import frc.robot.commands.ViserTourelle;
 import frc.robot.lib.FancyPathGeneration;
@@ -68,8 +71,8 @@ public class RobotContainer {
 
     configureBindings();
 
-    // basePilotable.setDefaultCommand(new BasePilotableDefaut(manette::getLeftY,
-    // manette::getLeftX, manette::getRightX, basePilotable));
+    basePilotable.setDefaultCommand(new BasePilotableDefaut(manette::getLeftY,
+    manette::getLeftX, manette::getRightX, basePilotable));
 
     coude.setDefaultCommand(coude.holdCommand());
 
@@ -95,11 +98,14 @@ public class RobotContainer {
     manette.a().whileTrue(carroussel.tournerCommand()/* .alongWith(gobeur.goberCommand()) */);
 
     manette.b().toggleOnTrue(
-        kickeur.kickerPIDCommand().alongWith(lanceur.lancerPIDCommand()).alongWith(hood.goToAnglePIDCommand()));
+        kickeur.kickerPIDCommand()
+            .alongWith(lanceur.lancerPIDCommand())
+            .alongWith(hood.goToAnglePIDCommand()));
+            // .finallyDo(()-> new PostShooting(lanceur, carroussel, kickeur)));
     // manette.b().whileTrue(hood.goToAnglePIDCommand());
 
-    // manette.leftBumper().whileTrue(tourelle.tournerAntiHoraire());
-    // manette.rightBumper().whileTrue(tourelle.tournerHoraire());
+    manette.leftBumper().whileTrue(tourelle.tournerAntiHoraire());
+    manette.rightBumper().whileTrue(tourelle.tournerHoraire());
 
     // manette.a().whileTrue(new ViserTourelle(tourelle, superstructure));
 

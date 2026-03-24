@@ -17,7 +17,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class Del extends SubsystemBase {
 
   private AddressableLED del = new AddressableLED(4);
-  private AddressableLEDBuffer delBuffer = new AddressableLEDBuffer(67);
+  private AddressableLEDBuffer delBuffer = new AddressableLEDBuffer(68);
 
   public Del() {
 
