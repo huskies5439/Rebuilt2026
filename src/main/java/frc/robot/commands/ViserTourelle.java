@@ -19,7 +19,7 @@ public class ViserTourelle extends Command {
 
   double angleCibleReel;
 
-  double limiteFil = 270; // à vérifier
+  double limiteFil = 195; // à vérifier
 
   public ViserTourelle(Tourelle tourelle, Superstructure superstructure) {
     this.tourelle = tourelle;
@@ -39,7 +39,7 @@ public class ViserTourelle extends Command {
   @Override
   public void execute() {
 
-    angleCibleAbsolu = superstructure.getAngleCibleVirtuelle().getDegrees();
+    angleCibleAbsolu = superstructure.getAngleCibleReelle();
     angleActuelAbsolu = tourelle.getAngleAbsolu();
 
     deltaAngleAbsolu = angleCibleAbsolu - angleActuelAbsolu;

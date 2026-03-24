@@ -22,6 +22,7 @@ import edu.wpi.first.math.interpolation.InterpolatingTreeMap;
 import edu.wpi.first.math.interpolation.InverseInterpolator;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.Filesystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.Cible;
@@ -87,6 +88,8 @@ public class Superstructure extends SubsystemBase {
 		// Mise à jour de la cibleRéelle et de la cible virtuelle
 		setCibleReelle();
 		calculCibleVirtuelle();
+
+		SmartDashboard.putNumber("vitesse rotation", chassisSpeedsRobot.omegaRadiansPerSecond * 360.0 / 2.0 * Math.PI);
 	}
 
 	public void setCibleReelle() {
@@ -145,11 +148,11 @@ public class Superstructure extends SubsystemBase {
 		return getVecteurCible(cible).getNorm();
 	}
 
-	public Rotation2d getAngleCible(Translation2d cible) {///// C'est l'angle par rapport à l'origine de la tourelle.
+	public double getAngleCible(Translation2d cible) {///// C'est l'angle par rapport à l'origine de la tourelle.
 		Rotation2d angleVecteurCible = getVecteurCible(cible).getAngle();
 		Rotation2d angleTourelle = poseRobot.getRotation().rotateBy(Rotation2d.k180deg);// Tourelle pointe par en
 																						// arrière
-		return angleVecteurCible.minus(angleTourelle);
+		return angleVecteurCible.minus(angleTourelle).getDegrees();
 	}
 
 	/////// Vecteur avec la cible virtuelle calculée par itération
@@ -161,7 +164,7 @@ public class Superstructure extends SubsystemBase {
 		return getDistanceCible(cibleVirtuelle);
 	}
 
-	public Rotation2d getAngleCibleVirtuelle() {
+	public double getAngleCibleVirtuelle() {
 		return getAngleCible(cibleVirtuelle);
 	}
 
@@ -174,7 +177,7 @@ public class Superstructure extends SubsystemBase {
 		return getDistanceCible(cibleReelle);
 	}
 
-	public Rotation2d getAngleCibleReelle() {
+	public double getAngleCibleReelle() {
 		return getAngleCible(cibleReelle);
 	}
 

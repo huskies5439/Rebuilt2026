@@ -228,7 +228,7 @@ public class BasePilotable extends SubsystemBase {
     // parametre limelight
     poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(0.7, 0.7, 9999999));
 
-    LimelightHelpers.PoseEstimate poseEstimate = LimelightHelpers.getBotPoseEstimate_wpiBlue(nomComplet);
+    LimelightHelpers.PoseEstimate poseEstimate = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2(nomComplet);
     boolean doRejectUpdate = false;
     if (poseEstimate == null) {
       return;

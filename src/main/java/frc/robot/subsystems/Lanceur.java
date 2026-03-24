@@ -33,7 +33,7 @@ public class Lanceur extends SubsystemBase {
 
   private double conversionLanceur = 1.0;
 
-  private PIDController pid = new PIDController(0.1, 0, 0.0001);
+  private PIDController pid = new PIDController(0.2, 0, 0.002);
   private SimpleMotorFeedforward ff = new SimpleMotorFeedforward(0.1, 0.108); 
                                                                      
   private SlewRateLimiter limiter = new SlewRateLimiter(200); // Pour limiter l'accélération du lanceur
@@ -46,13 +46,17 @@ public class Lanceur extends SubsystemBase {
     config.idleMode(IdleMode.kCoast);
     config.encoder.positionConversionFactor(conversionLanceur);
     config.encoder.velocityConversionFactor(conversionLanceur / 60.0);
+    config.encoder.quadratureMeasurementPeriod(10);
+    config.encoder.quadratureAverageDepth(2);
     moteurGauche.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
     config.inverted(!inverted);
     moteurDroit.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
+    pid.setTolerance(1.5);
+
     SmartDashboard.putNumber("voltage lanceur", 0);//Initialise input open loop dans le dashboard
-    SmartDashboard.putNumber("cible lanceur", 30);//Initialise input PID dans le dashboard
+    SmartDashboard.putNumber("cible lanceur", 28.5);//Initialise input PID dans le dashboard
   }
 
   @Override

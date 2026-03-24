@@ -30,8 +30,8 @@ public class Tourelle extends SubsystemBase {
   private double conversionTourelle = 20.0 / 200.0 * 360.0; //moteur gear 20 dents tourelle 200 dents, 360 degrés
 
   //PID 
-  private ProfiledPIDController pidTourelle = new ProfiledPIDController(0.1, 0, 0, //Valeurs à déterminer
-    new TrapezoidProfile.Constraints(90, 45)); 
+  private ProfiledPIDController pidTourelle = new ProfiledPIDController(0.05, 0, 0.001, //Valeurs à déterminer
+    new TrapezoidProfile.Constraints(720, 1440)); 
 
 
   public Tourelle() {
@@ -40,12 +40,12 @@ public class Tourelle extends SubsystemBase {
     configTourelle.idleMode(IdleMode.kBrake); 
     configTourelle.encoder.positionConversionFactor(conversionTourelle);
     configTourelle.encoder.velocityConversionFactor(conversionTourelle / 60.0);
-    configTourelle.softLimit.forwardSoftLimit(270.0).reverseSoftLimit(-270.0); //Faudrait peut être call la fonction pour l'enable? 
+    configTourelle.softLimit.forwardSoftLimit(200.0).reverseSoftLimit(-200.0); //Faudrait peut être call la fonction pour l'enable? 
     configTourelle.softLimit.forwardSoftLimitEnabled(true).reverseSoftLimitEnabled(true);
     moteurTourelle.configure(configTourelle, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters); 
 
     //PID 
-    pidTourelle.setTolerance(0); //À déterminer
+    pidTourelle.setTolerance(10); 
     resetEncoder();
   }
 
@@ -114,7 +114,7 @@ public class Tourelle extends SubsystemBase {
     return Commands.runEnd(this::setVoltageAntiHoraire,this::stop,this); 
   }
   public Command PIDCommand(){
-    return Commands.runEnd(()->this.setPID(0),this::stop,this);
+    return Commands.runEnd(()->this.setPID(200),this::stop,this);
   }
 
 }

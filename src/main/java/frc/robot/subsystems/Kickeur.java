@@ -22,16 +22,15 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-
 @Logged
 public class Kickeur extends SubsystemBase {
   private SparkFlex moteur = new SparkFlex(51, MotorType.kBrushless);
   private SparkFlexConfig config = new SparkFlexConfig();
 
-  private PIDController pid = new PIDController(0.1, 0, 0.008); 
-  private SimpleMotorFeedforward ff = new SimpleMotorFeedforward(0.203, 0.216); 
-  private SlewRateLimiter limiter = new SlewRateLimiter(100); 
-  private double vraieCible = 0.0; 
+  private PIDController pid = new PIDController(0.1, 0, 0.001);
+  private SimpleMotorFeedforward ff = new SimpleMotorFeedforward(0.203, 0.216);
+  private SlewRateLimiter limiter = new SlewRateLimiter(100);
+  private double vraieCible = 0.0;
 
   double conversionKickeur = (18.0 / 36.0);
 
@@ -40,20 +39,22 @@ public class Kickeur extends SubsystemBase {
     config.idleMode(IdleMode.kCoast);
     config.encoder.positionConversionFactor(conversionKickeur);
     config.encoder.velocityConversionFactor(conversionKickeur / 60.0);
+    config.encoder.quadratureMeasurementPeriod(10);
+    config.encoder.quadratureAverageDepth(2);
     moteur.configure(config, ResetMode.kResetSafeParameters,
         PersistMode.kPersistParameters);
 
-    SmartDashboard.putNumber("voltage kickeur",  5);//Initialise input open loop dans le dashboard
-    SmartDashboard.putNumber("cible kickeur", 30);////Initialise input PID dans le dashboard
-    
-    resetEncodeur();/////Nécessaire ?????
+    SmartDashboard.putNumber("voltage kickeur", 5);// Initialise input open loop dans le dashboard
+    SmartDashboard.putNumber("cible kickeur", 27);//// Initialise input PID dans le dashboard
+
+    resetEncodeur();///// Nécessaire ?????
   }
 
   @Override
-  public void periodic() {}
+  public void periodic() {
+  }
 
-
-  //MOTEUR
+  // MOTEUR
   public void setVoltage(double voltage) {
     moteur.setVoltage(voltage);
   }
@@ -62,7 +63,7 @@ public class Kickeur extends SubsystemBase {
     setVoltage(SmartDashboard.getNumber("voltage kickeur", 0));
   }
 
-   public void debloquer(){
+  public void debloquer() {
     setVoltage(-2);
   }
 
@@ -71,13 +72,13 @@ public class Kickeur extends SubsystemBase {
     resetPID();
   }
 
-  ///////ENCODEUR
-  
-  public double getPosition() {//////nécessaire ??
+  /////// ENCODEUR
+
+  public double getPosition() {////// nécessaire ??
     return moteur.getEncoder().getPosition();
   }
 
-  @Logged (name = "Vitesse Kickeur")
+  @Logged(name = "Vitesse Kickeur")
   public double getVitesse() {
     return moteur.getEncoder().getVelocity();
   }
@@ -86,9 +87,9 @@ public class Kickeur extends SubsystemBase {
     moteur.getEncoder().setPosition(0);
   }
 
-
-  //PID 
-  // vraie cible pour déterminer si le lanceur est vraiment à le Kickeur plutot que
+  // PID
+  // vraie cible pour déterminer si le lanceur est vraiment à le Kickeur plutot
+  // que
   // celle corrigée
   public void setVraieCible(double cible) {
     vraieCible = cible;
@@ -98,9 +99,9 @@ public class Kickeur extends SubsystemBase {
     return vraieCible;
   }
 
-  public void setPID(double cible){
+  public void setPID(double cible) {
     setVraieCible(cible);
-    double cibleCorriger = limiter.calculate(cible); 
+    double cibleCorriger = limiter.calculate(cible);
     setVoltage(
         ff.calculate(cibleCorriger) + pid.calculate(getVitesse(), cibleCorriger));
   }
@@ -110,26 +111,25 @@ public class Kickeur extends SubsystemBase {
     return Math.abs(getVitesse() - getVraieCible()) <= 1; // 1 RPS
   }
 
-   public void resetPID() {
+  public void resetPID() {
     setVraieCible(0);
     pid.reset();
   }
 
-  ////////COMMAND
+  //////// COMMAND
   public Command tournerCommand() {
     return Commands.runEnd(this::tourner, this::stop, this);
   }
 
-  public Command kickerPIDCommand(double cible){
+  public Command kickerPIDCommand(double cible) {
     return Commands.runOnce(() -> limiter.reset(getVitesse()))
         .andThen(Commands.runEnd(() -> setPID(cible), this::stop, this));
   }
 
-  public Command kickerPIDCommand(){//Version Dashboard
-    return Commands.defer(()->{return kickerPIDCommand(SmartDashboard.getNumber("cible kickeur", 0));}, Set.of(this));
+  public Command kickerPIDCommand() {// Version Dashboard
+    return Commands.defer(() -> {
+      return kickerPIDCommand(SmartDashboard.getNumber("cible kickeur", 0));
+    }, Set.of(this));
   }
 
-
-
-  
 }

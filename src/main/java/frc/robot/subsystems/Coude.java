@@ -30,7 +30,9 @@ public class Coude extends SubsystemBase {
   private SparkMax moteurGauche = new SparkMax(21, MotorType.kBrushless);
   private SparkMax moteurDroit = new SparkMax(22, MotorType.kBrushless);
 
-  private SparkMaxConfig moteurConfig = new SparkMaxConfig();
+  private SparkMaxConfig moteurConfigGauche = new SparkMaxConfig();
+  private SparkMaxConfig moteurConfigDroit = new SparkMaxConfig();
+
 
   private DigitalInput limitSwitchGauche = new DigitalInput(0);
   private DigitalInput limitSwitchDroite = new DigitalInput(1);
@@ -51,25 +53,33 @@ public class Coude extends SubsystemBase {
 
   private ArmFeedforward feedforward = new ArmFeedforward(0.0, 0.2, 0.0);// valeur à déterminer
 
+  private int stallLimit; 
+
   /** Creates a new Coude. */
   public Coude() {
 
     boolean inverted = true;
-    moteurConfig.inverted(inverted);
-    moteurConfig.idleMode(IdleMode.kBrake);
-    moteurConfig.encoder.positionConversionFactor(conversionCoude);
-    moteurConfig.encoder.velocityConversionFactor(conversionCoude / 60.0);
+    moteurConfigGauche.inverted(inverted);
+    moteurConfigGauche.idleMode(IdleMode.kBrake);
+    moteurConfigGauche.encoder.positionConversionFactor(conversionCoude);
+    moteurConfigGauche.encoder.velocityConversionFactor(conversionCoude / 60.0);
 
-    moteurGauche.configure(moteurConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+    moteurGauche.configure(moteurConfigGauche, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
-    moteurConfig.inverted(!inverted);
 
-    moteurDroit.configure(moteurConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+    moteurConfigDroit.inverted(!inverted);
+    moteurConfigDroit.idleMode(IdleMode.kBrake);
+    moteurConfigDroit.encoder.positionConversionFactor(conversionCoude);
+    moteurConfigDroit.encoder.velocityConversionFactor(conversionCoude / 60.0);
+
+    moteurDroit.configure(moteurConfigDroit, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
     resetEncodeurStartUp();
 
     pidGauche.setTolerance(2);
     pidDroit.setTolerance(2);
+
+    currentLimit(false);
 
   }
 
@@ -132,6 +142,7 @@ public class Coude extends SubsystemBase {
     return moteurDroit.getEncoder().getVelocity();
   }
 
+
   /// Encodeurs
 
   public void resetEncodeurLimitSwitchGauche() {// Quand on clique la limit switch
@@ -173,6 +184,28 @@ public class Coude extends SubsystemBase {
   public boolean atCible() {
     return pidDroit.atGoal() && pidGauche.atGoal();
   }
+
+  //smart current limit 
+   public void currentLimit(boolean isLimited){
+    if(isLimited){
+       stallLimit = 24; //24
+      }else{
+        stallLimit = 999999999; //Pas assez
+      }
+      moteurConfigGauche.smartCurrentLimit(stallLimit); 
+      moteurConfigDroit.smartCurrentLimit(stallLimit);
+      
+      moteurGauche.configure(moteurConfigGauche, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+      moteurDroit.configure(moteurConfigDroit, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+   }
+
+   public double getCurrentLimitGauche(){
+    return moteurGauche.getOutputCurrent(); 
+   }
+
+   public double getCurrentLimitDroite(){
+    return moteurDroit.getOutputCurrent(); 
+   }
 
   /// limit switch
 

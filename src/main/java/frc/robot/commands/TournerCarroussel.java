@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.BasePilotable;
 import frc.robot.subsystems.Carroussel;
 import frc.robot.subsystems.Hood;
+import frc.robot.subsystems.Kickeur;
 import frc.robot.subsystems.Lanceur;
 import frc.robot.subsystems.Tourelle;
 
@@ -18,10 +19,17 @@ public class TournerCarroussel extends Command {
   Tourelle tourelle;
   BasePilotable basePilotable;
   Carroussel carroussel; 
+  Kickeur kickeur; 
   boolean finish = false; 
 
-  public TournerCarroussel() {
-
+  public TournerCarroussel(Lanceur lanceur, Hood hood, Tourelle tourelle, BasePilotable basePilotable, Carroussel carroussel, Kickeur kickeur) {
+    this.lanceur = lanceur;
+    this.hood = hood;
+    this.tourelle = tourelle;
+    this.basePilotable = basePilotable;
+    this.carroussel = carroussel;
+    this.kickeur = kickeur;
+    addRequirements(carroussel);
   }
 
   @Override
@@ -31,7 +39,7 @@ public class TournerCarroussel extends Command {
 
   @Override
   public void execute() {
-    boolean condition = lanceur.atCible() && hood.atCible() && tourelle.atCible();
+    boolean condition = lanceur.atCible() && hood.atCible() && tourelle.atCible() && kickeur.atCible();
     if(condition){
       carroussel.tourner();
     }else{

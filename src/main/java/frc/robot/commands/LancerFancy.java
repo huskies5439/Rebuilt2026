@@ -22,6 +22,6 @@ public class LancerFancy extends ParallelCommandGroup {
     addCommands(
         new EnvoyerShotParams(lanceur, hood, kickeur, superstructure),
         new ViserTourelle(tourelle, superstructure),
-        new TournerCarroussel());
+        new TournerCarroussel(lanceur, hood, tourelle, basePilotable, carroussel, kickeur));  
   }
 }
