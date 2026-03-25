@@ -57,8 +57,20 @@
                 "data": {
                   "name": "gober"
                 }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "preShoot"
+                }
               }
             ]
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 1.0
           }
         },
         {

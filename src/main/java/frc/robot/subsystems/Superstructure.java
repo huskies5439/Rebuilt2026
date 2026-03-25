@@ -7,6 +7,7 @@ package frc.robot.subsystems;
 import java.io.File;
 import java.io.FileReader;
 import java.util.List;
+import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
 
 import com.opencsv.CSVReader;
@@ -38,10 +39,13 @@ public class Superstructure extends SubsystemBase {
 	private Translation2d cibleVirtuelle = new Translation2d(); // Ajustée en fonction de la vitesse du robot
 	private Pose2d poseRobot = new Pose2d();
 	private ChassisSpeeds chassisSpeedsRobot = new ChassisSpeeds();
+	private double omegaRobot = 0;
 
 	////// Pour obtenir les valeurs de la Base Pilotable
 	private final Supplier<Pose2d> poseSupplier;
 	private final Supplier<ChassisSpeeds> speedSupplier;
+	private final DoubleSupplier omegaSupplier;
+
 
 	// Look-Up-Table séparée des paramètres de tir afin d'itérer plus rapidement
 	InterpolatingDoubleTreeMap lutTOF = new InterpolatingDoubleTreeMap();
@@ -54,9 +58,10 @@ public class Superstructure extends SubsystemBase {
 			InverseInterpolator.forDouble(),
 			ShotParams::interpolate);
 
-	public Superstructure(Supplier<Pose2d> poseSupplier, Supplier<ChassisSpeeds> speedSupplier) {
+	public Superstructure(Supplier<Pose2d> poseSupplier, Supplier<ChassisSpeeds> speedSupplier, DoubleSupplier omegaSupplier) {
 		this.poseSupplier = poseSupplier;
 		this.speedSupplier = speedSupplier;
+		this.omegaSupplier = omegaSupplier;
 
 		// Création de la LUT
 		// Il faut ajouter la librairie OpenCSV dans le build.gradle
@@ -84,6 +89,7 @@ public class Superstructure extends SubsystemBase {
 		// Mise à jour des valeurs critiques de contrôle
 		poseRobot = poseSupplier.get();
 		chassisSpeedsRobot = speedSupplier.get();
+		omegaRobot = Math.toRadians(omegaSupplier.getAsDouble());
 
 		// Mise à jour de la cibleRéelle et de la cible virtuelle
 		setCibleReelle();
@@ -246,8 +252,8 @@ public class Superstructure extends SubsystemBase {
 	public ChassisSpeeds getComposanteRotationTourelle() {
 		Translation2d deplacementTourelleRotation = getDeplacementTourelleAvecRotation();
 		//// Formule du produit vectoriel obtenu avec la méthode du déterminant
-		double vitesseX = -deplacementTourelleRotation.getY() * chassisSpeedsRobot.omegaRadiansPerSecond;
-		double vitesseY = deplacementTourelleRotation.getX() * chassisSpeedsRobot.omegaRadiansPerSecond;
+		double vitesseX = -deplacementTourelleRotation.getY() * omegaRobot;
+		double vitesseY = deplacementTourelleRotation.getX() *omegaRobot;
 		return new ChassisSpeeds(vitesseX, vitesseY, 0);
 	}
 

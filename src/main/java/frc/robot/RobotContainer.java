@@ -16,6 +16,7 @@ import edu.wpi.first.epilogue.Logged;
 import frc.robot.commands.BasePilotableDefaut;
 import frc.robot.commands.LancerFancy;
 import frc.robot.commands.PostShooting;
+import frc.robot.commands.PreparerLancer;
 import frc.robot.commands.RetracterShooting;
 import frc.robot.commands.SnapTrench;
 import frc.robot.commands.ViserTourelle;
@@ -61,7 +62,7 @@ public class RobotContainer {
 
   public RobotContainer() {
     basePilotable = new BasePilotable();
-    superstructure = new Superstructure(basePilotable::getPose, basePilotable::getChassisSpeeds);
+    superstructure = new Superstructure(basePilotable::getPose, basePilotable::getChassisSpeeds, basePilotable::getOmegaGyro);
     tourelle = new Tourelle();
     carroussel = new Carroussel();
     lanceur = new Lanceur();
@@ -88,10 +89,10 @@ public class RobotContainer {
 
     FollowPathCommand.warmupCommand().schedule();
 
-    NamedCommands.registerCommand("gober", new WaitCommand(10.0));
-    NamedCommands.registerCommand("preShoot", new WaitCommand(10.0));
-    NamedCommands.registerCommand("shoot", new WaitCommand(10.0));
-    NamedCommands.registerCommand("grimper", new WaitCommand(10.0));
+    NamedCommands.registerCommand("gober", new WaitCommand(1));
+    NamedCommands.registerCommand("preShoot", new PreparerLancer(superstructure, kickeur, lanceur, hood));
+    NamedCommands.registerCommand("shoot", new LancerFancy(basePilotable, lanceur, hood, tourelle, kickeur, carroussel, superstructure));
+    NamedCommands.registerCommand("grimper", new WaitCommand(1));
 
     // L'auto chooser doit être mis APRÈS les named commands
     autoChooser = AutoBuilder.buildAutoChooser();
@@ -119,11 +120,11 @@ public class RobotContainer {
             superstructure).finallyDo(() -> new PostShooting(lanceur, carroussel, kickeur)));
 
     // Gober
-    manette.leftBumper().whileTrue(coude.PIDCommand(0).alongWith(gobeur.goberCommand())).onFalse(coude.PIDCommand(10.0));
+    //manette.leftBumper().whileTrue(coude.PIDCommand(0).alongWith(gobeur.goberCommand())).onFalse(coude.PIDCommand(10.0));
     // //à déterminer s'il faut lever légerment le gobeur
 
     // Protection coude
-    manette.x().onTrue(coude.PIDCommand(90));
+    //manette.x().onTrue(coude.PIDCommand(90));
 
     // Grimpeur
     manette.povUp().whileTrue(grimpeur.monterCommand());

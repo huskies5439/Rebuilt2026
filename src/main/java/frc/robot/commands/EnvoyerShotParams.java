@@ -5,6 +5,7 @@
 package frc.robot.commands;
 
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.lib.ShotParams;
 import frc.robot.subsystems.Hood;
@@ -46,7 +47,9 @@ public class EnvoyerShotParams extends Command {
   @Override
   public void execute() {
     shotParams = superstructure.getShotParams(dynamique);
-
+    SmartDashboard.putNumber("shot params - lanceur", shotParams.getVitesseLanceur());
+    SmartDashboard.putNumber("shot params - kickeur", shotParams.getVitesseKickeur());
+    SmartDashboard.putNumber("shot params - Hood",   shotParams.getAngleHood());
     lanceur.setPID(shotParams.getVitesseLanceur());
     hood.setPID(shotParams.getAngleHood());
     kickeur.setPID(shotParams.getVitesseKickeur());

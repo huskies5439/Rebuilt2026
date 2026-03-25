@@ -65,7 +65,7 @@ public class BasePilotable extends SubsystemBase {
   // Initialisation PoseEstimator
   SwerveDrivePoseEstimator poseEstimator = new SwerveDrivePoseEstimator(
       Constants.kDriveKinematics,
-      Rotation2d.fromDegrees(getAngle()),
+      Rotation2d.fromDegrees(getAngleGyro()),
       new SwerveModulePosition[] {
           avantGauche.getPosition(),
           avantDroite.getPosition(),
@@ -116,7 +116,7 @@ public class BasePilotable extends SubsystemBase {
   @Override
   public void periodic() {
     // Update du Pose Estimator
-    poseEstimator.update(Rotation2d.fromDegrees(getAngle()), new SwerveModulePosition[] {
+    poseEstimator.update(Rotation2d.fromDegrees(getAngleGyro()), new SwerveModulePosition[] {
         avantGauche.getPosition(),
         avantDroite.getPosition(),
         arriereGauche.getPosition(),
@@ -198,7 +198,7 @@ public class BasePilotable extends SubsystemBase {
 
   public void resetOdometry(Pose2d pose) { // pose est à la pose où reset, c'est typiquement l'origine du terrain
     poseEstimator.resetPosition(
-        Rotation2d.fromDegrees(getAngle()),
+        Rotation2d.fromDegrees(getAngleGyro()),
         new SwerveModulePosition[] {
             avantGauche.getPosition(),
             avantDroite.getPosition(),
@@ -234,7 +234,7 @@ public class BasePilotable extends SubsystemBase {
       return;
     }
 
-    if (Math.abs(getRate()) > 720) {
+    if (Math.abs(getOmegaGyro()) > 720) {
       doRejectUpdate = true;
     }
     if (poseEstimate.tagCount == 0) {
@@ -257,11 +257,11 @@ public class BasePilotable extends SubsystemBase {
   }
 
   /////////////// GYRO
-  public double getAngle() {
+  public double getAngleGyro() {
     return gyro.getYaw().getValueAsDouble();
   }
 
-  public double getRate() {
+  public double getOmegaGyro() {
     return gyro.getAngularVelocityZWorld().getValueAsDouble();
   }
 

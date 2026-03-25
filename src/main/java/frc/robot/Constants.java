@@ -16,8 +16,8 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 
 public final class Constants {
 
- public static final double maxVitesseLineaire = 0.5;
-  public static final double maxVitesseRotation = Math.toRadians(360);
+ public static final double maxVitesseLineaire = 3.75;
+  public static final double maxVitesseRotation = Math.toRadians(540);
 
   // Chassis configuration
   public static final double kTrackWidth = 0.5972 ;
