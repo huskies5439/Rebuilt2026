@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 7.505060240963855,
-        "y": 0.9752409638554218
+        "x": 5.9314698795180725,
+        "y": 0.7457590361445796
       },
       "prevControl": null,
       "nextControl": {
-        "x": 7.497092340593864,
-        "y": 2.053780909865578
+        "x": 6.193067510624762,
+        "y": 1.0283816302260789
       },
       "isLocked": false,
       "linkedName": "BloupsPickupCenterOutpost"
     },
     {
       "anchor": {
-        "x": 7.505,
-        "y": 3.193566265060241
+        "x": 6.95867469879518,
+        "y": 1.685542168674699
       },
       "prevControl": {
-        "x": 7.515680061040181,
-        "y": 2.921405778947414
+        "x": 6.7907977557552215,
+        "y": 1.5002927908199852
       },
       "nextControl": null,
       "isLocked": false,
@@ -42,13 +42,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 90.0
+    "rotation": 45.0
   },
   "reversed": false,
   "folder": "path",
   "idealStartingState": {
     "velocity": 1.0,
-    "rotation": 90.0
+    "rotation": 45.0
   },
   "useDefaultConstraints": false
 }

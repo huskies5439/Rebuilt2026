@@ -111,7 +111,8 @@ public class RobotContainer {
     manette.b().toggleOnTrue(
         kickeur.kickerPIDCommand()
             .alongWith(lanceur.lancerPIDCommand())
-            .alongWith(hood.goToAnglePIDCommand()));
+            .alongWith(hood.goToAnglePIDCommand())
+            .alongWith(tourelle.PIDCommand()));
 
     // manette.y().whileTrue(new SnapTrench(manette::getLeftY,basePilotable));
 

@@ -95,7 +95,7 @@ public class Superstructure extends SubsystemBase {
 		setCibleReelle();
 		calculCibleVirtuelle();
 
-		SmartDashboard.putNumber("vitesse rotation", chassisSpeedsRobot.omegaRadiansPerSecond * 360.0 / 2.0 * Math.PI);
+		
 	}
 
 	public void setCibleReelle() {

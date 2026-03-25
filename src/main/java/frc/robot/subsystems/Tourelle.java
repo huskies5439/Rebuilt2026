@@ -114,7 +114,7 @@ public class Tourelle extends SubsystemBase {
     return Commands.runEnd(this::setVoltageAntiHoraire,this::stop,this); 
   }
   public Command PIDCommand(){
-    return Commands.runEnd(()->this.setPID(200),this::stop,this);
+    return Commands.runEnd(()->this.setPID(180),this::stop,this);
   }
 
 }
