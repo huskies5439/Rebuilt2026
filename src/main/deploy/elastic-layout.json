@@ -11,8 +11,8 @@
             "title": "Field",
             "x": 0.0,
             "y": 0.0,
-            "width": 736.0,
-            "height": 704.0,
+            "width": 768.0,
+            "height": 352.0,
             "type": "Field",
             "properties": {
               "topic": "/SmartDashboard/Field",
@@ -30,7 +30,7 @@
           },
           {
             "title": "limelight",
-            "x": 736.0,
+            "x": 768.0,
             "y": 0.0,
             "width": 768.0,
             "height": 544.0,
@@ -40,6 +40,19 @@
               "period": 0.06,
               "rotation_turns": 0
             }
+          },
+          {
+            "title": "Auto Chooser",
+            "x": 0.0,
+            "y": 352.0,
+            "width": 768.0,
+            "height": 192.0,
+            "type": "ComboBox Chooser",
+            "properties": {
+              "topic": "/SmartDashboard/Auto Chooser",
+              "period": 0.06,
+              "sort_options": false
+            }
           }
         ]
       }
@@ -48,18 +61,87 @@
       "name": "Autonomous",
       "grid_layout": {
         "layouts": [],
-        "containers": []
-      }
-    },
-    {
-      "name": "Epilogue",
-      "grid_layout": {
-        "layouts": [],
         "containers": [
           {
-            "title": "gyro",
-            "x": 160.0,
+            "title": "Field",
+            "x": 0.0,
             "y": 0.0,
+            "width": 1024.0,
+            "height": 416.0,
+            "type": "Field",
+            "properties": {
+              "topic": "/SmartDashboard/Field",
+              "period": 0.06,
+              "field_game": "Rebuilt",
+              "robot_width": 0.85,
+              "robot_length": 0.85,
+              "show_other_objects": true,
+              "show_trajectories": true,
+              "field_rotation": 0.0,
+              "robot_color": 4294198070,
+              "trajectory_color": 4294967295,
+              "show_robot_outside_widget": true
+            }
+          },
+          {
+            "title": "MatchNumber",
+            "x": 0.0,
+            "y": 416.0,
+            "width": 128.0,
+            "height": 128.0,
+            "type": "Text Display",
+            "properties": {
+              "topic": "/FMSInfo/MatchNumber",
+              "period": 0.06,
+              "data_type": "int",
+              "show_submit_button": false
+            }
+          },
+          {
+            "title": "StationNumber",
+            "x": 128.0,
+            "y": 416.0,
+            "width": 128.0,
+            "height": 128.0,
+            "type": "Text Display",
+            "properties": {
+              "topic": "/FMSInfo/StationNumber",
+              "period": 0.06,
+              "data_type": "int",
+              "show_submit_button": false
+            }
+          },
+          {
+            "title": "limelight",
+            "x": 1024.0,
+            "y": 0.0,
+            "width": 512.0,
+            "height": 416.0,
+            "type": "Camera Stream",
+            "properties": {
+              "topic": "/CameraPublisher/limelight",
+              "period": 0.06,
+              "rotation_turns": 0
+            }
+          },
+          {
+            "title": "GameSpecificMessage",
+            "x": 256.0,
+            "y": 416.0,
+            "width": 288.0,
+            "height": 128.0,
+            "type": "Text Display",
+            "properties": {
+              "topic": "/FMSInfo/GameSpecificMessage",
+              "period": 0.06,
+              "data_type": "string",
+              "show_submit_button": false
+            }
+          },
+          {
+            "title": "gyro",
+            "x": 1280.0,
+            "y": 416.0,
             "width": 256.0,
             "height": 256.0,
             "type": "Gyro",
@@ -68,41 +150,21 @@
               "period": 0.06,
               "counter_clockwise_positive": true
             }
-          },
-          {
-            "title": "getAngleDroit",
-            "x": 0.0,
-            "y": 0.0,
-            "width": 160.0,
-            "height": 128.0,
-            "type": "Text Display",
-            "properties": {
-              "topic": "Robot/m_robotContainer/coude/getAngleDroit",
-              "period": 0.06,
-              "data_type": "double",
-              "show_submit_button": false
-            }
-          },
-          {
-            "title": "getAngleGauche",
-            "x": 0.0,
-            "y": 128.0,
-            "width": 160.0,
-            "height": 128.0,
-            "type": "Text Display",
-            "properties": {
-              "topic": "Robot/m_robotContainer/coude/getAngleGauche",
-              "period": 0.06,
-              "data_type": "double",
-              "show_submit_button": false
-            }
-          },
+          }
+        ]
+      }
+    },
+    {
+      "name": "Kickeur + Lanceur",
+      "grid_layout": {
+        "layouts": [],
+        "containers": [
           {
             "title": "Vitesse Lanceur",
-            "x": 800.0,
+            "x": 864.0,
             "y": 0.0,
-            "width": 736.0,
-            "height": 544.0,
+            "width": 672.0,
+            "height": 512.0,
             "type": "Graph",
             "properties": {
               "topic": "Robot/m_robotContainer/lanceur/Vitesse Lanceur",
@@ -114,23 +176,9 @@
             }
           },
           {
-            "title": "Vitesse Kikeur",
-            "x": 416.0,
-            "y": 128.0,
-            "width": 128.0,
-            "height": 128.0,
-            "type": "Text Display",
-            "properties": {
-              "topic": "Robot/m_robotContainer/kickeur/Vitesse Kikeur",
-              "period": 0.06,
-              "data_type": "double",
-              "show_submit_button": false
-            }
-          },
-          {
             "title": "cible lanceur",
-            "x": 576.0,
-            "y": 0.0,
+            "x": 1312.0,
+            "y": 544.0,
             "width": 224.0,
             "height": 128.0,
             "type": "Text Display",
@@ -142,171 +190,14 @@
             }
           },
           {
-            "title": "voltage kikeur",
-            "x": 576.0,
-            "y": 128.0,
-            "width": 224.0,
-            "height": 128.0,
-            "type": "Text Display",
-            "properties": {
-              "topic": "/SmartDashboard/voltage kikeur",
-              "period": 0.06,
-              "data_type": "double",
-              "show_submit_button": false
-            }
-          },
-          {
-            "title": "Position Kickeur",
-            "x": 416.0,
-            "y": 0.0,
-            "width": 128.0,
-            "height": 128.0,
-            "type": "Text Display",
-            "properties": {
-              "topic": "Robot/m_robotContainer/kickeur/Position Kickeur",
-              "period": 0.06,
-              "data_type": "double",
-              "show_submit_button": false
-            }
-          },
-          {
-            "title": "getAngleAbsolu",
-            "x": 672.0,
-            "y": 256.0,
-            "width": 128.0,
-            "height": 128.0,
-            "type": "Text Display",
-            "properties": {
-              "topic": "Robot/m_robotContainer/tourelle/getAngleAbsolu",
-              "period": 0.06,
-              "data_type": "double",
-              "show_submit_button": false
-            }
-          },
-          {
-            "title": "getAngleReel",
-            "x": 544.0,
-            "y": 256.0,
-            "width": 128.0,
-            "height": 128.0,
-            "type": "Text Display",
-            "properties": {
-              "topic": "Robot/m_robotContainer/tourelle/getAngleReel",
-              "period": 0.06,
-              "data_type": "double",
-              "show_submit_button": false
-            }
-          }
-        ]
-      }
-    },
-    {
-      "name": "Rebuilt-Epilogue",
-      "grid_layout": {
-        "layouts": [
-          {
-            "title": "rotation",
-            "x": 800.0,
-            "y": 0.0,
+            "title": "Cible PID Lanceur",
+            "x": 1056.0,
+            "y": 544.0,
             "width": 256.0,
-            "height": 256.0,
-            "type": "List Layout",
-            "properties": {
-              "label_position": "TOP"
-            },
-            "children": [
-              {
-                "title": "value",
-                "x": 0.0,
-                "y": 0.0,
-                "width": 128.0,
-                "height": 128.0,
-                "type": "Text Display",
-                "properties": {
-                  "topic": "Robot/m_robotContainer/basePilotable/getPose",
-                  "period": 0.06,
-                  "data_type": "double",
-                  "struct_meta": {
-                    "path": [
-                      "rotation",
-                      "value"
-                    ],
-                    "schema_name": "Pose2d",
-                    "type": "double"
-                  },
-                  "show_submit_button": false
-                }
-              }
-            ]
-          },
-          {
-            "title": "translation",
-            "x": 544.0,
-            "y": 0.0,
-            "width": 256.0,
-            "height": 256.0,
-            "type": "List Layout",
-            "properties": {
-              "label_position": "TOP"
-            },
-            "children": [
-              {
-                "title": "x",
-                "x": 0.0,
-                "y": 0.0,
-                "width": 128.0,
-                "height": 128.0,
-                "type": "Text Display",
-                "properties": {
-                  "topic": "Robot/m_robotContainer/basePilotable/getPose",
-                  "period": 0.06,
-                  "data_type": "double",
-                  "struct_meta": {
-                    "path": [
-                      "translation",
-                      "x"
-                    ],
-                    "schema_name": "Pose2d",
-                    "type": "double"
-                  },
-                  "show_submit_button": false
-                }
-              },
-              {
-                "title": "y",
-                "x": 0.0,
-                "y": 0.0,
-                "width": 128.0,
-                "height": 128.0,
-                "type": "Text Display",
-                "properties": {
-                  "topic": "Robot/m_robotContainer/basePilotable/getPose",
-                  "period": 0.06,
-                  "data_type": "double",
-                  "struct_meta": {
-                    "path": [
-                      "translation",
-                      "y"
-                    ],
-                    "schema_name": "Pose2d",
-                    "type": "double"
-                  },
-                  "show_submit_button": false
-                }
-              }
-            ]
-          }
-        ],
-        "containers": [
-          {
-            "title": "atCible",
-            "x": 0.0,
-            "y": 0.0,
-            "width": 128.0,
             "height": 128.0,
             "type": "Boolean Box",
             "properties": {
-              "topic": "Robot/m_robotContainer/lanceur/atCible",
+              "topic": "Robot/m_robotContainer/lanceur/Cible PID Lanceur",
               "period": 0.06,
               "data_type": "boolean",
               "true_color": 4283215696,
@@ -316,73 +207,53 @@
             }
           },
           {
-            "title": "getPosition",
+            "title": "At Cible Kickeur",
             "x": 0.0,
-            "y": 128.0,
-            "width": 128.0,
+            "y": 512.0,
+            "width": 224.0,
             "height": 128.0,
-            "type": "Text Display",
+            "type": "Boolean Box",
             "properties": {
-              "topic": "Robot/m_robotContainer/lanceur/getPosition",
+              "topic": "Robot/m_robotContainer/kickeur/At Cible Kickeur",
               "period": 0.06,
-              "data_type": "double",
-              "show_submit_button": false
+              "data_type": "boolean",
+              "true_color": 4283215696,
+              "false_color": 4294198070,
+              "true_icon": "None",
+              "false_icon": "None"
             }
           },
           {
-            "title": "getVitesse",
+            "title": "Vitesse Kickeur",
             "x": 0.0,
-            "y": 256.0,
-            "width": 128.0,
-            "height": 128.0,
-            "type": "Text Display",
-            "properties": {
-              "topic": "Robot/m_robotContainer/lanceur/getVitesse",
-              "period": 0.06,
-              "data_type": "double",
-              "show_submit_button": false
-            }
-          },
-          {
-            "title": "gyro",
-            "x": 1056.0,
             "y": 0.0,
-            "width": 256.0,
-            "height": 256.0,
-            "type": "Gyro",
+            "width": 672.0,
+            "height": 512.0,
+            "type": "Graph",
             "properties": {
-              "topic": "Robot/m_robotContainer/basePilotable/gyro",
-              "period": 0.06,
-              "counter_clockwise_positive": true
-            }
-          },
-          {
-            "title": "getDistanceCibleReelle",
-            "x": 576.0,
-            "y": 352.0,
-            "width": 96.0,
-            "height": 128.0,
-            "type": "Text Display",
-            "properties": {
-              "topic": "Robot/m_robotContainer/superstructure/getDistanceCibleReelle",
-              "period": 0.06,
+              "topic": "Robot/m_robotContainer/kickeur/Vitesse Kickeur",
+              "period": 0.033,
               "data_type": "double",
-              "show_submit_button": false
+              "time_displayed": 15.0,
+              "min_value": 0.0,
+              "max_value": 50.0,
+              "color": 4278238420,
+              "line_width": 2.0
             }
           }
         ]
       }
     },
     {
-      "name": "config lancer",
+      "name": "Hood + Coude",
       "grid_layout": {
         "layouts": [],
         "containers": [
           {
             "title": "getAngle",
-            "x": 512.0,
-            "y": 0.0,
-            "width": 288.0,
+            "x": 128.0,
+            "y": 384.0,
+            "width": 128.0,
             "height": 128.0,
             "type": "Text Display",
             "properties": {
@@ -393,9 +264,426 @@
             }
           },
           {
-            "title": "cible lanceur",
+            "title": "isLimitSwitch",
+            "x": 0.0,
+            "y": 384.0,
+            "width": 128.0,
+            "height": 128.0,
+            "type": "Boolean Box",
+            "properties": {
+              "topic": "Robot/m_robotContainer/hood/isLimitSwitch",
+              "period": 0.06,
+              "data_type": "boolean",
+              "true_color": 4283215696,
+              "false_color": 4294198070,
+              "true_icon": "None",
+              "false_icon": "None"
+            }
+          },
+          {
+            "title": "getVitesse",
+            "x": 0.0,
+            "y": 0.0,
+            "width": 480.0,
+            "height": 384.0,
+            "type": "Graph",
+            "properties": {
+              "topic": "Robot/m_robotContainer/hood/getVitesse",
+              "period": 0.033,
+              "data_type": "double",
+              "time_displayed": 15.0,
+              "min_value": -120.0,
+              "max_value": 120.0,
+              "color": 4278238420,
+              "line_width": 2.0
+            }
+          },
+          {
+            "title": "atCible",
+            "x": 1408.0,
+            "y": 384.0,
+            "width": 128.0,
+            "height": 128.0,
+            "type": "Boolean Box",
+            "properties": {
+              "topic": "Robot/m_robotContainer/coude/atCible",
+              "period": 0.06,
+              "data_type": "boolean",
+              "true_color": 4283215696,
+              "false_color": 4294198070,
+              "true_icon": "None",
+              "false_icon": "None"
+            }
+          },
+          {
+            "title": "getAngleDroit",
+            "x": 1120.0,
+            "y": 384.0,
+            "width": 128.0,
+            "height": 128.0,
+            "type": "Text Display",
+            "properties": {
+              "topic": "Robot/m_robotContainer/coude/getAngleDroit",
+              "period": 0.06,
+              "data_type": "double",
+              "show_submit_button": false
+            }
+          },
+          {
+            "title": "getAngleGauche",
+            "x": 672.0,
+            "y": 384.0,
+            "width": 128.0,
+            "height": 128.0,
+            "type": "Text Display",
+            "properties": {
+              "topic": "Robot/m_robotContainer/coude/getAngleGauche",
+              "period": 0.06,
+              "data_type": "double",
+              "show_submit_button": false
+            }
+          },
+          {
+            "title": "getVitesseGauche",
+            "x": 672.0,
+            "y": 0.0,
+            "width": 416.0,
+            "height": 384.0,
+            "type": "Graph",
+            "properties": {
+              "topic": "Robot/m_robotContainer/coude/getVitesseGauche",
+              "period": 0.033,
+              "data_type": "double",
+              "time_displayed": 15.0,
+              "min_value": -120.0,
+              "max_value": 120.0,
+              "color": 4278238420,
+              "line_width": 2.0
+            }
+          },
+          {
+            "title": "getVitesseDroit",
+            "x": 1088.0,
+            "y": 0.0,
+            "width": 448.0,
+            "height": 384.0,
+            "type": "Graph",
+            "properties": {
+              "topic": "Robot/m_robotContainer/coude/getVitesseDroit",
+              "period": 0.033,
+              "data_type": "double",
+              "time_displayed": 15.0,
+              "min_value": -120.0,
+              "max_value": 120.0,
+              "color": 4278238420,
+              "line_width": 2.0
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "Super Structure",
+      "grid_layout": {
+        "layouts": [
+          {
+            "title": "chassisSpeedsRobot",
+            "x": 0.0,
+            "y": 0.0,
+            "width": 128.0,
+            "height": 256.0,
+            "type": "List Layout",
+            "properties": {
+              "label_position": "TOP"
+            },
+            "children": []
+          },
+          {
+            "title": "getVitesseTourelle",
+            "x": 1376.0,
+            "y": 0.0,
+            "width": 160.0,
+            "height": 256.0,
+            "type": "List Layout",
+            "properties": {
+              "label_position": "TOP"
+            },
+            "children": []
+          }
+        ],
+        "containers": [
+          {
+            "title": "getAngleCibleVirtuelle",
+            "x": 512.0,
+            "y": 0.0,
+            "width": 224.0,
+            "height": 128.0,
+            "type": "Text Display",
+            "properties": {
+              "topic": "Robot/m_robotContainer/superstructure/getAngleCibleVirtuelle",
+              "period": 0.06,
+              "data_type": "double",
+              "show_submit_button": false
+            }
+          },
+          {
+            "title": "isProcheTrench",
+            "x": 736.0,
+            "y": 0.0,
+            "width": 128.0,
+            "height": 128.0,
+            "type": "Boolean Box",
+            "properties": {
+              "topic": "Robot/m_robotContainer/superstructure/isProcheTrench",
+              "period": 0.06,
+              "data_type": "boolean",
+              "true_color": 4283215696,
+              "false_color": 4294198070,
+              "true_icon": "None",
+              "false_icon": "None"
+            }
+          },
+          {
+            "title": "getAngleCibleReelle",
+            "x": 512.0,
+            "y": 128.0,
+            "width": 224.0,
+            "height": 128.0,
+            "type": "Text Display",
+            "properties": {
+              "topic": "Robot/m_robotContainer/superstructure/getAngleCibleReelle",
+              "period": 0.06,
+              "data_type": "double",
+              "show_submit_button": false
+            }
+          },
+          {
+            "title": "omega",
+            "x": 256.0,
+            "y": 0.0,
+            "width": 64.0,
+            "height": 256.0,
+            "type": "Text Display",
+            "properties": {
+              "topic": "Robot/m_robotContainer/superstructure/chassisSpeedsRobot",
+              "period": 0.06,
+              "data_type": "double",
+              "struct_meta": {
+                "path": [
+                  "omega"
+                ],
+                "schema_name": "ChassisSpeeds",
+                "type": "double"
+              },
+              "show_submit_button": false
+            }
+          },
+          {
+            "title": "vx",
             "x": 128.0,
             "y": 0.0,
+            "width": 64.0,
+            "height": 256.0,
+            "type": "Text Display",
+            "properties": {
+              "topic": "Robot/m_robotContainer/superstructure/chassisSpeedsRobot",
+              "period": 0.06,
+              "data_type": "double",
+              "struct_meta": {
+                "path": [
+                  "vx"
+                ],
+                "schema_name": "ChassisSpeeds",
+                "type": "double"
+              },
+              "show_submit_button": false
+            }
+          },
+          {
+            "title": "vy",
+            "x": 192.0,
+            "y": 0.0,
+            "width": 64.0,
+            "height": 256.0,
+            "type": "Text Display",
+            "properties": {
+              "topic": "Robot/m_robotContainer/superstructure/chassisSpeedsRobot",
+              "period": 0.06,
+              "data_type": "double",
+              "struct_meta": {
+                "path": [
+                  "vy"
+                ],
+                "schema_name": "ChassisSpeeds",
+                "type": "double"
+              },
+              "show_submit_button": false
+            }
+          },
+          {
+            "title": "omega",
+            "x": 1312.0,
+            "y": 0.0,
+            "width": 64.0,
+            "height": 256.0,
+            "type": "Text Display",
+            "properties": {
+              "topic": "Robot/m_robotContainer/superstructure/getVitesseTourelle",
+              "period": 0.06,
+              "data_type": "double",
+              "struct_meta": {
+                "path": [
+                  "omega"
+                ],
+                "schema_name": "ChassisSpeeds",
+                "type": "double"
+              },
+              "show_submit_button": false
+            }
+          },
+          {
+            "title": "vx",
+            "x": 1184.0,
+            "y": 0.0,
+            "width": 64.0,
+            "height": 256.0,
+            "type": "Text Display",
+            "properties": {
+              "topic": "Robot/m_robotContainer/superstructure/getVitesseTourelle",
+              "period": 0.06,
+              "data_type": "double",
+              "struct_meta": {
+                "path": [
+                  "vx"
+                ],
+                "schema_name": "ChassisSpeeds",
+                "type": "double"
+              },
+              "show_submit_button": false
+            }
+          },
+          {
+            "title": "vy",
+            "x": 1248.0,
+            "y": 0.0,
+            "width": 64.0,
+            "height": 256.0,
+            "type": "Text Display",
+            "properties": {
+              "topic": "Robot/m_robotContainer/superstructure/getVitesseTourelle",
+              "period": 0.06,
+              "data_type": "double",
+              "struct_meta": {
+                "path": [
+                  "vy"
+                ],
+                "schema_name": "ChassisSpeeds",
+                "type": "double"
+              },
+              "show_submit_button": false
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": " Carroussel + Grimpeur",
+      "grid_layout": {
+        "layouts": [],
+        "containers": [
+          {
+            "title": "Vitesse Caroussel",
+            "x": 0.0,
+            "y": 0.0,
+            "width": 544.0,
+            "height": 416.0,
+            "type": "Graph",
+            "properties": {
+              "topic": "Robot/m_robotContainer/carroussel/Vitesse Caroussel",
+              "period": 0.033,
+              "data_type": "double",
+              "time_displayed": 15.0,
+              "min_value": -120.0,
+              "max_value": 120.0,
+              "color": 4278238420,
+              "line_width": 2.0
+            }
+          },
+          {
+            "title": "At Cible Carroussel",
+            "x": 0.0,
+            "y": 416.0,
+            "width": 192.0,
+            "height": 128.0,
+            "type": "Boolean Box",
+            "properties": {
+              "topic": "Robot/m_robotContainer/carroussel/At Cible Carroussel",
+              "period": 0.06,
+              "data_type": "boolean",
+              "true_color": 4283215696,
+              "false_color": 4294198070,
+              "true_icon": "None",
+              "false_icon": "None"
+            }
+          },
+          {
+            "title": "getPosition",
+            "x": 192.0,
+            "y": 416.0,
+            "width": 128.0,
+            "height": 128.0,
+            "type": "Text Display",
+            "properties": {
+              "topic": "Robot/m_robotContainer/carroussel/getPosition",
+              "period": 0.06,
+              "data_type": "double",
+              "show_submit_button": false
+            }
+          },
+          {
+            "title": "getPosition",
+            "x": 1056.0,
+            "y": 416.0,
+            "width": 128.0,
+            "height": 128.0,
+            "type": "Text Display",
+            "properties": {
+              "topic": "Robot/m_robotContainer/grimpeur/getPosition",
+              "period": 0.06,
+              "data_type": "double",
+              "show_submit_button": false
+            }
+          },
+          {
+            "title": "getVelocity",
+            "x": 1024.0,
+            "y": 0.0,
+            "width": 512.0,
+            "height": 416.0,
+            "type": "Graph",
+            "properties": {
+              "topic": "Robot/m_robotContainer/grimpeur/getVelocity",
+              "period": 0.033,
+              "data_type": "double",
+              "time_displayed": 15.0,
+              "min_value": -40.0,
+              "max_value": 40.0,
+              "color": 4278238420,
+              "line_width": 2.0
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "Config lancer manuel",
+      "grid_layout": {
+        "layouts": [],
+        "containers": [
+          {
+            "title": "cible lanceur",
+            "x": 192.0,
+            "y": 128.0,
             "width": 128.0,
             "height": 128.0,
             "type": "Text Display",
@@ -408,7 +696,7 @@
           },
           {
             "title": "cible kickeur",
-            "x": 0.0,
+            "x": 448.0,
             "y": 128.0,
             "width": 128.0,
             "height": 128.0,
@@ -422,8 +710,8 @@
           },
           {
             "title": "Cible Hood",
-            "x": 0.0,
-            "y": 0.0,
+            "x": 320.0,
+            "y": 128.0,
             "width": 128.0,
             "height": 128.0,
             "type": "Text Display",
@@ -436,8 +724,8 @@
           },
           {
             "title": "voltage carroussel",
-            "x": 128.0,
-            "y": 128.0,
+            "x": 0.0,
+            "y": 0.0,
             "width": 384.0,
             "height": 128.0,
             "type": "Text Display",
@@ -449,64 +737,42 @@
             }
           },
           {
-            "title": "Vitesse Caroussel",
-            "x": 512.0,
-            "y": 128.0,
-            "width": 448.0,
-            "height": 416.0,
-            "type": "Graph",
-            "properties": {
-              "topic": "Robot/m_robotContainer/carroussel/Vitesse Caroussel",
-              "period": 0.033,
-              "data_type": "double",
-              "time_displayed": 15.0,
-              "color": 4290183380,
-              "line_width": 2.0
-            }
-          },
-          {
-            "title": "Vitesse Lanceur",
+            "title": "getDistanceCibleReelle",
             "x": 0.0,
-            "y": 256.0,
-            "width": 256.0,
-            "height": 288.0,
-            "type": "Graph",
+            "y": 128.0,
+            "width": 192.0,
+            "height": 128.0,
+            "type": "Text Display",
             "properties": {
-              "topic": "Robot/m_robotContainer/lanceur/Vitesse Lanceur",
-              "period": 0.033,
+              "topic": "Robot/m_robotContainer/superstructure/getDistanceCibleReelle",
+              "period": 0.06,
               "data_type": "double",
-              "time_displayed": 15.0,
-              "color": 4292083917,
-              "line_width": 2.0
+              "show_submit_button": false
             }
           },
           {
-            "title": "Field",
-            "x": 960.0,
-            "y": 0.0,
-            "width": 576.0,
-            "height": 544.0,
-            "type": "Field",
+            "title": "At Cible Kickeur",
+            "x": 448.0,
+            "y": 256.0,
+            "width": 128.0,
+            "height": 128.0,
+            "type": "Boolean Box",
             "properties": {
-              "topic": "/SmartDashboard/Field",
+              "topic": "Robot/m_robotContainer/kickeur/At Cible Kickeur",
               "period": 0.06,
-              "field_game": "Rebuilt",
-              "robot_width": 0.85,
-              "robot_length": 0.85,
-              "show_other_objects": true,
-              "show_trajectories": true,
-              "field_rotation": 0.0,
-              "robot_color": 4294198070,
-              "trajectory_color": 4294967295,
-              "show_robot_outside_widget": true
+              "data_type": "boolean",
+              "true_color": 4283215696,
+              "false_color": 4294198070,
+              "true_icon": "None",
+              "false_icon": "None"
             }
           },
           {
             "title": "Cible PID Lanceur",
-            "x": 800.0,
-            "y": 0.0,
-            "width": 160.0,
-            "height": 32.0,
+            "x": 192.0,
+            "y": 256.0,
+            "width": 128.0,
+            "height": 128.0,
             "type": "Boolean Box",
             "properties": {
               "topic": "Robot/m_robotContainer/lanceur/Cible PID Lanceur",
@@ -520,298 +786,46 @@
           },
           {
             "title": "Vitesse Kickeur",
-            "x": 256.0,
-            "y": 256.0,
-            "width": 256.0,
-            "height": 288.0,
+            "x": 576.0,
+            "y": 0.0,
+            "width": 480.0,
+            "height": 384.0,
             "type": "Graph",
             "properties": {
               "topic": "Robot/m_robotContainer/kickeur/Vitesse Kickeur",
               "period": 0.033,
               "data_type": "double",
               "time_displayed": 15.0,
-              "color": 4278196436,
+              "min_value": 15.0,
+              "max_value": 50.0,
+              "color": 4278238420,
               "line_width": 2.0
             }
           },
           {
-            "title": "getAngleGauche",
-            "x": 448.0,
-            "y": 544.0,
-            "width": 128.0,
-            "height": 128.0,
-            "type": "Text Display",
+            "title": "Vitesse Lanceur",
+            "x": 1056.0,
+            "y": 0.0,
+            "width": 480.0,
+            "height": 384.0,
+            "type": "Graph",
             "properties": {
-              "topic": "Robot/m_robotContainer/coude/getAngleGauche",
-              "period": 0.06,
+              "topic": "Robot/m_robotContainer/lanceur/Vitesse Lanceur",
+              "period": 0.033,
               "data_type": "double",
-              "show_submit_button": false
+              "time_displayed": 15.0,
+              "min_value": 15.0,
+              "max_value": 50.0,
+              "color": 4278238420,
+              "line_width": 2.0
             }
           },
           {
-            "title": "getAngleDroit",
-            "x": 576.0,
-            "y": 544.0,
-            "width": 128.0,
-            "height": 128.0,
-            "type": "Text Display",
-            "properties": {
-              "topic": "Robot/m_robotContainer/coude/getAngleDroit",
-              "period": 0.06,
-              "data_type": "double",
-              "show_submit_button": false
-            }
-          },
-          {
-            "title": "getDistanceCibleReelle",
-            "x": 288.0,
-            "y": 0.0,
-            "width": 192.0,
-            "height": 128.0,
-            "type": "Text Display",
-            "properties": {
-              "topic": "Robot/m_robotContainer/superstructure/getDistanceCibleReelle",
-              "period": 0.06,
-              "data_type": "double",
-              "show_submit_button": false
-            }
-          }
-        ]
-      }
-    },
-    {
-      "name": "Super Structure",
-      "grid_layout": {
-        "layouts": [
-          {
-            "title": "cible",
-            "x": 1088.0,
-            "y": 0.0,
-            "width": 160.0,
-            "height": 256.0,
-            "type": "List Layout",
-            "properties": {
-              "label_position": "TOP"
-            },
-            "children": [
-              {
-                "title": "x",
-                "x": 0.0,
-                "y": 0.0,
-                "width": 128.0,
-                "height": 128.0,
-                "type": "Text Display",
-                "properties": {
-                  "topic": "Robot/m_robotContainer/superstructure/cible",
-                  "period": 0.06,
-                  "data_type": "double",
-                  "struct_meta": {
-                    "path": [
-                      "x"
-                    ],
-                    "schema_name": "Translation3d",
-                    "type": "double"
-                  },
-                  "show_submit_button": false
-                }
-              },
-              {
-                "title": "y",
-                "x": 0.0,
-                "y": 0.0,
-                "width": 128.0,
-                "height": 128.0,
-                "type": "Text Display",
-                "properties": {
-                  "topic": "Robot/m_robotContainer/superstructure/cible",
-                  "period": 0.06,
-                  "data_type": "double",
-                  "struct_meta": {
-                    "path": [
-                      "y"
-                    ],
-                    "schema_name": "Translation3d",
-                    "type": "double"
-                  },
-                  "show_submit_button": false
-                }
-              },
-              {
-                "title": "z",
-                "x": 512.0,
-                "y": 160.0,
-                "width": 128.0,
-                "height": 128.0,
-                "type": "Text Display",
-                "properties": {
-                  "topic": "Robot/m_robotContainer/superstructure/cible",
-                  "period": 0.06,
-                  "data_type": "double",
-                  "struct_meta": {
-                    "path": [
-                      "z"
-                    ],
-                    "schema_name": "Translation3d",
-                    "type": "double"
-                  },
-                  "show_submit_button": false
-                }
-              }
-            ]
-          },
-          {
-            "title": "getAngleCible",
-            "x": 1248.0,
-            "y": 0.0,
-            "width": 128.0,
-            "height": 256.0,
-            "type": "List Layout",
-            "properties": {
-              "label_position": "TOP"
-            },
-            "children": [
-              {
-                "title": "value",
-                "x": 0.0,
-                "y": 0.0,
-                "width": 128.0,
-                "height": 128.0,
-                "type": "Text Display",
-                "properties": {
-                  "topic": "Robot/m_robotContainer/superstructure/getAngleCible",
-                  "period": 0.06,
-                  "data_type": "double",
-                  "struct_meta": {
-                    "path": [
-                      "value"
-                    ],
-                    "schema_name": "Rotation2d",
-                    "type": "double"
-                  },
-                  "show_submit_button": false
-                }
-              }
-            ]
-          },
-          {
-            "title": "getVecteurCibleTourelle",
-            "x": 1376.0,
-            "y": 0.0,
-            "width": 160.0,
-            "height": 256.0,
-            "type": "List Layout",
-            "properties": {
-              "label_position": "TOP"
-            },
-            "children": [
-              {
-                "title": "x",
-                "x": 0.0,
-                "y": 0.0,
-                "width": 128.0,
-                "height": 128.0,
-                "type": "Text Display",
-                "properties": {
-                  "topic": "Robot/m_robotContainer/superstructure/getVecteurCibleTourelle",
-                  "period": 0.06,
-                  "data_type": "double",
-                  "struct_meta": {
-                    "path": [
-                      "x"
-                    ],
-                    "schema_name": "Translation2d",
-                    "type": "double"
-                  },
-                  "show_submit_button": false
-                }
-              },
-              {
-                "title": "y",
-                "x": 0.0,
-                "y": 0.0,
-                "width": 128.0,
-                "height": 128.0,
-                "type": "Text Display",
-                "properties": {
-                  "topic": "Robot/m_robotContainer/superstructure/getVecteurCibleTourelle",
-                  "period": 0.06,
-                  "data_type": "double",
-                  "struct_meta": {
-                    "path": [
-                      "y"
-                    ],
-                    "schema_name": "Translation2d",
-                    "type": "double"
-                  },
-                  "show_submit_button": false
-                }
-              }
-            ]
-          }
-        ],
-        "containers": [
-          {
-            "title": "getDistanceCibleTourelle",
-            "x": 1152.0,
+            "title": "Field",
+            "x": 1280.0,
             "y": 384.0,
             "width": 256.0,
-            "height": 128.0,
-            "type": "Text Display",
-            "properties": {
-              "topic": "Robot/m_robotContainer/superstructure/getDistanceCibleTourelle",
-              "period": 0.06,
-              "data_type": "double",
-              "show_submit_button": false
-            }
-          },
-          {
-            "title": "normeVecteurLancer",
-            "x": 1152.0,
-            "y": 256.0,
-            "width": 128.0,
-            "height": 128.0,
-            "type": "Text Display",
-            "properties": {
-              "topic": "Robot/m_robotContainer/superstructure/normeVecteurLancer",
-              "period": 0.06,
-              "data_type": "double",
-              "show_submit_button": false
-            }
-          },
-          {
-            "title": "pitchVecteurLancer",
-            "x": 1280.0,
-            "y": 256.0,
-            "width": 128.0,
-            "height": 128.0,
-            "type": "Text Display",
-            "properties": {
-              "topic": "Robot/m_robotContainer/superstructure/pitchVecteurLancer",
-              "period": 0.06,
-              "data_type": "double",
-              "show_submit_button": false
-            }
-          },
-          {
-            "title": "yawVecteurLancer",
-            "x": 1408.0,
-            "y": 256.0,
-            "width": 128.0,
-            "height": 128.0,
-            "type": "Text Display",
-            "properties": {
-              "topic": "Robot/m_robotContainer/superstructure/yawVecteurLancer",
-              "period": 0.06,
-              "data_type": "double",
-              "show_submit_button": false
-            }
-          },
-          {
-            "title": "Field",
-            "x": 0.0,
-            "y": 0.0,
-            "width": 576.0,
-            "height": 512.0,
+            "height": 256.0,
             "type": "Field",
             "properties": {
               "topic": "/SmartDashboard/Field",
@@ -825,69 +839,6 @@
               "robot_color": 4294198070,
               "trajectory_color": 4294967295,
               "show_robot_outside_widget": true
-            }
-          },
-          {
-            "title": "limelight",
-            "x": 576.0,
-            "y": 0.0,
-            "width": 512.0,
-            "height": 512.0,
-            "type": "Camera Stream",
-            "properties": {
-              "topic": "/CameraPublisher/limelight",
-              "period": 0.06,
-              "rotation_turns": 0
-            }
-          }
-        ]
-      }
-    },
-    {
-      "name": "Field",
-      "grid_layout": {
-        "layouts": [],
-        "containers": [
-          {
-            "title": "Field",
-            "x": 0.0,
-            "y": 0.0,
-            "width": 1536.0,
-            "height": 544.0,
-            "type": "Field",
-            "properties": {
-              "topic": "/SmartDashboard/Field",
-              "period": 0.06,
-              "field_game": "Rebuilt",
-              "robot_width": 0.85,
-              "robot_length": 0.85,
-              "show_other_objects": true,
-              "show_trajectories": true,
-              "field_rotation": 0.0,
-              "robot_color": 4294198070,
-              "trajectory_color": 4294967295,
-              "show_robot_outside_widget": true
-            }
-          }
-        ]
-      }
-    },
-    {
-      "name": "LimeLight",
-      "grid_layout": {
-        "layouts": [],
-        "containers": [
-          {
-            "title": "limelight",
-            "x": 0.0,
-            "y": 0.0,
-            "width": 1536.0,
-            "height": 576.0,
-            "type": "Camera Stream",
-            "properties": {
-              "topic": "/CameraPublisher/limelight",
-              "period": 0.06,
-              "rotation_turns": 0
             }
           }
         ]
