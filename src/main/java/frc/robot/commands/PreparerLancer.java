@@ -43,18 +43,16 @@ public class PreparerLancer extends Command {
   public void execute() {
     shotParams = superstructure.getShotParams(dynamique);
 
-    lanceur.setPID(shotParams.getVitesseLanceur());
-    kickeur.setPID(shotParams.getVitesseKickeur());
+    lanceur.setPID(30);
+    kickeur.setPID(20);
 
-    if (superstructure.isProcheTrench()) {
-      hood.setPID(Constants.kAngleHoodDepart);
-    } else {
-      hood.setPID(shotParams.getAngleHood());
-    }
+    hood.setPID(Constants.kAngleHoodDepart);
+
   }
 
   @Override
   public void end(boolean interrupted) {
+    hood.stop();
   }
 
   // Returns true when the command should end.

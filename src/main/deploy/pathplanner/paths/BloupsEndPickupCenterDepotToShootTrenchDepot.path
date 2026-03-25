@@ -16,24 +16,19 @@
     },
     {
       "anchor": {
-        "x": 3.5,
-        "y": 7.367951807228916
+        "x": 3.5581135857219657,
+        "y": 7.396893857298884
       },
       "prevControl": {
-        "x": 5.745698795180724,
-        "y": 7.564650602409639
+        "x": 5.803811393234625,
+        "y": 7.593603928303247
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "ShootTrenchDepot"
+      "linkedName": "StartTrenchDepot"
     }
   ],
-  "rotationTargets": [
-    {
-      "waypointRelativePos": 0.6132780082987508,
-      "rotationDegrees": 170.0
-    }
-  ],
+  "rotationTargets": [],
   "constraintZones": [],
   "pointTowardsZones": [],
   "eventMarkers": [],
@@ -47,7 +42,7 @@
   },
   "goalEndState": {
     "velocity": 0.0,
-    "rotation": 180.0
+    "rotation": 0.0
   },
   "reversed": false,
   "folder": "path",

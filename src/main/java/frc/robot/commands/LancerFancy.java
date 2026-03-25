@@ -5,6 +5,8 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.subsystems.BasePilotable;
 import frc.robot.subsystems.Carroussel;
 import frc.robot.subsystems.Hood;
@@ -17,11 +19,11 @@ public class LancerFancy extends ParallelCommandGroup {
 
   public LancerFancy(BasePilotable basePilotable, Lanceur lanceur, Hood hood, Tourelle tourelle, Kickeur kickeur,
       Carroussel carroussel, Superstructure superstructure) {
-   
 
     addCommands(
         new EnvoyerShotParams(lanceur, hood, kickeur, superstructure),
         new ViserTourelle(tourelle, superstructure),
-        new TournerCarroussel(lanceur, hood, tourelle, basePilotable, carroussel, kickeur));  
+        new SequentialCommandGroup(new WaitCommand(5),
+        new TournerCarroussel(lanceur, hood, tourelle, basePilotable, carroussel, kickeur)));
   }
 }

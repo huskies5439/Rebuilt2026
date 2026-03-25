@@ -34,11 +34,13 @@ public class Lanceur extends SubsystemBase {
   private double conversionLanceur = 1.0;
 
   private PIDController pid = new PIDController(0.2, 0, 0.002);
-  private SimpleMotorFeedforward ff = new SimpleMotorFeedforward(0.1, 0.108); 
-                                                                     
+  private SimpleMotorFeedforward ff = new SimpleMotorFeedforward(0.1, 0.108);
+
   private SlewRateLimiter limiter = new SlewRateLimiter(200); // Pour limiter l'accélération du lanceur
 
   private double vraieCible = 0.0;
+
+  private double toleranceLanceur = 1.0;
 
   public Lanceur() {
     boolean inverted = true;
@@ -53,10 +55,8 @@ public class Lanceur extends SubsystemBase {
     config.inverted(!inverted);
     moteurDroit.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
-    pid.setTolerance(1.5);
-
-    SmartDashboard.putNumber("voltage lanceur", 0);//Initialise input open loop dans le dashboard
-    SmartDashboard.putNumber("cible lanceur", 28.5);//Initialise input PID dans le dashboard
+    SmartDashboard.putNumber("voltage lanceur", 0);// Initialise input open loop dans le dashboard
+    SmartDashboard.putNumber("cible lanceur", 28.5);// Initialise input PID dans le dashboard
   }
 
   @Override
@@ -65,7 +65,7 @@ public class Lanceur extends SubsystemBase {
 
   }
 
-  /////Moteur
+  ///// Moteur
   public void setVoltage(double voltage) {
     moteurGauche.setVoltage(voltage);
     moteurDroit.setVoltage(voltage);
@@ -80,20 +80,17 @@ public class Lanceur extends SubsystemBase {
     resetPID();
   }
 
-
-  ///////Encodeur
+  /////// Encodeur
   public double getPosition() {
     return (moteurGauche.getEncoder().getPosition() + moteurDroit.getEncoder().getPosition()) / 2.0;
   }
 
-
-  @Logged (name = "Vitesse Lanceur")
+  @Logged(name = "Vitesse Lanceur")
   public double getVitesse() {
     return (moteurGauche.getEncoder().getVelocity() + moteurDroit.getEncoder().getVelocity()) / 2.0;
   }
 
-
-  ///////////PID
+  /////////// PID
 
   // vraie cible pour déterminer si le lanceur est vraiment à la cible plutot que
   // celle corrigée
@@ -113,9 +110,9 @@ public class Lanceur extends SubsystemBase {
         ff.calculate(cibleCorriger) + pid.calculate(getVitesse(), cibleCorriger));
   }
 
-  @Logged (name = "Cible PID Lanceur")
+  @Logged(name = "Cible PID Lanceur")
   public boolean atCible() {
-    return Math.abs(getVitesse() - getVraieCible()) <= 1; // 1 RPS
+    return Math.abs(getVitesse() - getVraieCible()) <= toleranceLanceur;
   }
 
   public void resetPID() {
@@ -123,7 +120,7 @@ public class Lanceur extends SubsystemBase {
     pid.reset();
   }
 
-  /////////////////COMMANDES
+  ///////////////// COMMANDES
 
   public Command lancerSimpleCommand() {
     return Commands.runEnd(this::lancer, this::stop, this);
@@ -134,8 +131,10 @@ public class Lanceur extends SubsystemBase {
         .andThen(Commands.runEnd(() -> setPID(cible), this::stop, this));
   }
 
-  public Command lancerPIDCommand() {//Version Dashboard  
-    return Commands.defer(()->{return lancerPIDCommand(SmartDashboard.getNumber("cible lanceur", 0));}, Set.of(this));
+  public Command lancerPIDCommand() {// Version Dashboard
+    return Commands.defer(() -> {
+      return lancerPIDCommand(SmartDashboard.getNumber("cible lanceur", 0));
+    }, Set.of(this));
   }
 
 }
