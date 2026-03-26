@@ -103,16 +103,14 @@ public class RobotContainer {
 
   private void configureBindings() {
 
-    // manette.povRight().whileTrue(coude.descendreCommand());
-    // manette.povLeft().whileTrue(coude.monterCommand());
+    manette.a().whileTrue(carroussel.tournerCommand().alongWith(gobeur.goberCommand())/*alongWith(new RetracterShooting(coude,gobeur))*/)
+    .onFalse(carroussel.debloquerCommand().withTimeout(0.5));
 
-    manette.a().whileTrue(carroussel.tournerCommand());// .alongWith(new RetracterShooting(coude,gobeur)));
 
     manette.b().toggleOnTrue(
         kickeur.kickerPIDCommand()
             .alongWith(lanceur.lancerPIDCommand())
-            .alongWith(hood.goToAnglePIDCommand())
-            .alongWith(tourelle.PIDCommand()));
+            .alongWith(hood.goToAnglePIDCommand()));
 
     // manette.y().whileTrue(new SnapTrench(manette::getLeftY,basePilotable));
 
@@ -121,15 +119,19 @@ public class RobotContainer {
             superstructure).finallyDo(() -> new PostShooting(lanceur, carroussel, kickeur)));
 
     // Gober
-    //manette.leftBumper().whileTrue(coude.PIDCommand(0).alongWith(gobeur.goberCommand())).onFalse(coude.PIDCommand(10.0));
+    manette.leftBumper().whileTrue(coude.PIDCommand(0).alongWith(gobeur.goberCommand())).onFalse(coude.PIDCommand(10.0));
     // //à déterminer s'il faut lever légerment le gobeur
 
     // Protection coude
-    //manette.x().onTrue(coude.PIDCommand(90));
+    manette.x().onTrue(coude.PIDCommand(90));
 
     // Grimpeur
-    manette.povUp().whileTrue(grimpeur.monterCommand());
-    manette.povDown().whileTrue(grimpeur.descendreCommand());
+    // manette.povUp().whileTrue(grimpeur.monterCommand());
+    // manette.povDown().whileTrue(grimpeur.descendreCommand());
+
+      
+
+
   }
 
   public Command getAutonomousCommand() {

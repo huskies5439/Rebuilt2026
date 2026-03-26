@@ -48,7 +48,7 @@ public class Carroussel extends SubsystemBase {
     moteur.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
 
-    SmartDashboard.putNumber("voltage carroussel",  3);//Initialise input open loop dans le dashboard
+    SmartDashboard.putNumber("voltage carroussel",  12);//Initialise input open loop dans le dashboard
     SmartDashboard.putNumber("cible carroussel", 0);////Initialise input PID dans le dashboard
 
   }
@@ -68,7 +68,7 @@ public class Carroussel extends SubsystemBase {
   }
 
   public void debloquer() {
-    setVoltage(-2);
+    setVoltage(-6);
   }
 
   public void stop() {

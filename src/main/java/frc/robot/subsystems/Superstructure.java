@@ -242,13 +242,13 @@ public class Superstructure extends SubsystemBase {
 	}
 
 	public boolean isProcheTrench() {
-		double rayon = 1.0;
-		// demiX = 0.51
-		// demiY = 0.61
-		return isProche(PoseTrench.trenchBleuDepot, rayon, true) ||
-				isProche(PoseTrench.trenchBleuOutpost, rayon, true) ||
-				isProche(PoseTrench.trenchRougeDepot, rayon, true) ||
-				isProche(PoseTrench.trenchRougeOutpost, rayon, true);
+		//double rayon = 1.0;
+		double demiX = 0.51; 
+		double demiY = 0.61; 
+		return isProcheRectangle(PoseTrench.trenchBleuDepot, demiX, demiY) ||
+				isProcheRectangle(PoseTrench.trenchBleuOutpost, demiX, demiY) ||
+				isProcheRectangle(PoseTrench.trenchRougeDepot, demiX, demiY) ||
+				isProcheRectangle(PoseTrench.trenchRougeOutpost, demiX, demiY);
 	}
 
 	/////// Cinématique d'un point P (tourelle) sur un corps rigide (robot)
