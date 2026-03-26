@@ -46,7 +46,6 @@ public class Superstructure extends SubsystemBase {
 	private final Supplier<ChassisSpeeds> speedSupplier;
 	private final DoubleSupplier omegaSupplier;
 
-
 	// Look-Up-Table séparée des paramètres de tir afin d'itérer plus rapidement
 	InterpolatingDoubleTreeMap lutTOF = new InterpolatingDoubleTreeMap();
 
@@ -58,7 +57,8 @@ public class Superstructure extends SubsystemBase {
 			InverseInterpolator.forDouble(),
 			ShotParams::interpolate);
 
-	public Superstructure(Supplier<Pose2d> poseSupplier, Supplier<ChassisSpeeds> speedSupplier, DoubleSupplier omegaSupplier) {
+	public Superstructure(Supplier<Pose2d> poseSupplier, Supplier<ChassisSpeeds> speedSupplier,
+			DoubleSupplier omegaSupplier) {
 		this.poseSupplier = poseSupplier;
 		this.speedSupplier = speedSupplier;
 		this.omegaSupplier = omegaSupplier;
@@ -95,7 +95,6 @@ public class Superstructure extends SubsystemBase {
 		setCibleReelle();
 		calculCibleVirtuelle();
 
-		
 	}
 
 	public void setCibleReelle() {
@@ -228,8 +227,24 @@ public class Superstructure extends SubsystemBase {
 		return isProche(cible.getTranslation(), rayon, false);
 	}
 
+	public boolean isProcheRectangle(Translation2d cible, double demiX, double demiY) {
+
+		Pose2d pose = poseRobot.plus(deplacementTourelle);
+
+		double poseX = pose.getX();
+		double poseY = pose.getY();
+
+		return poseX < cible.getX() + demiX
+				&& poseX > cible.getX() - demiX
+				&& poseY < cible.getY() + demiY
+				&& poseY > cible.getY() - demiY;
+
+	}
+
 	public boolean isProcheTrench() {
 		double rayon = 1.0;
+		// demiX = 0.51
+		// demiY = 0.61
 		return isProche(PoseTrench.trenchBleuDepot, rayon, true) ||
 				isProche(PoseTrench.trenchBleuOutpost, rayon, true) ||
 				isProche(PoseTrench.trenchRougeDepot, rayon, true) ||
@@ -253,7 +268,7 @@ public class Superstructure extends SubsystemBase {
 		Translation2d deplacementTourelleRotation = getDeplacementTourelleAvecRotation();
 		//// Formule du produit vectoriel obtenu avec la méthode du déterminant
 		double vitesseX = -deplacementTourelleRotation.getY() * omegaRobot;
-		double vitesseY = deplacementTourelleRotation.getX() *omegaRobot;
+		double vitesseY = deplacementTourelleRotation.getX() * omegaRobot;
 		return new ChassisSpeeds(vitesseX, vitesseY, 0);
 	}
 
