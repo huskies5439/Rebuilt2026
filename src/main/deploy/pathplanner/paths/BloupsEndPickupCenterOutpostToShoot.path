@@ -8,27 +8,11 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 5.0014951424080785,
-        "y": -0.8050630166298092
+        "x": 6.595941155550881,
+        "y": 1.470563484721232
       },
       "isLocked": true,
       "linkedName": "BloupsEndPickUpCenterOutpost"
-    },
-    {
-      "anchor": {
-        "x": 5.549,
-        "y": 0.669
-      },
-      "prevControl": {
-        "x": 5.7755451263373425,
-        "y": 0.8244148594792722
-      },
-      "nextControl": {
-        "x": 5.306619825008029,
-        "y": 0.5027219544469648
-      },
-      "isLocked": true,
-      "linkedName": null
     },
     {
       "anchor": {
@@ -36,8 +20,8 @@
         "y": 0.669265060240964
       },
       "prevControl": {
-        "x": 4.723882777208284,
-        "y": 0.7189123747608105
+        "x": 5.898686746987949,
+        "y": 0.4288554216867476
       },
       "nextControl": null,
       "isLocked": false,
@@ -46,11 +30,7 @@
   ],
   "rotationTargets": [
     {
-      "waypointRelativePos": 0.5,
-      "rotationDegrees": 0.0
-    },
-    {
-      "waypointRelativePos": 0.9078838174273903,
+      "waypointRelativePos": 0.6614107883817387,
       "rotationDegrees": 0.0
     }
   ],

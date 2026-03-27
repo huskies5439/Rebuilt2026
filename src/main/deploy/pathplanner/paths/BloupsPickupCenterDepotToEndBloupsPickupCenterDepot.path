@@ -8,8 +8,8 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.31871101996416,
-        "y": 7.042935955777249
+        "x": 6.302178254251741,
+        "y": 7.009628498397054
       },
       "isLocked": false,
       "linkedName": "BloupsPickupCenterDepot"
@@ -20,8 +20,8 @@
         "y": 6.187759036144579
       },
       "prevControl": {
-        "x": 5.904866358980239,
-        "y": 7.232465984803477
+        "x": 6.070188533331405,
+        "y": 7.27583628626977
       },
       "nextControl": null,
       "isLocked": false,

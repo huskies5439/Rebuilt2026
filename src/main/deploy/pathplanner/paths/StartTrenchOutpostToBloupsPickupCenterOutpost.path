@@ -4,12 +4,12 @@
     {
       "anchor": {
         "x": 3.5492289156559256,
-        "y": 0.8550361445818577
+        "y": 0.67
       },
       "prevControl": null,
       "nextControl": {
-        "x": 4.049228915655926,
-        "y": 0.8550361445818577
+        "x": 3.834322156145069,
+        "y": 0.6742020236407923
       },
       "isLocked": true,
       "linkedName": "StartTrenchOutpost"
@@ -20,8 +20,8 @@
         "y": 0.7457590361445796
       },
       "prevControl": {
-        "x": 5.5489999999999995,
-        "y": -0.00825301204819251
+        "x": 5.615858736758453,
+        "y": 0.6956916088229481
       },
       "nextControl": null,
       "isLocked": false,
@@ -30,8 +30,8 @@
   ],
   "rotationTargets": [
     {
-      "waypointRelativePos": 0.3858921161825751,
-      "rotationDegrees": 180.0
+      "waypointRelativePos": 0.6289978678038313,
+      "rotationDegrees": 0.0
     }
   ],
   "constraintZones": [],
@@ -53,7 +53,7 @@
   "folder": "path",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 180.0
+    "rotation": 0.0
   },
   "useDefaultConstraints": true
 }
