@@ -15,6 +15,7 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 
 import edu.wpi.first.epilogue.Logged;
 import edu.wpi.first.math.controller.ProfiledPIDController;
+import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -33,11 +34,15 @@ public class Hood extends SubsystemBase {
 
   private double conversion = maxPlanetary*(40.0/24.0)*(25.0/332.0)*360.0;
 
+  private SlewRateLimiter limiter = new SlewRateLimiter(100); //à vérifier
+  private double toleranceHood = 1.0;  
+
   private DigitalInput limitSwitch = new DigitalInput(9);
 
   private ProfiledPIDController profiledPID = new ProfiledPIDController(1, 0, 0,
       new TrapezoidProfile.Constraints(60, 180));
 
+  private double vraieCible = Constants.kAngleHoodDepart; 
 
 
   public Hood() {
@@ -50,7 +55,7 @@ public class Hood extends SubsystemBase {
     config.softLimit.forwardSoftLimitEnabled(true).reverseSoftLimitEnabled(true);
     moteur.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
-    profiledPID.setTolerance(0.5);
+    profiledPID.setTolerance(5);
 
     SmartDashboard.putNumber("Cible Hood",Constants.kAngleHoodDepart);
 
@@ -64,11 +69,8 @@ public class Hood extends SubsystemBase {
     if (isLimitSwitch()) {
       resetEncodeur();
     }
-
       SmartDashboard.putNumber("Goal Hood", profiledPID.getGoal().position);
-      SmartDashboard.putNumber("Setpoint", profiledPID.getSetpoint().velocity);
-       
-
+      SmartDashboard.putNumber("Setpoint", profiledPID.getSetpoint().velocity); 
   }
 
   public void setVoltage(double voltage) {
@@ -108,22 +110,30 @@ public class Hood extends SubsystemBase {
     return Commands.runEnd(this::sortir, this::stop, this);
   }
 
+  //Cibles 
+  public void setCible(double cible){
+    this.vraieCible = cible;
+  }
+
+  public double getCible(){
+    return vraieCible; 
+  }
+
   /// PID
-
   public void setPID(double cible) {
-
-   
+      setCible(cible);
       double voltage = profiledPID.calculate(getAngle(), cible);
-      setVoltage(voltage);
-
+      setVoltage(voltage); 
   }
 
   public void resetPID() {
+    setCible(getAngle());
     profiledPID.reset(getAngle());
   }
 
+  @Logged(name = "At Cible Hood")
   public boolean atCible() {
-    return profiledPID.atGoal();
+    return Math.abs(getAngle() - getCible()) <= toleranceHood; 
   }
 
   // Limit switch

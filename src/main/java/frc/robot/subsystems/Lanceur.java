@@ -110,7 +110,7 @@ public class Lanceur extends SubsystemBase {
         ff.calculate(cibleCorriger) + pid.calculate(getVitesse(), cibleCorriger));
   }
 
-  @Logged(name = "Cible PID Lanceur")
+  @Logged(name = "At Cible Lanceur")
   public boolean atCible() {
     return Math.abs(getVitesse() - getVraieCible()) <= toleranceLanceur;
   }

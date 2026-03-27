@@ -17,7 +17,10 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 public final class Constants {
 
  public static final double maxVitesseLineaire = 3.75;
-  public static final double maxVitesseRotation = Math.toRadians(540);
+ public static final double maxVitesseRotation = Math.toRadians(540);
+
+  public static final double maxVitesseLineaireLancer = 0.9;
+  public static final double maxVitesseRotationLancer = Math.toRadians(90);
 
   // Chassis configuration
   public static final double kTrackWidth = 0.5972 ;
@@ -61,12 +64,12 @@ public final class Constants {
 
   }
 
-  public static final double kAngleCoudeDepart = -5; //140.0 ou -8.0 
+  public static final double kAngleCoudeDepart = -5; //140.0 ou -5.0 
 
   public static final double kAngleHoodDepart = 74.0; 
 
   public static final class PidBasePilotable {
-    public static final double kPLineaire = 2.0;
+    public static final double kPLineaire = 8.0;
     public static final double kDLineaire = 1.0;
     public static final double kPRot = 10.0;
     public static final double kDRot = 1.0;

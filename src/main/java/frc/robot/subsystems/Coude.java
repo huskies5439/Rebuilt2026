@@ -55,6 +55,8 @@ public class Coude extends SubsystemBase {
 
   private int stallLimit; 
 
+  private int smartCurrentLimitDefault = 80; 
+
   /** Creates a new Coude. */
   public Coude() {
 
@@ -63,6 +65,7 @@ public class Coude extends SubsystemBase {
     moteurConfigGauche.idleMode(IdleMode.kBrake);
     moteurConfigGauche.encoder.positionConversionFactor(conversionCoude);
     moteurConfigGauche.encoder.velocityConversionFactor(conversionCoude / 60.0);
+    moteurConfigGauche.smartCurrentLimit(smartCurrentLimitDefault); 
 
     moteurGauche.configure(moteurConfigGauche, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
@@ -71,6 +74,7 @@ public class Coude extends SubsystemBase {
     moteurConfigDroit.idleMode(IdleMode.kBrake);
     moteurConfigDroit.encoder.positionConversionFactor(conversionCoude);
     moteurConfigDroit.encoder.velocityConversionFactor(conversionCoude / 60.0);
+    moteurConfigDroit.smartCurrentLimit(smartCurrentLimitDefault); 
 
     moteurDroit.configure(moteurConfigDroit, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
@@ -190,13 +194,13 @@ public class Coude extends SubsystemBase {
     if(isLimited){
        stallLimit = 24; //24
       }else{
-        stallLimit = 999999999; //Pas assez
+        stallLimit = smartCurrentLimitDefault;
       }
       moteurConfigGauche.smartCurrentLimit(stallLimit); 
       moteurConfigDroit.smartCurrentLimit(stallLimit);
       
-      moteurGauche.configure(moteurConfigGauche, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-      moteurDroit.configure(moteurConfigDroit, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+      moteurGauche.configure(moteurConfigGauche, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
+      moteurDroit.configure(moteurConfigDroit, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
    }
 
    public double getCurrentLimitGauche(){

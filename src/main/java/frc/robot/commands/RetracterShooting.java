@@ -13,6 +13,8 @@ public class RetracterShooting extends Command {
   Coude coude; 
   Gobeur gobeur; 
 
+  double angleHaut = 90.0; 
+
   public RetracterShooting(Coude coude, Gobeur gobeur) {
     this.coude = coude; 
     this.gobeur = gobeur; 
@@ -23,16 +25,18 @@ public class RetracterShooting extends Command {
  
   @Override
   public void initialize() {
-    coude.currentLimit(true);
+    
   }
 
   
   @Override
   public void execute() {
-    if(coude.getAngleDroit() <= Constants.kAngleCoudeDepart-10 && coude.getAngleGauche() <= Constants.kAngleCoudeDepart-10){
+    if(coude.getAngleDroit() <= angleHaut && coude.getAngleGauche() <= angleHaut){
+      coude.currentLimit(true);
       coude.monter();
     }else{
-      coude.stop();
+      coude.currentLimit(false);
+      coude.hold();
     }
     gobeur.retractage();
   }

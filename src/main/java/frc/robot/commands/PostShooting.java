@@ -11,15 +11,18 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.subsystems.Carroussel;
 import frc.robot.subsystems.Kickeur;
 import frc.robot.subsystems.Lanceur;
+import frc.robot.subsystems.Superstructure;
 
 public class PostShooting extends SequentialCommandGroup {
 
-  public PostShooting(Lanceur lanceur, Carroussel carroussel, Kickeur kickeur) {
+  public PostShooting(Lanceur lanceur, Carroussel carroussel, Kickeur kickeur, Superstructure superstructure) {
 
     addCommands(
+        Commands.runOnce(()-> superstructure.setIsShooting(false)), 
         Commands.runOnce(carroussel::stop, carroussel),
         new WaitCommand(0.5),
         Commands.runOnce(lanceur::stop, lanceur).alongWith(Commands.runOnce(kickeur::stop, kickeur))
+        
 
     );
   }

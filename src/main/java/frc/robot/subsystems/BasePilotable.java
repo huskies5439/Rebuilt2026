@@ -74,7 +74,7 @@ public class BasePilotable extends SubsystemBase {
       },
       Pose2d.kZero);
 
-  Field2d field2d = new Field2d();
+ 
 
   public BasePilotable() {
 
@@ -123,9 +123,6 @@ public class BasePilotable extends SubsystemBase {
         arriereDroite.getPosition()
     });
 
-    // Update du Field2d
-    field2d.setRobotPose(getPose());
-    SmartDashboard.putData("Field", field2d);
 
     setLimelightRobotOrientation();
     addVisionPosition("limelight");

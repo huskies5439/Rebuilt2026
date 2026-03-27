@@ -23,6 +23,7 @@ import edu.wpi.first.math.interpolation.InterpolatingTreeMap;
 import edu.wpi.first.math.interpolation.InverseInterpolator;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.Filesystem;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -56,6 +57,10 @@ public class Superstructure extends SubsystemBase {
 	InterpolatingTreeMap<Double, ShotParams> lutShotParams = new InterpolatingTreeMap<>(
 			InverseInterpolator.forDouble(),
 			ShotParams::interpolate);
+
+	Field2d field2d = new Field2d();
+
+	private boolean isShooting = false; 
 
 	public Superstructure(Supplier<Pose2d> poseSupplier, Supplier<ChassisSpeeds> speedSupplier,
 			DoubleSupplier omegaSupplier) {
@@ -95,6 +100,10 @@ public class Superstructure extends SubsystemBase {
 		setCibleReelle();
 		calculCibleVirtuelle();
 
+		field2d.setRobotPose(poseRobot);
+		field2d.getObject("cible virtuelle").setPose(new Pose2d(cibleVirtuelle, Rotation2d.kZero));
+		SmartDashboard.putData("field2d", field2d);
+
 	}
 
 	public void setCibleReelle() {
@@ -115,6 +124,10 @@ public class Superstructure extends SubsystemBase {
 				cibleReelle = Cible.souffleuseOutPostBleu;
 			}
 		}
+	}
+
+	public boolean cibleIsHub(){
+		return cibleReelle == Cible.hubRouge || cibleReelle == Cible.hubBleu;
 	}
 
 	public void calculCibleVirtuelle() {
@@ -242,13 +255,21 @@ public class Superstructure extends SubsystemBase {
 	}
 
 	public boolean isProcheTrench() {
-		//double rayon = 1.0;
-		double demiX = 0.51; 
-		double demiY = 0.61; 
+		// double rayon = 1.0;
+		double demiX = 0.35;
+		double demiY = 0.61;
 		return isProcheRectangle(PoseTrench.trenchBleuDepot, demiX, demiY) ||
 				isProcheRectangle(PoseTrench.trenchBleuOutpost, demiX, demiY) ||
 				isProcheRectangle(PoseTrench.trenchRougeDepot, demiX, demiY) ||
 				isProcheRectangle(PoseTrench.trenchRougeOutpost, demiX, demiY);
+	}
+
+	public boolean getIsShooting(){
+		return isShooting; 
+	}
+
+	public void setIsShooting(boolean isShooting){
+		this.isShooting = isShooting; 
 	}
 
 	/////// Cinématique d'un point P (tourelle) sur un corps rigide (robot)

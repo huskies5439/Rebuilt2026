@@ -34,6 +34,9 @@ public class Kickeur extends SubsystemBase {
 
   double conversionKickeur = (18.0 / 36.0);
 
+  private double toleranceKickeur = 1.0;
+
+
   public Kickeur() {
     config.inverted(true);
     config.idleMode(IdleMode.kCoast);
@@ -108,7 +111,7 @@ public class Kickeur extends SubsystemBase {
 
   @Logged(name = "At Cible Kickeur")
   public boolean atCible() {
-    return Math.abs(getVitesse() - getVraieCible()) <= 1; // 1 RPS
+    return Math.abs(getVitesse() - getVraieCible()) <= toleranceKickeur;
   }
 
   public void resetPID() {

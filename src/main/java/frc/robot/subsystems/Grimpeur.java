@@ -21,18 +21,14 @@ public class Grimpeur extends SubsystemBase {
   private SparkFlex moteur = new SparkFlex(59, MotorType.kBrushless);
   private SparkFlexConfig config = new SparkFlexConfig();
 
-  private Servo servo = new Servo(3);
-
   private double conversion;
 
-  private double maxPosition = 0.5; // à vérifier
+  private double maxPosition = 87.0; 
 
-  private double angleServoBarrer = 70.0; // à vérifier
+  private double voltageRapide = 6.0; 
+  private double volatgeLent = 0.25; 
 
-  private double angleServoDebarrer = 105.0; // à vérifier
-
-  private double voltageRapide = 3.0; // à vérifier
-  private double volatgeLent = 0.25; // à vérifier
+  private boolean grimpeurHaut = false;
 
     
   public Grimpeur() {
@@ -42,11 +38,10 @@ public class Grimpeur extends SubsystemBase {
     conversion = 1;
     config.encoder.positionConversionFactor(conversion); //// à vérifier
     config.encoder.velocityConversionFactor(conversion / 60);
-    //config.softLimit.forwardSoftLimit(maxPosition).reverseSoftLimit(0);
-    //config.softLimit.forwardSoftLimitEnabled(true).reverseSoftLimitEnabled(true);
+    // config.softLimit.forwardSoftLimit(maxPosition).reverseSoftLimit(angleMax);
+    // config.softLimit.forwardSoftLimitEnabled(true).reverseSoftLimitEnabled(true);
     moteur.configure(config, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters);
-
-    debarrer();
+    resetEncoder();
 
   }
 
@@ -79,34 +74,36 @@ public class Grimpeur extends SubsystemBase {
     setVoltage(-6);
   }
 
+  public boolean grimpeurHaut(){
+    return grimpeurHaut;
+  }
+
   ///// ENCODEUR
 
   public void resetEncoder() {
     moteur.getEncoder().setPosition(0);
   }
 
-  /// SERVO
-
-  public void barrer() {
-    servo.setAngle(angleServoBarrer);
-  }
-
-  public void debarrer() {
-    servo.setAngle(angleServoDebarrer);
-  }
-
-  public void setServoAngle(double angle) {
-    servo.setAngle(angle);
-  }
-
   /// COMMANDES
-
   public Command monterCommand() {
     return Commands.runEnd(this::monter, this::stop, this);
   }
 
   public Command descendreCommand() {
     return Commands.runEnd(this::descendre, this::stop, this);
+  }
+
+  public Command goMaxHauteur(){
+    
+    return Commands.runOnce(()-> {grimpeurHaut = true;})
+    .andThen(Commands.runEnd(this::monter, this::stop, this).until(()-> {return getPosition() > maxPosition;}));
+     
+  }
+
+  public Command goMinHauteur(){
+
+    return Commands.runOnce(()-> {grimpeurHaut = false;})
+    .andThen(Commands.runEnd(this::descendre, this::stop, this).until(()-> {return getPosition() < 0.0;}));
   }
 
 }

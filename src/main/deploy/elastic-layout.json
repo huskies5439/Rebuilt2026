@@ -8,32 +8,11 @@
         "layouts": [],
         "containers": [
           {
-            "title": "Field",
-            "x": 0.0,
-            "y": 0.0,
-            "width": 768.0,
-            "height": 352.0,
-            "type": "Field",
-            "properties": {
-              "topic": "/SmartDashboard/Field",
-              "period": 0.06,
-              "field_game": "Rebuilt",
-              "robot_width": 0.85,
-              "robot_length": 0.85,
-              "show_other_objects": true,
-              "show_trajectories": true,
-              "field_rotation": 0.0,
-              "robot_color": 4294198070,
-              "trajectory_color": 4294967295,
-              "show_robot_outside_widget": true
-            }
-          },
-          {
             "title": "limelight",
             "x": 768.0,
             "y": 0.0,
             "width": 768.0,
-            "height": 544.0,
+            "height": 576.0,
             "type": "Camera Stream",
             "properties": {
               "topic": "/CameraPublisher/limelight",
@@ -44,33 +23,25 @@
           {
             "title": "Auto Chooser",
             "x": 0.0,
-            "y": 352.0,
+            "y": 0.0,
             "width": 768.0,
-            "height": 192.0,
+            "height": 128.0,
             "type": "ComboBox Chooser",
             "properties": {
               "topic": "/SmartDashboard/Auto Chooser",
               "period": 0.06,
               "sort_options": false
             }
-          }
-        ]
-      }
-    },
-    {
-      "name": "Autonomous",
-      "grid_layout": {
-        "layouts": [],
-        "containers": [
+          },
           {
-            "title": "Field",
+            "title": "field2d",
             "x": 0.0,
-            "y": 0.0,
-            "width": 1024.0,
-            "height": 416.0,
+            "y": 128.0,
+            "width": 768.0,
+            "height": 512.0,
             "type": "Field",
             "properties": {
-              "topic": "/SmartDashboard/Field",
+              "topic": "/SmartDashboard/field2d",
               "period": 0.06,
               "field_game": "Rebuilt",
               "robot_width": 0.85,
@@ -82,7 +53,15 @@
               "trajectory_color": 4294967295,
               "show_robot_outside_widget": true
             }
-          },
+          }
+        ]
+      }
+    },
+    {
+      "name": "Autonomous",
+      "grid_layout": {
+        "layouts": [],
+        "containers": [
           {
             "title": "MatchNumber",
             "x": 0.0,
@@ -113,10 +92,10 @@
           },
           {
             "title": "limelight",
-            "x": 1024.0,
+            "x": 544.0,
             "y": 0.0,
-            "width": 512.0,
-            "height": 416.0,
+            "width": 992.0,
+            "height": 576.0,
             "type": "Camera Stream",
             "properties": {
               "topic": "/CameraPublisher/limelight",
@@ -140,8 +119,8 @@
           },
           {
             "title": "gyro",
-            "x": 1280.0,
-            "y": 416.0,
+            "x": 0.0,
+            "y": 0.0,
             "width": 256.0,
             "height": 256.0,
             "type": "Gyro",
@@ -317,7 +296,7 @@
           },
           {
             "title": "getAngleDroit",
-            "x": 1120.0,
+            "x": 800.0,
             "y": 384.0,
             "width": 128.0,
             "height": 128.0,
@@ -383,7 +362,7 @@
       }
     },
     {
-      "name": "Super Structure",
+      "name": "SuperStructure + Tourelle",
       "grid_layout": {
         "layouts": [
           {
@@ -409,14 +388,106 @@
               "label_position": "TOP"
             },
             "children": []
+          },
+          {
+            "title": "rotation",
+            "x": 928.0,
+            "y": 256.0,
+            "width": 256.0,
+            "height": 256.0,
+            "type": "List Layout",
+            "properties": {
+              "label_position": "TOP"
+            },
+            "children": [
+              {
+                "title": "value",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 128.0,
+                "height": 128.0,
+                "type": "Text Display",
+                "properties": {
+                  "topic": "Robot/m_robotContainer/basePilotable/getPose",
+                  "period": 0.06,
+                  "data_type": "double",
+                  "struct_meta": {
+                    "path": [
+                      "rotation",
+                      "value"
+                    ],
+                    "schema_name": "Pose2d",
+                    "type": "double"
+                  },
+                  "show_submit_button": false
+                }
+              }
+            ]
+          },
+          {
+            "title": "translation",
+            "x": 1216.0,
+            "y": 256.0,
+            "width": 256.0,
+            "height": 256.0,
+            "type": "List Layout",
+            "properties": {
+              "label_position": "TOP"
+            },
+            "children": [
+              {
+                "title": "x",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 128.0,
+                "height": 128.0,
+                "type": "Text Display",
+                "properties": {
+                  "topic": "Robot/m_robotContainer/basePilotable/getPose",
+                  "period": 0.06,
+                  "data_type": "double",
+                  "struct_meta": {
+                    "path": [
+                      "translation",
+                      "x"
+                    ],
+                    "schema_name": "Pose2d",
+                    "type": "double"
+                  },
+                  "show_submit_button": false
+                }
+              },
+              {
+                "title": "y",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 128.0,
+                "height": 128.0,
+                "type": "Text Display",
+                "properties": {
+                  "topic": "Robot/m_robotContainer/basePilotable/getPose",
+                  "period": 0.06,
+                  "data_type": "double",
+                  "struct_meta": {
+                    "path": [
+                      "translation",
+                      "y"
+                    ],
+                    "schema_name": "Pose2d",
+                    "type": "double"
+                  },
+                  "show_submit_button": false
+                }
+              }
+            ]
           }
         ],
         "containers": [
           {
             "title": "getAngleCibleVirtuelle",
-            "x": 512.0,
-            "y": 0.0,
-            "width": 224.0,
+            "x": 736.0,
+            "y": 256.0,
+            "width": 192.0,
             "height": 128.0,
             "type": "Text Display",
             "properties": {
@@ -445,9 +516,9 @@
           },
           {
             "title": "getAngleCibleReelle",
-            "x": 512.0,
+            "x": 736.0,
             "y": 128.0,
-            "width": 224.0,
+            "width": 192.0,
             "height": 128.0,
             "type": "Text Display",
             "properties": {
@@ -459,7 +530,7 @@
           },
           {
             "title": "omega",
-            "x": 256.0,
+            "x": 608.0,
             "y": 0.0,
             "width": 64.0,
             "height": 256.0,
@@ -479,36 +550,15 @@
             }
           },
           {
-            "title": "vx",
-            "x": 128.0,
-            "y": 0.0,
-            "width": 64.0,
-            "height": 256.0,
-            "type": "Text Display",
-            "properties": {
-              "topic": "Robot/m_robotContainer/superstructure/chassisSpeedsRobot",
-              "period": 0.06,
-              "data_type": "double",
-              "struct_meta": {
-                "path": [
-                  "vx"
-                ],
-                "schema_name": "ChassisSpeeds",
-                "type": "double"
-              },
-              "show_submit_button": false
-            }
-          },
-          {
             "title": "vy",
             "x": 192.0,
             "y": 0.0,
-            "width": 64.0,
+            "width": 416.0,
             "height": 256.0,
-            "type": "Text Display",
+            "type": "Graph",
             "properties": {
               "topic": "Robot/m_robotContainer/superstructure/chassisSpeedsRobot",
-              "period": 0.06,
+              "period": 0.033,
               "data_type": "double",
               "struct_meta": {
                 "path": [
@@ -517,7 +567,9 @@
                 "schema_name": "ChassisSpeeds",
                 "type": "double"
               },
-              "show_submit_button": false
+              "time_displayed": 20.0,
+              "color": 4278238420,
+              "line_width": 0.5
             }
           },
           {
@@ -582,6 +634,182 @@
               },
               "show_submit_button": false
             }
+          },
+          {
+            "title": "shot params - Hood",
+            "x": 384.0,
+            "y": 256.0,
+            "width": 160.0,
+            "height": 128.0,
+            "type": "Text Display",
+            "properties": {
+              "topic": "/SmartDashboard/shot params - Hood",
+              "period": 0.06,
+              "data_type": "double",
+              "show_submit_button": false
+            }
+          },
+          {
+            "title": "shot params - kickeur",
+            "x": 544.0,
+            "y": 256.0,
+            "width": 192.0,
+            "height": 128.0,
+            "type": "Text Display",
+            "properties": {
+              "topic": "/SmartDashboard/shot params - kickeur",
+              "period": 0.06,
+              "data_type": "double",
+              "show_submit_button": false
+            }
+          },
+          {
+            "title": "shot params - lanceur",
+            "x": 192.0,
+            "y": 256.0,
+            "width": 192.0,
+            "height": 128.0,
+            "type": "Text Display",
+            "properties": {
+              "topic": "/SmartDashboard/shot params - lanceur",
+              "period": 0.06,
+              "data_type": "double",
+              "show_submit_button": false
+            }
+          },
+          {
+            "title": "getDistanceCibleReelle",
+            "x": 0.0,
+            "y": 256.0,
+            "width": 192.0,
+            "height": 128.0,
+            "type": "Text Display",
+            "properties": {
+              "topic": "Robot/m_robotContainer/superstructure/getDistanceCibleReelle",
+              "period": 0.06,
+              "data_type": "double",
+              "show_submit_button": false
+            }
+          },
+          {
+            "title": "getAngleReel",
+            "x": 0.0,
+            "y": 512.0,
+            "width": 128.0,
+            "height": 128.0,
+            "type": "Text Display",
+            "properties": {
+              "topic": "Robot/m_robotContainer/tourelle/getAngleReel",
+              "period": 0.06,
+              "data_type": "double",
+              "show_submit_button": false
+            }
+          },
+          {
+            "title": "At Cible Hood",
+            "x": 384.0,
+            "y": 384.0,
+            "width": 160.0,
+            "height": 128.0,
+            "type": "Boolean Box",
+            "properties": {
+              "topic": "Robot/m_robotContainer/hood/At Cible Hood",
+              "period": 0.06,
+              "data_type": "boolean",
+              "true_color": 4283215696,
+              "false_color": 4294198070,
+              "true_icon": "None",
+              "false_icon": "None"
+            }
+          },
+          {
+            "title": "At Cible Kickeur",
+            "x": 544.0,
+            "y": 384.0,
+            "width": 192.0,
+            "height": 128.0,
+            "type": "Boolean Box",
+            "properties": {
+              "topic": "Robot/m_robotContainer/kickeur/At Cible Kickeur",
+              "period": 0.06,
+              "data_type": "boolean",
+              "true_color": 4283215696,
+              "false_color": 4294198070,
+              "true_icon": "None",
+              "false_icon": "None"
+            }
+          },
+          {
+            "title": "At Cible Lanceur",
+            "x": 192.0,
+            "y": 384.0,
+            "width": 192.0,
+            "height": 128.0,
+            "type": "Boolean Box",
+            "properties": {
+              "topic": "Robot/m_robotContainer/lanceur/At Cible Lanceur",
+              "period": 0.06,
+              "data_type": "boolean",
+              "true_color": 4283215696,
+              "false_color": 4294198070,
+              "true_icon": "None",
+              "false_icon": "None"
+            }
+          },
+          {
+            "title": "isShooting",
+            "x": 864.0,
+            "y": 0.0,
+            "width": 128.0,
+            "height": 128.0,
+            "type": "Boolean Box",
+            "properties": {
+              "topic": "Robot/m_robotContainer/superstructure/isShooting",
+              "period": 0.06,
+              "data_type": "boolean",
+              "true_color": 4283215696,
+              "false_color": 4294198070,
+              "true_icon": "None",
+              "false_icon": "None"
+            }
+          },
+          {
+            "title": "vx",
+            "x": 128.0,
+            "y": 0.0,
+            "width": 64.0,
+            "height": 256.0,
+            "type": "Text Display",
+            "properties": {
+              "topic": "Robot/m_robotContainer/superstructure/chassisSpeedsRobot",
+              "period": 0.06,
+              "data_type": "double",
+              "struct_meta": {
+                "path": [
+                  "vx"
+                ],
+                "schema_name": "ChassisSpeeds",
+                "type": "double"
+              },
+              "show_submit_button": false
+            }
+          },
+          {
+            "title": "cibleIsHub",
+            "x": 992.0,
+            "y": 0.0,
+            "width": 128.0,
+            "height": 128.0,
+            "type": "Boolean Box",
+            "properties": {
+              "topic": "Robot/m_robotContainer/superstructure/cibleIsHub",
+              "period": 0.06,
+              "data_type": "boolean",
+              "true_color": 4283215696,
+              "false_color": 4294198070,
+              "true_icon": "None",
+              "false_icon": "None"
+            }
           }
         ]
       }
@@ -641,7 +869,7 @@
             }
           },
           {
-            "title": "getPosition",
+            "title": "getPosition grimpeur",
             "x": 1056.0,
             "y": 416.0,
             "width": 128.0,
@@ -670,6 +898,23 @@
               "max_value": 40.0,
               "color": 4278238420,
               "line_width": 2.0
+            }
+          },
+          {
+            "title": "grimpeurHaut",
+            "x": 1184.0,
+            "y": 416.0,
+            "width": 128.0,
+            "height": 128.0,
+            "type": "Boolean Box",
+            "properties": {
+              "topic": "Robot/m_robotContainer/grimpeur/grimpeurHaut",
+              "period": 0.06,
+              "data_type": "boolean",
+              "true_color": 4283215696,
+              "false_color": 4294198070,
+              "true_icon": "None",
+              "false_icon": "None"
             }
           }
         ]
@@ -748,40 +993,6 @@
               "period": 0.06,
               "data_type": "double",
               "show_submit_button": false
-            }
-          },
-          {
-            "title": "At Cible Kickeur",
-            "x": 448.0,
-            "y": 256.0,
-            "width": 128.0,
-            "height": 128.0,
-            "type": "Boolean Box",
-            "properties": {
-              "topic": "Robot/m_robotContainer/kickeur/At Cible Kickeur",
-              "period": 0.06,
-              "data_type": "boolean",
-              "true_color": 4283215696,
-              "false_color": 4294198070,
-              "true_icon": "None",
-              "false_icon": "None"
-            }
-          },
-          {
-            "title": "Cible PID Lanceur",
-            "x": 192.0,
-            "y": 256.0,
-            "width": 128.0,
-            "height": 128.0,
-            "type": "Boolean Box",
-            "properties": {
-              "topic": "Robot/m_robotContainer/lanceur/Cible PID Lanceur",
-              "period": 0.06,
-              "data_type": "boolean",
-              "true_color": 4283215696,
-              "false_color": 4294198070,
-              "true_icon": "None",
-              "false_icon": "None"
             }
           },
           {

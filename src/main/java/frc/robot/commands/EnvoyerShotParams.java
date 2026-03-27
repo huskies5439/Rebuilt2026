@@ -40,7 +40,7 @@ public class EnvoyerShotParams extends Command {
 
   @Override
   public void initialize() {
-    dynamique = false;
+    dynamique = true;
     avecFin = true;
   }
 

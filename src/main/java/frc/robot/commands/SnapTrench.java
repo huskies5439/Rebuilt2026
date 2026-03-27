@@ -26,6 +26,9 @@ public class SnapTrench extends Command {
   double cibleY;
   double cibleAngle;
   ChassisSpeeds chassisSpeeds;
+
+  double getRotationPose;
+
   private DoubleSupplier vx;
 
   public SnapTrench(DoubleSupplier vx, BasePilotable basePilotable) {
@@ -47,6 +50,7 @@ public class SnapTrench extends Command {
     pidY.reset();
 
     pidAngle.reset();
+    getRotationPose = basePilotable.getPose().getRotation().getDegrees();
 
     if (basePilotable.getPose().getY() >= 4.0) {
       cibleY = PoseTrench.trenchBleuDepot.getY();
@@ -54,10 +58,15 @@ public class SnapTrench extends Command {
       cibleY = PoseTrench.trenchBleuOutpost.getY();
     }
 
-    if (Constants.isRedAlliance()) {
-      cibleAngle = Math.toRadians(0);
-    } else {
-      cibleAngle = Math.toRadians(180);
+    // if (Constants.isRedAlliance()) {
+    //   cibleAngle = Math.toRadians(0);
+    // } else {
+    //   cibleAngle = Math.toRadians(180);
+    // }
+    if(Math.abs(getRotationPose) < 90){
+      cibleAngle = Math.toRadians(0); 
+    }else{
+      cibleAngle = Math.toRadians(180); 
     }
   }
 
@@ -78,13 +87,13 @@ public class SnapTrench extends Command {
 
     double omegaRadiansPerSecond = pidAngle.calculate(basePilotable.getPose().getRotation().getRadians(), cibleAngle);
 
-    if (pidY.atSetpoint()) {
-      vyMetersPerSecond = 0.0;
-    }
+    // if (pidY.atSetpoint()) {
+    //   vyMetersPerSecond = 0.0;
+    // }
 
-    if (pidAngle.atSetpoint()) {
-      omegaRadiansPerSecond = 0.0;
-    }
+    // if (pidAngle.atSetpoint()) {
+    //   omegaRadiansPerSecond = 0.0;
+    // }
 
     chassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(vxMetersPerSecond, vyMetersPerSecond, omegaRadiansPerSecond,
         basePilotable.getPose().getRotation());

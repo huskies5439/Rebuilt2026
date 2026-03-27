@@ -12,6 +12,7 @@ import com.revrobotics.spark.config.SparkFlexConfig;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 
 import edu.wpi.first.epilogue.Logged;
+import edu.wpi.first.epilogue.NotLogged;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -30,6 +31,7 @@ public class Tourelle extends SubsystemBase {
   private double conversionTourelle = 20.0 / 200.0 * 360.0; //moteur gear 20 dents tourelle 200 dents, 360 degrés
 
   //PID 
+  private double vraieCible = 0.0; 
   private ProfiledPIDController pidTourelle = new ProfiledPIDController(0.05, 0, 0.001, //Valeurs à déterminer
     new TrapezoidProfile.Constraints(720, 1440)); 
 
@@ -45,7 +47,6 @@ public class Tourelle extends SubsystemBase {
     moteurTourelle.configure(configTourelle, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters); 
 
     //PID 
-    pidTourelle.setTolerance(10); 
     resetEncoder();
   }
 
@@ -88,20 +89,30 @@ public class Tourelle extends SubsystemBase {
     moteurTourelle.getEncoder().setPosition(0); 
   }
 
+  //Cibles 
+  public void setCible(double cible){
+    this.vraieCible = cible;
+  }
+
+  public double getCible(){
+    return vraieCible; 
+  }
+
   //PID 
   public void setPID(double cible){
+     setCible(cible);
     double voltagePID = pidTourelle.calculate(getAngleReel(),cible); 
     setVoltage(voltagePID);
-
-
   }
 
   public void resetPID(){
+    setCible(getAngleReel());
     pidTourelle.reset(getAngleReel());
   }
 
-  public boolean atCible(){
-    return pidTourelle.atGoal(); 
+  @NotLogged
+  public boolean atCible(double toleranceTourelle){
+    return Math.abs(getAngleReel() - getCible()) <= toleranceTourelle;  
   } 
 
 

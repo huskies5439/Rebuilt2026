@@ -10,7 +10,9 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
+import frc.robot.Constants.Cible;
 import frc.robot.subsystems.BasePilotable;
+import frc.robot.subsystems.Superstructure;
 
 public class BasePilotableDefaut extends Command {
 
@@ -19,14 +21,20 @@ public class BasePilotableDefaut extends Command {
   private DoubleSupplier joystickVY;
   private DoubleSupplier joystickOmega;
 
+  private Superstructure superstructure; 
+
   private double deadband = 0.05;
 
   private double vx;
   private double vy;
   private double omega;
 
-  public BasePilotableDefaut(DoubleSupplier joystickVX, DoubleSupplier joystickVY, DoubleSupplier joystickOmega, BasePilotable basePilotable) {
+  private double maxVitesseLineaire; 
+  private double maxVitesseRotation; 
+
+  public BasePilotableDefaut(DoubleSupplier joystickVX, DoubleSupplier joystickVY, DoubleSupplier joystickOmega, BasePilotable basePilotable, Superstructure superstructure) {
     this.basePilotable = basePilotable;
+    this.superstructure = superstructure; 
 
     this.joystickVX = joystickVX;
     this.joystickVY = joystickVY;
@@ -58,9 +66,17 @@ public class BasePilotableDefaut extends Command {
     omega = omega * Math.abs(omega);
 
     // Convertir les valeurs des Joysticks selon les vitesses maximales du robot en téléop
-    vx = vx * Constants.maxVitesseLineaire;
-    vy = vy * Constants.maxVitesseLineaire;
-    omega = omega * Constants.maxVitesseRotation;
+    if(superstructure.getIsShooting() && superstructure.cibleIsHub()){
+      maxVitesseLineaire = Constants.maxVitesseLineaireLancer; 
+      maxVitesseRotation = Constants.maxVitesseRotationLancer; 
+    }else{
+      maxVitesseLineaire = Constants.maxVitesseLineaire; 
+      maxVitesseRotation = Constants.maxVitesseRotation; 
+    }
+
+    vx = vx * maxVitesseLineaire;
+    vy = vy * maxVitesseLineaire;
+    omega = omega * maxVitesseRotation;
     
     // inversion du field oriented selon l'alliance
     double invert = 1;
