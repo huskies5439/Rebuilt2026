@@ -3,16 +3,32 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.5,
-        "y": 7.367951807228916
+        "x": 4.25,
+        "y": 7.4
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.0412650602363884,
-        "y": 7.072903614451602
+        "x": 2.379963855421687,
+        "y": 7.018265060240964
       },
       "isLocked": false,
       "linkedName": "ShootTrenchDepot"
+    },
+    {
+      "anchor": {
+        "x": 2.511096385542168,
+        "y": 5.914566265060241
+      },
+      "prevControl": {
+        "x": 2.946462977825452,
+        "y": 6.347156808573448
+      },
+      "nextControl": {
+        "x": 1.4820944680229358,
+        "y": 4.892125621552767
+      },
+      "isLocked": false,
+      "linkedName": null
     },
     {
       "anchor": {
@@ -20,8 +36,8 @@
         "y": 4.548602409632326
       },
       "prevControl": {
-        "x": 1.3855421686701233,
-        "y": 5.892710843367265
+        "x": 1.8824983568143678,
+        "y": 5.426163649975301
       },
       "nextControl": null,
       "isLocked": false,
@@ -30,7 +46,11 @@
   ],
   "rotationTargets": [
     {
-      "waypointRelativePos": 0.45,
+      "waypointRelativePos": 0.65,
+      "rotationDegrees": 0.0
+    },
+    {
+      "waypointRelativePos": 1.6846473029045628,
       "rotationDegrees": 180.0
     }
   ],
@@ -53,7 +73,7 @@
   "folder": "path",
   "idealStartingState": {
     "velocity": 1.5,
-    "rotation": 180.0
+    "rotation": 0.0
   },
   "useDefaultConstraints": false
 }

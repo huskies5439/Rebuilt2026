@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 7.778253012048193,
-        "y": 4.789012048192771
+        "x": 7.8,
+        "y": 4.8
       },
       "prevControl": null,
       "nextControl": {
-        "x": 7.592481927709838,
-        "y": 5.2807590361445795
+        "x": 7.614228915661645,
+        "y": 5.291746987951808
       },
       "isLocked": false,
       "linkedName": "EndPickupCenterDepot"

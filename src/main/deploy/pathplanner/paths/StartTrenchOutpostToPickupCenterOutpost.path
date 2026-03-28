@@ -3,37 +3,32 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.5492289156559256,
-        "y": 0.67
+        "x": 4.4,
+        "y": 0.6
       },
       "prevControl": null,
       "nextControl": {
-        "x": 4.05889097800694,
-        "y": 0.67
+        "x": 4.909662062351015,
+        "y": 0.6
       },
       "isLocked": true,
       "linkedName": "StartTrenchOutpost"
     },
     {
       "anchor": {
-        "x": 8.267,
-        "y": 0.997
+        "x": 8.25,
+        "y": 0.6
       },
       "prevControl": {
-        "x": 7.789145108187321,
-        "y": 0.9442320549881703
+        "x": 7.772145108187321,
+        "y": 0.5472320549881703
       },
       "nextControl": null,
       "isLocked": false,
       "linkedName": "PickupCenterOutpost"
     }
   ],
-  "rotationTargets": [
-    {
-      "waypointRelativePos": 0.3825726141078825,
-      "rotationDegrees": 0.0
-    }
-  ],
+  "rotationTargets": [],
   "constraintZones": [],
   "pointTowardsZones": [],
   "eventMarkers": [],

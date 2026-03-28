@@ -4,24 +4,24 @@
     {
       "anchor": {
         "x": 4.4,
-        "y": 7.396893857298884
+        "y": 7.4
       },
       "prevControl": null,
       "nextControl": {
         "x": 4.906140132978913,
-        "y": 7.347810706588633
+        "y": 7.350916849289749
       },
       "isLocked": false,
       "linkedName": "StartTrenchDepot"
     },
     {
       "anchor": {
-        "x": 8.248,
-        "y": 7.357024096385541
+        "x": 8.25,
+        "y": 7.4
       },
       "prevControl": {
-        "x": 7.298226384985961,
-        "y": 7.473758590617614
+        "x": 7.293079490281219,
+        "y": 7.4
       },
       "nextControl": null,
       "isLocked": false,

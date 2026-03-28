@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 7.199084337349397,
-        "y": 6.187759036144579
+        "x": 7.4,
+        "y": 6.198686746987952
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.98756743611302,
-        "y": 7.067132063483036
+        "x": 7.188483098763623,
+        "y": 7.078059774326409
       },
       "isLocked": false,
       "linkedName": "BloupsEndPickupCenterDepot"
     },
     {
       "anchor": {
-        "x": 4.4,
-        "y": 7.396893857298884
+        "x": 4.25,
+        "y": 7.4
       },
       "prevControl": {
-        "x": 6.64569780751266,
-        "y": 7.593603928303247
+        "x": 6.495697807512659,
+        "y": 7.596710071004363
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "StartTrenchDepot"
+      "linkedName": "EndTrenchDepot"
     }
   ],
   "rotationTargets": [],

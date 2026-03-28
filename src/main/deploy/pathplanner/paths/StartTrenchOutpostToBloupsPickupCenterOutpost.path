@@ -3,34 +3,34 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.5492289156559256,
-        "y": 0.67
+        "x": 4.4,
+        "y": 0.6
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.834322156145069,
-        "y": 0.6742020236407923
+        "x": 7.827163487927086,
+        "y": 0.650513375807931
       },
       "isLocked": true,
       "linkedName": "StartTrenchOutpost"
     },
     {
       "anchor": {
-        "x": 5.9314698795180725,
-        "y": 0.7457590361445796
+        "x": 7.4,
+        "y": 1.8
       },
       "prevControl": {
-        "x": 5.615858736758453,
-        "y": 0.6956916088229481
+        "x": 7.084388857240381,
+        "y": 1.7499325726783683
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "BloupsPickupCenterOutpost"
+      "linkedName": "BloupsEndPickUpCenterOutpost"
     }
   ],
   "rotationTargets": [
     {
-      "waypointRelativePos": 0.6289978678038313,
+      "waypointRelativePos": 0.14190871369294486,
       "rotationDegrees": 0.0
     }
   ],

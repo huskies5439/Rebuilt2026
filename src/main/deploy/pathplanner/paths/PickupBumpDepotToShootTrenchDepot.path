@@ -3,37 +3,32 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 5.7019879518072285,
-        "y": 5.018493975903613
+        "x": 5.7,
+        "y": 5.0
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.456,
-        "y": 7.138469879518072
+        "x": 6.1500240963855415,
+        "y": 6.887132530120482
       },
       "isLocked": false,
       "linkedName": "PickupBumpDepot"
     },
     {
       "anchor": {
-        "x": 3.5,
-        "y": 7.367951807228916
+        "x": 4.25,
+        "y": 7.4
       },
       "prevControl": {
-        "x": 6.80568674698795,
-        "y": 7.870626506024097
+        "x": 7.363,
+        "y": 7.619289156626506
       },
       "nextControl": null,
       "isLocked": false,
       "linkedName": "ShootTrenchDepot"
     }
   ],
-  "rotationTargets": [
-    {
-      "waypointRelativePos": 0.3676348547717827,
-      "rotationDegrees": -165.0
-    }
-  ],
+  "rotationTargets": [],
   "constraintZones": [],
   "pointTowardsZones": [],
   "eventMarkers": [],
@@ -47,7 +42,7 @@
   },
   "goalEndState": {
     "velocity": 0.0,
-    "rotation": 180.0
+    "rotation": 0.0
   },
   "reversed": false,
   "folder": "path",

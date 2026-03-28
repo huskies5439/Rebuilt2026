@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 8.248,
-        "y": 7.357024096385541
+        "x": 8.25,
+        "y": 7.4
       },
       "prevControl": null,
       "nextControl": {
-        "x": 8.248,
-        "y": 6.8356909676731545
+        "x": 8.25,
+        "y": 6.878666871287614
       },
       "isLocked": false,
       "linkedName": "PickupCenterDepot"
     },
     {
       "anchor": {
-        "x": 7.778253012048193,
-        "y": 4.789012048192771
+        "x": 7.8,
+        "y": 4.8
       },
       "prevControl": {
-        "x": 8.565048192771085,
-        "y": 5.280759036144577
+        "x": 8.586795180722891,
+        "y": 5.2917469879518055
       },
       "nextControl": null,
       "isLocked": false,
