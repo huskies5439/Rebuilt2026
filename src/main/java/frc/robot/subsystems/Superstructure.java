@@ -7,6 +7,7 @@ package frc.robot.subsystems;
 import java.io.File;
 import java.io.FileReader;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
 
@@ -22,6 +23,8 @@ import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
 import edu.wpi.first.math.interpolation.InterpolatingTreeMap;
 import edu.wpi.first.math.interpolation.InverseInterpolator;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -300,45 +303,61 @@ public class Superstructure extends SubsystemBase {
 				.plus(composanteRotationTourelle);
 	}
 
-	// public double normeVecteurLancer() {
-	// double vitesseBallon;
-	// if (getDistanceCibleTourelle() < 1) {
-	// vitesseBallon = Constants.RegimeLanceur.vitesseProche;
-	// } else {
-	// vitesseBallon = Constants.RegimeLanceur.vitesseLoin;
-	// }
-	// // Ajouter la correction de la vitesse ici sur la vitesse Ballonn
+	public boolean isHubActive() {
+		Optional<Alliance> alliance = DriverStation.getAlliance();
 
-	// return vitesseBallon;
-	// }
+		// Hub is always enabled in autonomous.
+		if (DriverStation.isAutonomousEnabled()) {
+			return true;
+		}
+		// At this point, if we're not teleop enabled, there is no hub.
+		if (!DriverStation.isTeleopEnabled()) {
+			return false;
+		}
 
-	// public double conversionBallonRouleau() {
-	// // Norme vecteur donne la vitesse voulue du BALLON. Il faut convertir pour
-	// // obtenir la vitesse correspondante du rouleau du lanceur
-	// return normeVecteurLancer() / (Units.inchesToMeters(4) *
-	// Constants.coefficientFrictionBallon);
-	// }
+		// We're teleop enabled, compute.
+		double matchTime = DriverStation.getMatchTime();
+		String gameData = DriverStation.getGameSpecificMessage();
+		// If we have no game data, we cannot compute, assume hub is active, as its
+		// likely early in teleop.
+		if (gameData.isEmpty()) {
+			return true;
+		}
+		boolean redInactiveFirst = false;
+		switch (gameData.charAt(0)) {
+			case 'R' -> redInactiveFirst = true;
+			case 'B' -> redInactiveFirst = false;
+			default -> {
+				// If we have invalid game data, assume hub is active.
+				return true;
+			}
+		}
 
-	// // pitch
-	// public double pitchVecteurLancer() { // ajouter un clamp pour éviter de
-	// briser le hood
-	// double vitesseBallon = normeVecteurLancer();
-	// double distance = getDistanceCibleTourelle();
-	// double hauteur = cible.getZ();
-	// return Math.toDegrees(
-	// Math.atan(
-	// (Math.pow(vitesseBallon, 2)
-	// + Math.sqrt(
-	// Math.pow(vitesseBallon, 4)
-	// - Math.pow(Constants.g, 2) * Math.pow(distance, 2)
-	// - 2 * Constants.g * Math.pow(vitesseBallon, 2) * hauteur))
-	// / Constants.g * distance));
-	// }
+		// Shift was is active for blue if red won auto, or red if blue won auto.
+		boolean shift1Active = switch (alliance.get()) {
+			case Red -> !redInactiveFirst;
+			case Blue -> redInactiveFirst;
+		};
 
-	// // Yaw
-	// public double yawVecteurLancer() {
-	// return getAngleCible().getDegrees(); // ajouter la correction pour la vitesse
-	// ici
-	// }
+		if (matchTime > 130) {
+			// Transition shift, hub is active.
+			return true;
+		} else if (matchTime > 105 - Constants.PREVISION_TIME) {
+			// Shift 1
+			return shift1Active;
+		} else if (matchTime > 80 - Constants.PREVISION_TIME) {
+			// Shift 2
+			return !shift1Active;
+		} else if (matchTime > 55 - Constants.PREVISION_TIME) {
+			// Shift 3
+			return shift1Active;
+		} else if (matchTime > 30 - Constants.PREVISION_TIME) {
+			// Shift 4
+			return !shift1Active;
+		} else {
+			// End game, hub always active.
+			return true;
+		}
+	}
 
 }

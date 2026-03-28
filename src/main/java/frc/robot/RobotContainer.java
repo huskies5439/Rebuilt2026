@@ -4,13 +4,10 @@
 
 package frc.robot;
 
-import org.apache.commons.lang3.time.StopWatch;
-
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.FollowPathCommand;
 
-import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.epilogue.Logged;
@@ -21,8 +18,6 @@ import frc.robot.commands.PreLancer;
 import frc.robot.commands.RetracterGobeurDurantLancer;
 import frc.robot.commands.RumbleControllerActiveHub;
 import frc.robot.commands.SnapTrench;
-import frc.robot.commands.ViserTourelle;
-import frc.robot.lib.FancyPathGeneration;
 import frc.robot.subsystems.BasePilotable;
 import frc.robot.subsystems.Carroussel;
 import frc.robot.subsystems.Coude;
@@ -34,9 +29,7 @@ import frc.robot.subsystems.Lanceur;
 import frc.robot.subsystems.Superstructure;
 import frc.robot.subsystems.Tourelle;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
-import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -57,11 +50,9 @@ public class RobotContainer {
   private final Kickeur kickeur;
   private final Grimpeur grimpeur;
 
-  private final FancyPathGeneration fancyPath;
-
   private Trigger protectionTrench;
 
-  private Trigger beatController;
+  private Trigger isHubActive;
 
   private final SendableChooser<Command> autoChooser;
 
@@ -78,24 +69,18 @@ public class RobotContainer {
     kickeur = new Kickeur();
     grimpeur = new Grimpeur();
 
+    isHubActive = new Trigger(superstructure::isHubActive);
+
     protectionTrench = new Trigger(superstructure::isProcheTrench).negate();
-
-    beatController = new Trigger(() -> true);
-
-    fancyPath = new FancyPathGeneration(basePilotable::getPose,
-        basePilotable::getChassisSpeeds);
 
     configureBindings();
 
     basePilotable.setDefaultCommand(new BasePilotableDefaut(manette::getLeftY,
         manette::getLeftX, manette::getRightX, basePilotable, superstructure));
 
-    coude.setDefaultCommand(coude.holdCommand()); // A REMETTRE
+    coude.setDefaultCommand(coude.holdCommand());
 
-    hood.setDefaultCommand(hood.goToAnglePIDCommand(Constants.kAngleHoodDepart)); // mauvaise intéraction avec les defer
-                                                                                  // commande
-
-    superstructure.setDefaultCommand(new RumbleControllerActiveHub(manette,superstructure));
+    hood.setDefaultCommand(hood.goToAnglePIDCommand(Constants.kAngleHoodDepart));
 
     FollowPathCommand.warmupCommand().schedule();
 
@@ -151,9 +136,12 @@ public class RobotContainer {
     manette.povDown().whileTrue(grimpeur.descendreCommand());
 
     manette.b().onTrue(new ConditionalCommand(
-      grimpeur.goMinHauteur(),
-      grimpeur.goMaxHauteur().alongWith(coude.PIDCommand(90).withTimeout(1)), 
-      grimpeur :: grimpeurHaut));
+        grimpeur.goMinHauteur(),
+        grimpeur.goMaxHauteur().alongWith(coude.PIDCommand(90).withTimeout(1)),
+        grimpeur::grimpeurHaut));
+
+    isHubActive.onTrue(new RumbleControllerActiveHub(true, manette, superstructure))
+        .onFalse(new RumbleControllerActiveHub(false, manette, superstructure));
 
   }
 

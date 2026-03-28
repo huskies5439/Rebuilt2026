@@ -12,10 +12,10 @@ import com.revrobotics.spark.config.SparkFlexConfig;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 
 import edu.wpi.first.epilogue.Logged;
-import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+
 @Logged
 public class Grimpeur extends SubsystemBase {
   private SparkFlex moteur = new SparkFlex(59, MotorType.kBrushless);
@@ -23,14 +23,10 @@ public class Grimpeur extends SubsystemBase {
 
   private double conversion;
 
-  private double maxPosition = 87.0; 
-
-  private double voltageRapide = 6.0; 
-  private double volatgeLent = 0.25; 
+  private double maxPosition = 87.0;
 
   private boolean grimpeurHaut = false;
 
-    
   public Grimpeur() {
 
     config.inverted(true);
@@ -74,7 +70,7 @@ public class Grimpeur extends SubsystemBase {
     setVoltage(-6);
   }
 
-  public boolean grimpeurHaut(){
+  public boolean grimpeurHaut() {
     return grimpeurHaut;
   }
 
@@ -93,17 +89,25 @@ public class Grimpeur extends SubsystemBase {
     return Commands.runEnd(this::descendre, this::stop, this);
   }
 
-  public Command goMaxHauteur(){
-    
-    return Commands.runOnce(()-> {grimpeurHaut = true;})
-    .andThen(Commands.runEnd(this::monter, this::stop, this).until(()-> {return getPosition() > maxPosition;}));
-     
+  public Command goMaxHauteur() {
+
+    return Commands.runOnce(() -> {
+      grimpeurHaut = true;
+    })
+        .andThen(Commands.runEnd(this::monter, this::stop, this).until(() -> {
+          return getPosition() > maxPosition;
+        }));
+
   }
 
-  public Command goMinHauteur(){
+  public Command goMinHauteur() {
 
-    return Commands.runOnce(()-> {grimpeurHaut = false;})
-    .andThen(Commands.runEnd(this::descendre, this::stop, this).until(()-> {return getPosition() < 0.0;}));
+    return Commands.runOnce(() -> {
+      grimpeurHaut = false;
+    })
+        .andThen(Commands.runEnd(this::descendre, this::stop, this).until(() -> {
+          return getPosition() < 0.0;
+        }));
   }
 
 }

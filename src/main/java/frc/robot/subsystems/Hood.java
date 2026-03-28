@@ -15,7 +15,6 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 
 import edu.wpi.first.epilogue.Logged;
 import edu.wpi.first.math.controller.ProfiledPIDController;
-import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -34,7 +33,6 @@ public class Hood extends SubsystemBase {
 
   private double conversion = maxPlanetary*(40.0/24.0)*(25.0/332.0)*360.0;
 
-  private SlewRateLimiter limiter = new SlewRateLimiter(100); //à vérifier
   private double toleranceHood = 1.0;  
 
   private DigitalInput limitSwitch = new DigitalInput(9);
