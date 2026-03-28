@@ -144,7 +144,7 @@ public class Coude extends SubsystemBase {
 
   /// PID + feedForward
 
-  public double feedForwardResort(double angle) {
+  public double feedForwardRessort(double angle) {
 
     return kR * Math.sin(Math.toRadians(angle));
 
@@ -152,7 +152,7 @@ public class Coude extends SubsystemBase {
 
   public double feedForwardTotal(double angle, double vitesse) {
 
-    return feedForwardResort(angle) + feedforward.calculate(
+    return feedForwardRessort(angle) + feedforward.calculate(
         Math.toRadians(angle), vitesse);
 
   }
