@@ -80,6 +80,7 @@ public class Tourelle extends SubsystemBase {
   }
 
 
+  @Logged
   public double getVitesse(){
     return moteurTourelle.getEncoder().getVelocity(); 
   } 

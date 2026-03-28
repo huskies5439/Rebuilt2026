@@ -16,6 +16,7 @@ import com.pathplanner.lib.util.swerve.SwerveSetpoint;
 import com.pathplanner.lib.util.swerve.SwerveSetpointGenerator;
 
 import edu.wpi.first.epilogue.Logged;
+import edu.wpi.first.epilogue.Logged.Strategy;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -31,7 +32,7 @@ import frc.robot.Constants;
 import frc.robot.Constants.PidBasePilotable;
 import frc.robot.LimelightHelpers;
 
-@Logged
+@Logged(strategy = Strategy.OPT_IN)
 public class BasePilotable extends SubsystemBase {
 
   // Créer les moteurs swerves
@@ -251,6 +252,7 @@ public class BasePilotable extends SubsystemBase {
   }
 
   /////////////// GYRO
+  @Logged(name = "gyro")
   public double getAngleGyro() {
     return gyro.getYaw().getValueAsDouble();
   }

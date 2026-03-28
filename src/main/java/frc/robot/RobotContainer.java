@@ -29,7 +29,6 @@ import frc.robot.subsystems.Lanceur;
 import frc.robot.subsystems.Superstructure;
 import frc.robot.subsystems.Tourelle;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -99,17 +98,13 @@ public class RobotContainer {
 
   private void configureBindings() {
 
-    // manette.a().whileTrue(carroussel.tournerCommand()/*
-    // .alongWith(gobeur.goberCommand())*/.alongWith(new
-    // RetracterShooting(coude,gobeur)))
+    // manette.a().whileTrue(carroussel.tournerCommand().alongWith(new RetracterGobeurDurantLancer(coude,gobeur)))
     // .onFalse(carroussel.debloquerCommand().withTimeout(0.5));
 
-    // manette.b().toggleOnTrue(
-    // kickeur.kickerPIDCommand()
-    // .alongWith(lanceur.lancerPIDCommand())
-    // .alongWith(hood.goToAnglePIDCommand()));
-
-    manette.a().toggleOnTrue(grimpeur.goMaxHauteur().finallyDo(() -> grimpeur.goMinHauteur()));
+    manette.b().toggleOnTrue(
+    kickeur.kickerPIDCommand()
+    .alongWith(lanceur.lancerPIDCommand())
+    .alongWith(hood.goToAnglePIDCommand()));
 
     manette.y().whileTrue(new SnapTrench(manette::getLeftY, basePilotable));
 
@@ -135,14 +130,20 @@ public class RobotContainer {
     manette.povUp().whileTrue(grimpeur.monterCommand());
     manette.povDown().whileTrue(grimpeur.descendreCommand());
 
-    manette.b().onTrue(new ConditionalCommand(
-        grimpeur.goMinHauteur(),
-        grimpeur.goMaxHauteur().alongWith(coude.PIDCommand(90).withTimeout(1)),
-        grimpeur::grimpeurHaut));
+    // manette.b().onTrue(new ConditionalCommand(
+    //     grimpeur.goMinHauteur(),
+    //     grimpeur.goMaxHauteur().alongWith(coude.PIDCommand(90).withTimeout(1)),
+    //     grimpeur::grimpeurHaut));
 
-    isHubActive.onTrue(new RumbleControllerActiveHub(true, manette, superstructure))
-        .onFalse(new RumbleControllerActiveHub(false, manette, superstructure));
+    manette.povRight().whileTrue(coude.monterCommand()); 
+    manette.povLeft().whileTrue(coude.descendreCommand()); 
 
+
+
+    // isHubActive.onTrue(new RumbleControllerActiveHub(true, manette, superstructure))
+        // .onFalse(new RumbleControllerActiveHub(false, manette, superstructure));
+
+    
   }
 
   public Command getAutonomousCommand() {

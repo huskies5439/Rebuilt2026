@@ -14,6 +14,7 @@ import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
 import edu.wpi.first.epilogue.Logged;
+import edu.wpi.first.epilogue.Logged.Strategy;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -23,7 +24,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
-@Logged
+@Logged(strategy = Strategy.OPT_IN)
 public class Hood extends SubsystemBase {
   private SparkMax moteur = new SparkMax(41, MotorType.kBrushless);
   private SparkMaxConfig config = new SparkMaxConfig();
@@ -75,10 +76,12 @@ public class Hood extends SubsystemBase {
     moteur.setVoltage(voltage);
   }
 
+  @Logged
   public double getAngle() {
     return moteur.getEncoder().getPosition();
   }
 
+  @Logged
   public double getVitesse() {
     return moteur.getEncoder().getVelocity();
   }
@@ -135,7 +138,7 @@ public class Hood extends SubsystemBase {
   }
 
   // Limit switch
-
+  @Logged
   public boolean isLimitSwitch() {
     return !limitSwitch.get();
   }

@@ -12,6 +12,7 @@ import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkFlexConfig;
 
 import edu.wpi.first.epilogue.Logged;
+import edu.wpi.first.epilogue.Logged.Strategy;
 import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
@@ -20,7 +21,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
-@Logged
+@Logged(strategy = Strategy.OPT_IN)
 public class Coude extends SubsystemBase {
 
   private SparkFlex moteurGauche = new SparkFlex(21, MotorType.kBrushless);
@@ -36,7 +37,7 @@ public class Coude extends SubsystemBase {
   private final double kp = 0.1;
   private final double maxVelocity = 360;
   private final double maxAcceleration = 720;
-  private final double kR = 1.0;
+  private final double kR = 0.1;
 
   private ProfiledPIDController pidGauche = new ProfiledPIDController(kp, 0, 0,
       new TrapezoidProfile.Constraints(maxVelocity, maxAcceleration));
@@ -110,21 +111,24 @@ public class Coude extends SubsystemBase {
   }
 
   /// Encodeur Gauche
-
+  @Logged
   public double getAngleGauche() {
     return moteurGauche.getEncoder().getPosition();
   }
 
+  @Logged
   public double getVitesseGauche() {
     return moteurGauche.getEncoder().getVelocity();
   }
 
   /// Encodeur Droit
 
+  @Logged
   public double getAngleDroit() {
     return moteurDroit.getEncoder().getPosition();
   }
 
+  @Logged
   public double getVitesseDroit() {
     return moteurDroit.getEncoder().getVelocity();
   }
@@ -140,7 +144,7 @@ public class Coude extends SubsystemBase {
 
   public double feedForwardRessort(double angle) {
 
-    return kR * Math.sin(Math.toRadians(angle));
+    return -kR * Math.sin(Math.toRadians(angle));
 
   }
 
@@ -169,6 +173,7 @@ public class Coude extends SubsystemBase {
     pidGauche.reset(getAngleGauche());
   }
 
+  @Logged
   public boolean atCible() {
     return pidDroit.atGoal() && pidGauche.atGoal();
   }
