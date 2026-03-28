@@ -16,9 +16,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.epilogue.Logged;
 import frc.robot.commands.BasePilotableDefaut;
 import frc.robot.commands.LancerFancy;
-import frc.robot.commands.PostShooting;
-import frc.robot.commands.PreparerLancer;
-import frc.robot.commands.RetracterShooting;
+import frc.robot.commands.PostLancer;
+import frc.robot.commands.PreLancer;
+import frc.robot.commands.RetracterGobeurDurantLancer;
 import frc.robot.commands.RumbleControllerActiveHub;
 import frc.robot.commands.SnapTrench;
 import frc.robot.commands.ViserTourelle;
@@ -100,7 +100,7 @@ public class RobotContainer {
     FollowPathCommand.warmupCommand().schedule();
 
     NamedCommands.registerCommand("gober", coude.PIDCommand(0).alongWith(gobeur.goberCommand()));
-    NamedCommands.registerCommand("preShoot", new PreparerLancer(superstructure, kickeur, lanceur, hood));
+    NamedCommands.registerCommand("preShoot", new PreLancer(superstructure, kickeur, lanceur, hood));
     NamedCommands.registerCommand("shoot",
         new LancerFancy(basePilotable, lanceur, hood, tourelle, kickeur, carroussel, superstructure));
     NamedCommands.registerCommand("grimper", new WaitCommand(1));
@@ -134,10 +134,10 @@ public class RobotContainer {
                 superstructure)
 
         )
-        .onFalse(new PostShooting(lanceur, carroussel, kickeur, superstructure));
+        .onFalse(new PostLancer(lanceur, carroussel, kickeur, superstructure));
 
     manette.rightBumper().and(protectionTrench).and(manette.leftBumper().negate())
-        .whileTrue(new RetracterShooting(coude, gobeur));
+        .whileTrue(new RetracterGobeurDurantLancer(coude, gobeur));
 
     // Gober
     manette.leftBumper().whileTrue(coude.PIDCommand(-5).alongWith(gobeur.goberCommand()));

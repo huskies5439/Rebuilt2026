@@ -35,17 +35,14 @@ public class Coude extends SubsystemBase {
   private SparkFlexConfig moteurConfigGauche = new SparkFlexConfig();
   private SparkFlexConfig moteurConfigDroit = new SparkFlexConfig();
 
-
-  private DigitalInput limitSwitchGauche = new DigitalInput(0);
-  private DigitalInput limitSwitchDroite = new DigitalInput(1);
-
   private double conversionCoude = (1 / 9.0) * 360.0;
 
   /// PID et feedForward
-  
+
   private final double kp = 0.1;
   private final double maxVelocity = 360;
   private final double maxAcceleration = 720;
+  private final double kR = 1.0;
 
   private ProfiledPIDController pidGauche = new ProfiledPIDController(kp, 0, 0,
       new TrapezoidProfile.Constraints(maxVelocity, maxAcceleration));
@@ -55,9 +52,9 @@ public class Coude extends SubsystemBase {
 
   private ArmFeedforward feedforward = new ArmFeedforward(0.0, 0.2, 0.0);// valeur à déterminer
 
-  private int stallLimit; 
+  private int stallLimit;
 
-  private int smartCurrentLimitDefault = 80; 
+  private int smartCurrentLimitDefault = 80;
 
   /** Creates a new Coude. */
   public Coude() {
@@ -67,16 +64,15 @@ public class Coude extends SubsystemBase {
     moteurConfigGauche.idleMode(IdleMode.kBrake);
     moteurConfigGauche.encoder.positionConversionFactor(conversionCoude);
     moteurConfigGauche.encoder.velocityConversionFactor(conversionCoude / 60.0);
-    moteurConfigGauche.smartCurrentLimit(smartCurrentLimitDefault); 
+    moteurConfigGauche.smartCurrentLimit(smartCurrentLimitDefault);
 
     moteurGauche.configure(moteurConfigGauche, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-
 
     moteurConfigDroit.inverted(!inverted);
     moteurConfigDroit.idleMode(IdleMode.kBrake);
     moteurConfigDroit.encoder.positionConversionFactor(conversionCoude);
     moteurConfigDroit.encoder.velocityConversionFactor(conversionCoude / 60.0);
-    moteurConfigDroit.smartCurrentLimit(smartCurrentLimitDefault); 
+    moteurConfigDroit.smartCurrentLimit(smartCurrentLimitDefault);
 
     moteurDroit.configure(moteurConfigDroit, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
@@ -91,14 +87,6 @@ public class Coude extends SubsystemBase {
 
   @Override
   public void periodic() {
-
-    if (isLimitSwitchGauche()) {
-      resetEncodeurLimitSwitchGauche();
-    }
-    if (isLimitSwitchDroite()) {
-      resetEncodeurLimitSwitchDroite();
-    }
-    
 
   }
 
@@ -124,8 +112,7 @@ public class Coude extends SubsystemBase {
   }
 
   public void hold() {
-    setVoltage(feedforward.calculate(Math.toRadians(getAngleGauche()), 0),
-                feedforward.calculate(Math.toRadians(getAngleDroit()), 0));
+    setVoltage(feedForwardTotal(getAngleGauche(), 0), feedForwardTotal(getAngleDroit(), 0));
   }
 
   /// Encodeur Gauche
@@ -148,35 +135,36 @@ public class Coude extends SubsystemBase {
     return moteurDroit.getEncoder().getVelocity();
   }
 
-
   /// Encodeurs
 
-  public void resetEncodeurLimitSwitchGauche() {// Quand on clique la limit switch
-    moteurGauche.getEncoder().setPosition(0); // À determiner
-  }
-
-  public void resetEncodeurLimitSwitchDroite() {// Quand on clique la limit switch
-    moteurDroit.getEncoder().setPosition(0); // À determiner
-  }
-
   public void resetEncodeurStartUp() {
-    moteurDroit.getEncoder().setPosition(Constants.kAngleCoudeDepart);// à déterminer
-    moteurGauche.getEncoder().setPosition(Constants.kAngleCoudeDepart);// à déterminer
+    moteurDroit.getEncoder().setPosition(Constants.kAngleCoudeDepart);
+    moteurGauche.getEncoder().setPosition(Constants.kAngleCoudeDepart);
   }
 
   /// PID + feedForward
+
+  public double feedForwardResort(double angle) {
+
+    return kR * Math.sin(Math.toRadians(angle));
+
+  }
+
+  public double feedForwardTotal(double angle, double vitesse) {
+
+    return feedForwardResort(angle) + feedforward.calculate(
+        Math.toRadians(angle), vitesse);
+
+  }
+
   public void setPID(double cible) {
     double voltagePIDDroit = pidDroit.calculate(getAngleDroit(), cible);
 
-    double voltageFFDroit = feedforward.calculate(
-        Math.toRadians(getAngleDroit()),
-        pidDroit.getSetpoint().velocity);
+    double voltageFFDroit = feedForwardTotal(getAngleDroit(), pidDroit.getSetpoint().velocity);
 
     double voltagePIDGauche = pidGauche.calculate(getAngleGauche(), cible);
 
-    double voltageFFGauche = feedforward.calculate(
-        Math.toRadians(getAngleGauche()),
-        pidGauche.getSetpoint().velocity);
+    double voltageFFGauche = feedForwardTotal(getAngleGauche(), pidGauche.getSetpoint().velocity);
 
     setVoltage(voltagePIDGauche + voltageFFGauche, voltagePIDDroit + voltageFFDroit);
 
@@ -191,36 +179,26 @@ public class Coude extends SubsystemBase {
     return pidDroit.atGoal() && pidGauche.atGoal();
   }
 
-  //smart current limit 
-   public void currentLimit(boolean isLimited){
-    if(isLimited){
-       stallLimit = 24; //24
-      }else{
-        stallLimit = smartCurrentLimitDefault;
-      }
-      moteurConfigGauche.smartCurrentLimit(stallLimit); 
-      moteurConfigDroit.smartCurrentLimit(stallLimit);
-      
-      moteurGauche.configure(moteurConfigGauche, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
-      moteurDroit.configure(moteurConfigDroit, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
-   }
+  // smart current limit
+  public void currentLimit(boolean isLimited) {
+    if (isLimited) {
+      stallLimit = 10;
+    } else {
+      stallLimit = smartCurrentLimitDefault;
+    }
+    moteurConfigGauche.smartCurrentLimit(stallLimit);
+    moteurConfigDroit.smartCurrentLimit(stallLimit);
 
-   public double getCurrentLimitGauche(){
-    return moteurGauche.getOutputCurrent(); 
-   }
-
-   public double getCurrentLimitDroite(){
-    return moteurDroit.getOutputCurrent(); 
-   }
-
-  /// limit switch
-
-  public boolean isLimitSwitchGauche() {
-    return !limitSwitchGauche.get();
+    moteurGauche.configure(moteurConfigGauche, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
+    moteurDroit.configure(moteurConfigDroit, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
   }
 
-  public boolean isLimitSwitchDroite() {
-    return !limitSwitchDroite.get();
+  public double getCurrentLimitGauche() {
+    return moteurGauche.getOutputCurrent();
+  }
+
+  public double getCurrentLimitDroite() {
+    return moteurDroit.getOutputCurrent();
   }
 
   /// commandes
@@ -238,7 +216,7 @@ public class Coude extends SubsystemBase {
   }
 
   public Command PIDCommand(double cible) {
-    return Commands.runOnce(this::resetPID, this).andThen(Commands.run(()->this.setPID(cible), this));
+    return Commands.runOnce(this::resetPID, this).andThen(Commands.run(() -> this.setPID(cible), this));
   }
 
 }

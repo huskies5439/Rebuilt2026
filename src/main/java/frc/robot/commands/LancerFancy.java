@@ -4,17 +4,10 @@
 
 package frc.robot.commands;
 
-import java.util.function.BooleanSupplier;
-
 import edu.wpi.first.wpilibj2.command.Commands;
-import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.subsystems.BasePilotable;
 import frc.robot.subsystems.Carroussel;
-import frc.robot.subsystems.Coude;
-import frc.robot.subsystems.Gobeur;
 import frc.robot.subsystems.Hood;
 import frc.robot.subsystems.Kickeur;
 import frc.robot.subsystems.Lanceur;
@@ -29,10 +22,8 @@ public class LancerFancy extends ParallelCommandGroup {
     addCommands(
         new EnvoyerShotParams(lanceur, hood, kickeur, superstructure),
         new ViserTourelle(tourelle, superstructure),
-        new SequentialCommandGroup(new WaitCommand(0.0001),
-        new TournerCarroussel(lanceur, hood, tourelle, basePilotable, carroussel, kickeur,superstructure)),
+        new TournerCarroussel(lanceur, hood, tourelle, basePilotable, carroussel, kickeur, superstructure),
 
-        Commands.runOnce(()-> superstructure.setIsShooting(true))
-        );
+        Commands.runOnce(() -> superstructure.setLancerActif(true)));
   }
 }

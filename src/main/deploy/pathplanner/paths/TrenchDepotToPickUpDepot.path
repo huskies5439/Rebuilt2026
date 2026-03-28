@@ -3,16 +3,16 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 4.4,
-        "y": 7.396893857298884
+        "x": 3.558,
+        "y": 7.397
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.4731876190973114,
-        "y": 6.821566265060242
+        "x": 2.631187619097311,
+        "y": 6.821672407761358
       },
       "isLocked": false,
-      "linkedName": "StartTrenchDepot"
+      "linkedName": "transitionTrenchDepot"
     },
     {
       "anchor": {
@@ -53,7 +53,7 @@
   "folder": "path",
   "idealStartingState": {
     "velocity": 1.5,
-    "rotation": 0.0
+    "rotation": 180.0
   },
   "useDefaultConstraints": false
 }

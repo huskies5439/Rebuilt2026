@@ -66,7 +66,7 @@ public class BasePilotableDefaut extends Command {
     omega = omega * Math.abs(omega);
 
     // Convertir les valeurs des Joysticks selon les vitesses maximales du robot en téléop
-    if(superstructure.getIsShooting() && superstructure.cibleIsHub()){
+    if(superstructure.getLancerActif() && superstructure.cibleIsHub()){
       maxVitesseLineaire = Constants.maxVitesseLineaireLancer; 
       maxVitesseRotation = Constants.maxVitesseRotationLancer; 
     }else{

@@ -60,7 +60,7 @@ public class Superstructure extends SubsystemBase {
 
 	Field2d field2d = new Field2d();
 
-	private boolean isShooting = false; 
+	private boolean lancerActif = false; 
 
 	public Superstructure(Supplier<Pose2d> poseSupplier, Supplier<ChassisSpeeds> speedSupplier,
 			DoubleSupplier omegaSupplier) {
@@ -264,12 +264,12 @@ public class Superstructure extends SubsystemBase {
 				isProcheRectangle(PoseTrench.trenchRougeOutpost, demiX, demiY);
 	}
 
-	public boolean getIsShooting(){
-		return isShooting; 
+	public boolean getLancerActif(){
+		return this.lancerActif; 
 	}
 
-	public void setIsShooting(boolean isShooting){
-		this.isShooting = isShooting; 
+	public void setLancerActif(boolean lancerActif){
+		this.lancerActif = lancerActif; 
 	}
 
 	/////// Cinématique d'un point P (tourelle) sur un corps rigide (robot)

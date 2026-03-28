@@ -13,7 +13,7 @@ import frc.robot.subsystems.Lanceur;
 import frc.robot.subsystems.Superstructure;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
-public class PreparerLancer extends Command {
+public class PreLancer extends Command {
 
   ShotParams shotParams;
 
@@ -24,7 +24,7 @@ public class PreparerLancer extends Command {
   Lanceur lanceur;
   Hood hood;
 
-  public PreparerLancer(Superstructure superstructure, Kickeur kickeur, Lanceur lanceur, Hood hood) {
+  public PreLancer(Superstructure superstructure, Kickeur kickeur, Lanceur lanceur, Hood hood) {
     this.superstructure = superstructure;
     this.kickeur = kickeur;
     this.lanceur = lanceur;
