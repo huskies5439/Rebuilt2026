@@ -9,8 +9,10 @@ import org.ejml.dense.row.decomposition.chol.CholeskyDecomposition_FDRB_to_FDRM;
 import com.revrobotics.PersistMode;
 import com.revrobotics.ResetMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
+import com.revrobotics.spark.SparkFlex;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
+import com.revrobotics.spark.config.SparkFlexConfig;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
 import edu.wpi.first.epilogue.Logged;
@@ -27,17 +29,17 @@ import frc.robot.Constants;
 @Logged
 public class Coude extends SubsystemBase {
 
-  private SparkMax moteurGauche = new SparkMax(21, MotorType.kBrushless);
-  private SparkMax moteurDroit = new SparkMax(22, MotorType.kBrushless);
+  private SparkFlex moteurGauche = new SparkFlex(21, MotorType.kBrushless);
+  private SparkFlex moteurDroit = new SparkFlex(22, MotorType.kBrushless);
 
-  private SparkMaxConfig moteurConfigGauche = new SparkMaxConfig();
-  private SparkMaxConfig moteurConfigDroit = new SparkMaxConfig();
+  private SparkFlexConfig moteurConfigGauche = new SparkFlexConfig();
+  private SparkFlexConfig moteurConfigDroit = new SparkFlexConfig();
 
 
   private DigitalInput limitSwitchGauche = new DigitalInput(0);
   private DigitalInput limitSwitchDroite = new DigitalInput(1);
 
-  private double conversionCoude = (1 / 5.0) * (1 / 5.0) * (1 / 3.0) * 360.0;
+  private double conversionCoude = (1 / 9.0) * 360.0;
 
   /// PID et feedForward
   

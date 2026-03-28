@@ -95,6 +95,8 @@ public class RobotContainer {
     hood.setDefaultCommand(hood.goToAnglePIDCommand(Constants.kAngleHoodDepart)); // mauvaise intéraction avec les defer
                                                                                   // commande
 
+    superstructure.setDefaultCommand(new RumbleControllerActiveHub(manette,superstructure));
+
     FollowPathCommand.warmupCommand().schedule();
 
     NamedCommands.registerCommand("gober", coude.PIDCommand(0).alongWith(gobeur.goberCommand()));
@@ -152,10 +154,6 @@ public class RobotContainer {
       grimpeur.goMinHauteur(),
       grimpeur.goMaxHauteur().alongWith(coude.PIDCommand(90).withTimeout(1)), 
       grimpeur :: grimpeurHaut));
-
-    manette.leftTrigger().whileTrue(new RumbleControllerActiveHub(manette));
-
-    beatController.whileTrue(new RumbleControllerActiveHub(manette));
 
   }
 

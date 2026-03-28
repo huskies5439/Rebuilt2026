@@ -6,69 +6,97 @@ package frc.robot.commands;
 
 import java.util.Optional;
 
+import edu.wpi.first.epilogue.Logged;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import frc.robot.subsystems.Superstructure;
 
+@Logged
 public class RumbleControllerActiveHub extends Command {
 
   //Avant de descendre plus loin, veuillez noter que le code si-dessous est extrêmement laid!
   //Si vous ne voulez point devenir aveugle pour le restant de votre vie, ne descendez pas plus loin!
 
-  CommandXboxController manette = new CommandXboxController(0); 
+  CommandXboxController manette;
   Boolean hasChanged = false; 
 
-  int changeBufferMAX = 30;
+  int changeBufferMAX = 230;
   int changeBuffer = changeBufferMAX; 
 
   int step = 1; 
 
-  int heartBuffer1MAX = 30; 
+  int heartBuffer1MAX = 10; 
   int heartBuffer1 = heartBuffer1MAX; 
   boolean beatInit = false; 
 
-  int heartBuffer2MAX = 20;
+  int heartBuffer2MAX = 15;
   int heartBuffer2 = heartBuffer2MAX;
 
-  int heartBuffer4MAX = 60; 
+  int heartBuffer4MAX = 40; 
   int heartBuffer4 = heartBuffer4MAX; 
 
 
+  boolean hasNotHubActiveVibrate = true; 
+  int notHubActiveInfoBufferMAX = 60; 
+  int notHubActiveInfoBuffer = notHubActiveInfoBufferMAX; 
 
-  public RumbleControllerActiveHub(CommandXboxController manette) {
+
+
+
+  public RumbleControllerActiveHub(CommandXboxController manette, Superstructure superstructure) {
     this.manette = manette; 
+    addRequirements(superstructure);
   }
 
   @Override
   public void initialize() {
-
+    hasChanged = false; 
+    changeBuffer = changeBufferMAX; 
+    step = 1; 
   }
  
   @Override
    public void execute() {
-  //  if(isHubActive()){
-  //     if(!hasChanged){
+   if(isHubActive()){
+      if(!hasChanged){
        setBeat();
-  //      if(changeBuffer > 0){
-  //       changeBuffer--;
-  //      }else{
-  //        hasChanged = true; 
-  //      }
-  //     }
-  //   }else{
-  //      manette.setRumble(RumbleType.kBothRumble,1.0); 
-  //      changeBuffer = changeBufferMAX; 
-  //      hasChanged = false; 
-  //   }
+       hasNotHubActiveVibrate = false; 
+       notHubActiveInfoBuffer = notHubActiveInfoBufferMAX; 
+       if(changeBuffer > 0){
+        changeBuffer--;
+       }else{
+         hasChanged = true; 
+       }
+      }
+    }else{
+      if(!hasNotHubActiveVibrate && !isHubActive()){
+        if(notHubActiveInfoBuffer > 0){
+          notHubActiveInfoBuffer--; 
+           manette.setRumble(RumbleType.kBothRumble,1.0); 
+        }else{
+          hasNotHubActiveVibrate = true; 
+        }
+      }else{
+        manette.setRumble(RumbleType.kBothRumble,0.0); 
+        changeBuffer = changeBufferMAX; 
+        heartBuffer1 = heartBuffer1MAX; 
+        heartBuffer2 = heartBuffer2MAX; 
+        heartBuffer4 = heartBuffer4MAX; 
+       }
+       hasChanged = false; 
+    }
 
  }
 
 
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    // manette.setRumble(RumbleType.kBothRumble,0);   
+  }
 
  
   @Override
@@ -78,7 +106,7 @@ public class RumbleControllerActiveHub extends Command {
 
 
   public void setBeat(){
-      manette.setRumble(RumbleType.kBothRumble,1);   
+      //manette.setRumble(RumbleType.kBothRumble,1);   
     if(step == 1){
       if(!beatInit){
         heartBuffer1 = heartBuffer1MAX; 
@@ -168,7 +196,7 @@ public class RumbleControllerActiveHub extends Command {
       case Blue -> redInactiveFirst;
     };
 
-    if (matchTime > 130) {
+    if (matchTime > 130) { //130 
       // Transition shift, hub is active.
       return true;
     } else if (matchTime > 105) {
