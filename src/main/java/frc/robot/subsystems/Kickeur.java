@@ -8,7 +8,9 @@ import java.util.Set;
 
 import com.revrobotics.PersistMode;
 import com.revrobotics.ResetMode;
+import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkFlex;
+import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkFlexConfig;
@@ -26,6 +28,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 @Logged(strategy = Strategy.OPT_IN)
 public class Kickeur extends SubsystemBase {
   private SparkFlex moteur = new SparkFlex(51, MotorType.kBrushless);
+  private SparkClosedLoopController pidFlex = moteur.getClosedLoopController();
   private SparkFlexConfig config = new SparkFlexConfig();
 
   private PIDController pid = new PIDController(0.1, 0, 0.001);
@@ -41,10 +44,19 @@ public class Kickeur extends SubsystemBase {
   public Kickeur() {
     config.inverted(true);
     config.idleMode(IdleMode.kCoast);
+
     config.encoder.positionConversionFactor(conversionKickeur);
     config.encoder.velocityConversionFactor(conversionKickeur / 60.0);
     config.encoder.quadratureMeasurementPeriod(10);
     config.encoder.quadratureAverageDepth(2);
+
+    //Les gains PID des Flex sont en duty cycle (entre 0-1), donc il faut diviser par 12...
+    config.closedLoop.p(0.1/12.0).i(0).d(0.001/12.0).outputRange(-1, 1);
+    //Les gains FF des Flex sont en Volts, donc on est ok avec nos pratiques actuelles
+    config.closedLoop.feedForward.kS(0.203).kV(0.216);
+
+    //////ALLER ACTIVER LE PID FLEX DANS SETPID POUR TESTER
+
     moteur.configure(config, ResetMode.kResetSafeParameters,
         PersistMode.kPersistParameters);
 
@@ -108,6 +120,8 @@ public class Kickeur extends SubsystemBase {
     double cibleCorriger = limiter.calculate(cible);
     setVoltage(
         ff.calculate(cibleCorriger) + pid.calculate(getVitesse(), cibleCorriger));
+    
+    //pidFlex.setSetpoint(cibleCorriger, ControlType.kVelocity);
   }
 
   @Logged(name = "At Cible Kickeur")
@@ -118,6 +132,7 @@ public class Kickeur extends SubsystemBase {
   public void resetPID() {
     setVraieCible(0);
     pid.reset();
+    //pidFlex ne semble pas avoir besoin de reset
   }
 
   //////// COMMAND

@@ -8,7 +8,9 @@ import java.util.Set;
 
 import com.revrobotics.PersistMode;
 import com.revrobotics.ResetMode;
+import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkFlex;
+import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.config.SparkFlexConfig;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
@@ -30,6 +32,8 @@ public class Lanceur extends SubsystemBase {
   private SparkFlex moteurGauche = new SparkFlex(61, MotorType.kBrushless);
   private SparkFlex moteurDroit = new SparkFlex(62, MotorType.kBrushless);
 
+  private SparkClosedLoopController pidFlex = moteurGauche.getClosedLoopController();
+
   private SparkFlexConfig config = new SparkFlexConfig();
 
   private double conversionLanceur = 1.0;
@@ -47,13 +51,24 @@ public class Lanceur extends SubsystemBase {
     boolean inverted = true;
     config.inverted(inverted);
     config.idleMode(IdleMode.kCoast);
+
     config.encoder.positionConversionFactor(conversionLanceur);
     config.encoder.velocityConversionFactor(conversionLanceur / 60.0);
     config.encoder.quadratureMeasurementPeriod(10);
     config.encoder.quadratureAverageDepth(2);
+
+    //Les gains PID des Flex sont en duty cycle (entre 0-1), donc il faut diviser par 12...
+    config.closedLoop.p(0.2/12.0).i(0).d(0.002/12.0).outputRange(-1, 1);
+    //Les gains FF des Flex sont en Volts, donc on est ok avec nos pratiques actuelles
+    config.closedLoop.feedForward.kS(0.1).kV(0.108);
+
+    //////ALLER ACTIVER LE PID FLEX DANS SETPID POUR TESTER !!!
+
     moteurGauche.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
     config.inverted(!inverted);
+    //////Ajouter le follow pour le pidFlex
+    config.follow(moteurGauche);//On peut aussi mettre un boolean pour que le follow soit automatiquement inversé 
     moteurDroit.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
     SmartDashboard.putNumber("voltage lanceur", 0);// Initialise input open loop dans le dashboard
@@ -109,6 +124,7 @@ public class Lanceur extends SubsystemBase {
     double cibleCorriger = limiter.calculate(cible);
     setVoltage(
         ff.calculate(cibleCorriger) + pid.calculate(getVitesse(), cibleCorriger));
+    //pidFlex.setSetpoint(cibleCorriger, ControlType.kVelocity);
   }
 
   @Logged(name = "At Cible Lanceur")
@@ -119,6 +135,7 @@ public class Lanceur extends SubsystemBase {
   public void resetPID() {
     setVraieCible(0);
     pid.reset();
+    //pidFlex ne semble pas avoir besoin d'un reset
   }
 
   ///////////////// COMMANDES
