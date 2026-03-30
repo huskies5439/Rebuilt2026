@@ -110,6 +110,17 @@ public class Coude extends SubsystemBase {
     setVoltage(feedForwardTotal(getAngleGauche(), 0), feedForwardTotal(getAngleDroit(), 0));
   }
 
+  //Télémétrie
+  @Logged(name = "Courant Coude Gauche")
+  public double getCourantGauche(){
+    return moteurGauche.getOutputCurrent();
+  }
+
+  @Logged(name = "Courant Coude Droit")
+  public double getCourantDroit(){
+    return moteurDroit.getOutputCurrent();
+  }
+
   /// Encodeur Gauche
   @Logged
   public double getAngleGauche() {

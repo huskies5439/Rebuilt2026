@@ -26,7 +26,7 @@ public class Carroussel extends SubsystemBase {
   private SparkFlexConfig config = new SparkFlexConfig();
 
   // moteur avec maxPlanetary, poulie 36 vers 72, 360 degrées
-  private double maxPlanetary = 9.0;
+  private double maxPlanetary = 4.0*4.0;
   private double conversion = (1.0 / maxPlanetary) * (36.0 / 72.0) * 360;
 
   public Carroussel() {
@@ -62,6 +62,17 @@ public class Carroussel extends SubsystemBase {
 
   public void stop() {
     setVoltage(0);
+  }
+
+  //Télémétrie
+  @Logged(name = "Courant Carroussel")
+  public double getCourant(){
+    return moteur.getOutputCurrent();
+  }
+
+  @Logged(name = "Temperature Carroussel")
+  public double getTemperature(){
+    return moteur.getMotorTemperature();
   }
 
   //////// ENCODEUR
