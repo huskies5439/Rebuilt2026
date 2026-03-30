@@ -68,7 +68,7 @@ public class Lanceur extends SubsystemBase {
 
     config.inverted(!inverted);
     //////Ajouter le follow pour le pidFlex
-    config.follow(moteurGauche);//On peut aussi mettre un boolean pour que le follow soit automatiquement inversé 
+    //config.follow(moteurGauche);//On peut aussi mettre un boolean pour que le follow soit automatiquement inversé 
     moteurDroit.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
     SmartDashboard.putNumber("voltage lanceur", 0);// Initialise input open loop dans le dashboard

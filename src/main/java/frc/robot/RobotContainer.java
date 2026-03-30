@@ -98,7 +98,7 @@ public class RobotContainer {
 
   private void configureBindings() {
 
-    manette.a().whileTrue(carroussel.tournerCommand().alongWith(new RetracterGobeurDurantLancer(coude,gobeur)))
+    manette.a().whileTrue(carroussel.tournerCommand().alongWith(new RetracterGobeurDurantLancer(coude, gobeur)))
     .onFalse(carroussel.debloquerCommand().withTimeout(0.5));
 
     manette.b().toggleOnTrue(

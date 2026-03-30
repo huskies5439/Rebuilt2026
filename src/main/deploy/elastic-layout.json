@@ -280,7 +280,7 @@
           {
             "title": "atCible",
             "x": 1408.0,
-            "y": 384.0,
+            "y": 512.0,
             "width": 128.0,
             "height": 128.0,
             "type": "Boolean Box",
@@ -296,7 +296,7 @@
           },
           {
             "title": "getAngleDroit",
-            "x": 800.0,
+            "x": 1088.0,
             "y": 384.0,
             "width": 128.0,
             "height": 128.0,
@@ -360,7 +360,7 @@
           },
           {
             "title": "Courant Coude Droit",
-            "x": 800.0,
+            "x": 1088.0,
             "y": 512.0,
             "width": 128.0,
             "height": 128.0,
@@ -397,29 +397,157 @@
             "title": "chassisSpeedsRobot",
             "x": 0.0,
             "y": 0.0,
-            "width": 128.0,
+            "width": 256.0,
             "height": 256.0,
             "type": "List Layout",
             "properties": {
               "label_position": "TOP"
             },
-            "children": []
+            "children": [
+              {
+                "title": "vx",
+                "x": 32.0,
+                "y": 32.0,
+                "width": 64.0,
+                "height": 256.0,
+                "type": "Text Display",
+                "properties": {
+                  "topic": "Robot/m_robotContainer/superstructure/chassisSpeedsRobot",
+                  "period": 0.06,
+                  "data_type": "double",
+                  "struct_meta": {
+                    "path": [
+                      "vx"
+                    ],
+                    "schema_name": "ChassisSpeeds",
+                    "type": "double"
+                  },
+                  "show_submit_button": false
+                }
+              },
+              {
+                "title": "omega",
+                "x": 64.0,
+                "y": 128.0,
+                "width": 64.0,
+                "height": 256.0,
+                "type": "Text Display",
+                "properties": {
+                  "topic": "Robot/m_robotContainer/superstructure/chassisSpeedsRobot",
+                  "period": 0.06,
+                  "data_type": "double",
+                  "struct_meta": {
+                    "path": [
+                      "omega"
+                    ],
+                    "schema_name": "ChassisSpeeds",
+                    "type": "double"
+                  },
+                  "show_submit_button": false
+                }
+              },
+              {
+                "title": "vy",
+                "x": 128.0,
+                "y": 128.0,
+                "width": 64.0,
+                "height": 256.0,
+                "type": "Text Display",
+                "properties": {
+                  "topic": "Robot/m_robotContainer/superstructure/chassisSpeedsRobot",
+                  "period": 0.033,
+                  "data_type": "double",
+                  "struct_meta": {
+                    "path": [
+                      "vy"
+                    ],
+                    "schema_name": "ChassisSpeeds",
+                    "type": "double"
+                  },
+                  "show_submit_button": false
+                }
+              }
+            ]
           },
           {
             "title": "getVitesseTourelle",
-            "x": 1376.0,
+            "x": 1280.0,
             "y": 0.0,
-            "width": 160.0,
+            "width": 256.0,
             "height": 256.0,
             "type": "List Layout",
             "properties": {
               "label_position": "TOP"
             },
-            "children": []
+            "children": [
+              {
+                "title": "vx",
+                "x": 1376.0,
+                "y": 0.0,
+                "width": 64.0,
+                "height": 256.0,
+                "type": "Text Display",
+                "properties": {
+                  "topic": "Robot/m_robotContainer/superstructure/getVitesseTourelle",
+                  "period": 0.06,
+                  "data_type": "double",
+                  "struct_meta": {
+                    "path": [
+                      "vx"
+                    ],
+                    "schema_name": "ChassisSpeeds",
+                    "type": "double"
+                  },
+                  "show_submit_button": false
+                }
+              },
+              {
+                "title": "vy",
+                "x": 1408.0,
+                "y": 64.0,
+                "width": 64.0,
+                "height": 256.0,
+                "type": "Text Display",
+                "properties": {
+                  "topic": "Robot/m_robotContainer/superstructure/getVitesseTourelle",
+                  "period": 0.06,
+                  "data_type": "double",
+                  "struct_meta": {
+                    "path": [
+                      "vy"
+                    ],
+                    "schema_name": "ChassisSpeeds",
+                    "type": "double"
+                  },
+                  "show_submit_button": false
+                }
+              },
+              {
+                "title": "omega",
+                "x": 1408.0,
+                "y": 160.0,
+                "width": 64.0,
+                "height": 256.0,
+                "type": "Text Display",
+                "properties": {
+                  "topic": "Robot/m_robotContainer/superstructure/getVitesseTourelle",
+                  "period": 0.06,
+                  "data_type": "double",
+                  "struct_meta": {
+                    "path": [
+                      "omega"
+                    ],
+                    "schema_name": "ChassisSpeeds",
+                    "type": "double"
+                  },
+                  "show_submit_button": false
+                }
+              }
+            ]
           },
           {
             "title": "rotation",
-            "x": 928.0,
+            "x": 1024.0,
             "y": 256.0,
             "width": 256.0,
             "height": 256.0,
@@ -454,7 +582,7 @@
           },
           {
             "title": "translation",
-            "x": 1216.0,
+            "x": 1280.0,
             "y": 256.0,
             "width": 256.0,
             "height": 256.0,
@@ -463,28 +591,6 @@
               "label_position": "TOP"
             },
             "children": [
-              {
-                "title": "x",
-                "x": 0.0,
-                "y": 0.0,
-                "width": 128.0,
-                "height": 128.0,
-                "type": "Text Display",
-                "properties": {
-                  "topic": "Robot/m_robotContainer/basePilotable/getPose",
-                  "period": 0.06,
-                  "data_type": "double",
-                  "struct_meta": {
-                    "path": [
-                      "translation",
-                      "x"
-                    ],
-                    "schema_name": "Pose2d",
-                    "type": "double"
-                  },
-                  "show_submit_button": false
-                }
-              },
               {
                 "title": "y",
                 "x": 0.0,
@@ -506,6 +612,28 @@
                   },
                   "show_submit_button": false
                 }
+              },
+              {
+                "title": "x",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 128.0,
+                "height": 128.0,
+                "type": "Text Display",
+                "properties": {
+                  "topic": "Robot/m_robotContainer/basePilotable/getPose",
+                  "period": 0.06,
+                  "data_type": "double",
+                  "struct_meta": {
+                    "path": [
+                      "translation",
+                      "x"
+                    ],
+                    "schema_name": "Pose2d",
+                    "type": "double"
+                  },
+                  "show_submit_button": false
+                }
               }
             ]
           }
@@ -513,8 +641,8 @@
         "containers": [
           {
             "title": "getAngleCibleVirtuelle",
-            "x": 736.0,
-            "y": 256.0,
+            "x": 1024.0,
+            "y": 0.0,
             "width": 192.0,
             "height": 128.0,
             "type": "Text Display",
@@ -527,7 +655,7 @@
           },
           {
             "title": "isProcheTrench",
-            "x": 736.0,
+            "x": 256.0,
             "y": 0.0,
             "width": 128.0,
             "height": 128.0,
@@ -544,8 +672,8 @@
           },
           {
             "title": "getAngleCibleReelle",
-            "x": 736.0,
-            "y": 128.0,
+            "x": 832.0,
+            "y": 0.0,
             "width": 192.0,
             "height": 128.0,
             "type": "Text Display",
@@ -553,113 +681,6 @@
               "topic": "Robot/m_robotContainer/superstructure/getAngleCibleReelle",
               "period": 0.06,
               "data_type": "double",
-              "show_submit_button": false
-            }
-          },
-          {
-            "title": "omega",
-            "x": 608.0,
-            "y": 0.0,
-            "width": 64.0,
-            "height": 256.0,
-            "type": "Text Display",
-            "properties": {
-              "topic": "Robot/m_robotContainer/superstructure/chassisSpeedsRobot",
-              "period": 0.06,
-              "data_type": "double",
-              "struct_meta": {
-                "path": [
-                  "omega"
-                ],
-                "schema_name": "ChassisSpeeds",
-                "type": "double"
-              },
-              "show_submit_button": false
-            }
-          },
-          {
-            "title": "vy",
-            "x": 192.0,
-            "y": 0.0,
-            "width": 416.0,
-            "height": 256.0,
-            "type": "Graph",
-            "properties": {
-              "topic": "Robot/m_robotContainer/superstructure/chassisSpeedsRobot",
-              "period": 0.033,
-              "data_type": "double",
-              "struct_meta": {
-                "path": [
-                  "vy"
-                ],
-                "schema_name": "ChassisSpeeds",
-                "type": "double"
-              },
-              "time_displayed": 20.0,
-              "color": 4278238420,
-              "line_width": 0.5
-            }
-          },
-          {
-            "title": "omega",
-            "x": 1312.0,
-            "y": 0.0,
-            "width": 64.0,
-            "height": 256.0,
-            "type": "Text Display",
-            "properties": {
-              "topic": "Robot/m_robotContainer/superstructure/getVitesseTourelle",
-              "period": 0.06,
-              "data_type": "double",
-              "struct_meta": {
-                "path": [
-                  "omega"
-                ],
-                "schema_name": "ChassisSpeeds",
-                "type": "double"
-              },
-              "show_submit_button": false
-            }
-          },
-          {
-            "title": "vx",
-            "x": 1184.0,
-            "y": 0.0,
-            "width": 64.0,
-            "height": 256.0,
-            "type": "Text Display",
-            "properties": {
-              "topic": "Robot/m_robotContainer/superstructure/getVitesseTourelle",
-              "period": 0.06,
-              "data_type": "double",
-              "struct_meta": {
-                "path": [
-                  "vx"
-                ],
-                "schema_name": "ChassisSpeeds",
-                "type": "double"
-              },
-              "show_submit_button": false
-            }
-          },
-          {
-            "title": "vy",
-            "x": 1248.0,
-            "y": 0.0,
-            "width": 64.0,
-            "height": 256.0,
-            "type": "Text Display",
-            "properties": {
-              "topic": "Robot/m_robotContainer/superstructure/getVitesseTourelle",
-              "period": 0.06,
-              "data_type": "double",
-              "struct_meta": {
-                "path": [
-                  "vy"
-                ],
-                "schema_name": "ChassisSpeeds",
-                "type": "double"
-              },
               "show_submit_button": false
             }
           },
@@ -722,8 +743,8 @@
           {
             "title": "getAngleReel",
             "x": 0.0,
-            "y": 512.0,
-            "width": 128.0,
+            "y": 576.0,
+            "width": 192.0,
             "height": 128.0,
             "type": "Text Display",
             "properties": {
@@ -786,7 +807,7 @@
           },
           {
             "title": "isShooting",
-            "x": 864.0,
+            "x": 384.0,
             "y": 0.0,
             "width": 128.0,
             "height": 128.0,
@@ -802,29 +823,8 @@
             }
           },
           {
-            "title": "vx",
-            "x": 128.0,
-            "y": 0.0,
-            "width": 64.0,
-            "height": 256.0,
-            "type": "Text Display",
-            "properties": {
-              "topic": "Robot/m_robotContainer/superstructure/chassisSpeedsRobot",
-              "period": 0.06,
-              "data_type": "double",
-              "struct_meta": {
-                "path": [
-                  "vx"
-                ],
-                "schema_name": "ChassisSpeeds",
-                "type": "double"
-              },
-              "show_submit_button": false
-            }
-          },
-          {
             "title": "cibleIsHub",
-            "x": 992.0,
+            "x": 512.0,
             "y": 0.0,
             "width": 128.0,
             "height": 128.0,
@@ -851,7 +851,7 @@
             "title": "Vitesse Caroussel",
             "x": 0.0,
             "y": 0.0,
-            "width": 544.0,
+            "width": 480.0,
             "height": 416.0,
             "type": "Graph",
             "properties": {
@@ -886,7 +886,7 @@
             "title": "getPosition",
             "x": 192.0,
             "y": 416.0,
-            "width": 128.0,
+            "width": 160.0,
             "height": 128.0,
             "type": "Text Display",
             "properties": {
@@ -900,7 +900,7 @@
             "title": "getPosition grimpeur",
             "x": 1056.0,
             "y": 416.0,
-            "width": 128.0,
+            "width": 192.0,
             "height": 128.0,
             "type": "Text Display",
             "properties": {
@@ -912,9 +912,9 @@
           },
           {
             "title": "getVelocity",
-            "x": 1024.0,
+            "x": 1056.0,
             "y": 0.0,
-            "width": 512.0,
+            "width": 480.0,
             "height": 416.0,
             "type": "Graph",
             "properties": {
@@ -930,7 +930,7 @@
           },
           {
             "title": "grimpeurHaut",
-            "x": 1184.0,
+            "x": 1248.0,
             "y": 416.0,
             "width": 128.0,
             "height": 128.0,
@@ -947,16 +947,16 @@
           },
           {
             "title": "Courant Carroussel",
-            "x": 544.0,
+            "x": 480.0,
             "y": 0.0,
-            "width": 416.0,
+            "width": 448.0,
             "height": 416.0,
             "type": "Graph",
             "properties": {
               "topic": "Robot/m_robotContainer/carroussel/Courant Carroussel",
               "period": 0.033,
               "data_type": "double",
-              "time_displayed": 5.0,
+              "time_displayed": 15.0,
               "color": 4278238420,
               "line_width": 2.0
             }
@@ -965,7 +965,7 @@
             "title": "Temperature Carroussel",
             "x": 480.0,
             "y": 416.0,
-            "width": 128.0,
+            "width": 192.0,
             "height": 128.0,
             "type": "Text Display",
             "properties": {
@@ -1027,7 +1027,7 @@
           },
           {
             "title": "voltage carroussel",
-            "x": 0.0,
+            "x": 192.0,
             "y": 0.0,
             "width": 384.0,
             "height": 128.0,
@@ -1058,7 +1058,7 @@
             "x": 576.0,
             "y": 0.0,
             "width": 480.0,
-            "height": 384.0,
+            "height": 352.0,
             "type": "Graph",
             "properties": {
               "topic": "Robot/m_robotContainer/kickeur/Vitesse Kickeur",
@@ -1076,7 +1076,7 @@
             "x": 1056.0,
             "y": 0.0,
             "width": 480.0,
-            "height": 384.0,
+            "height": 352.0,
             "type": "Graph",
             "properties": {
               "topic": "Robot/m_robotContainer/lanceur/Vitesse Lanceur",
@@ -1091,9 +1091,9 @@
           },
           {
             "title": "Field",
-            "x": 1280.0,
-            "y": 384.0,
-            "width": 256.0,
+            "x": 1152.0,
+            "y": 352.0,
+            "width": 384.0,
             "height": 256.0,
             "type": "Field",
             "properties": {
