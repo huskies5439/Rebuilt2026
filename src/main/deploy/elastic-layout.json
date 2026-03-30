@@ -357,6 +357,34 @@
               "color": 4278238420,
               "line_width": 2.0
             }
+          },
+          {
+            "title": "Courant Coude Droit",
+            "x": 800.0,
+            "y": 512.0,
+            "width": 128.0,
+            "height": 128.0,
+            "type": "Text Display",
+            "properties": {
+              "topic": "Robot/m_robotContainer/coude/Courant Coude Droit",
+              "period": 0.06,
+              "data_type": "double",
+              "show_submit_button": false
+            }
+          },
+          {
+            "title": "Courant Coude Gauche",
+            "x": 672.0,
+            "y": 512.0,
+            "width": 128.0,
+            "height": 128.0,
+            "type": "Text Display",
+            "properties": {
+              "topic": "Robot/m_robotContainer/coude/Courant Coude Gauche",
+              "period": 0.06,
+              "data_type": "double",
+              "show_submit_button": false
+            }
           }
         ]
       }
@@ -915,6 +943,36 @@
               "false_color": 4294198070,
               "true_icon": "None",
               "false_icon": "None"
+            }
+          },
+          {
+            "title": "Courant Carroussel",
+            "x": 544.0,
+            "y": 0.0,
+            "width": 416.0,
+            "height": 416.0,
+            "type": "Graph",
+            "properties": {
+              "topic": "Robot/m_robotContainer/carroussel/Courant Carroussel",
+              "period": 0.033,
+              "data_type": "double",
+              "time_displayed": 5.0,
+              "color": 4278238420,
+              "line_width": 2.0
+            }
+          },
+          {
+            "title": "Temperature Carroussel",
+            "x": 480.0,
+            "y": 416.0,
+            "width": 128.0,
+            "height": 128.0,
+            "type": "Text Display",
+            "properties": {
+              "topic": "Robot/m_robotContainer/carroussel/Temperature Carroussel",
+              "period": 0.06,
+              "data_type": "double",
+              "show_submit_button": false
             }
           }
         ]
