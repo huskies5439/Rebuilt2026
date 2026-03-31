@@ -84,7 +84,7 @@ public class RobotContainer {
     FollowPathCommand.warmupCommand().schedule();
 
     NamedCommands.registerCommand("gober", coude.PIDCommand(0).alongWith(gobeur.goberCommand()));
-    NamedCommands.registerCommand("preShoot", new PreLancer(superstructure, kickeur, lanceur, hood));
+    NamedCommands.registerCommand("preShoot", new PreLancer(superstructure, kickeur, lanceur));
     NamedCommands.registerCommand("shoot",
         new LancerFancy(basePilotable, lanceur, hood, tourelle, kickeur, carroussel, superstructure));
     NamedCommands.registerCommand("retracter",  new RetracterGobeurDurantLancer(coude,gobeur));

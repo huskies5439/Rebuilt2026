@@ -50,6 +50,12 @@
                 "data": {
                   "name": "shoot"
                 }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "retracter"
+                }
               }
             ]
           }
@@ -86,9 +92,28 @@
           }
         },
         {
-          "type": "named",
+          "type": "deadline",
           "data": {
-            "name": "shoot"
+            "commands": [
+              {
+                "type": "wait",
+                "data": {
+                  "waitTime": 10.0
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "shoot"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "retracter"
+                }
+              }
+            ]
           }
         }
       ]

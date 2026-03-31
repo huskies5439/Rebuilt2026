@@ -66,9 +66,9 @@
           "data": {
             "commands": [
               {
-                "type": "wait",
+                "type": "path",
                 "data": {
-                  "waitTime": 6.0
+                  "pathName": "ShootTrenchDepotToTowerDepot"
                 }
               },
               {
@@ -76,14 +76,14 @@
                 "data": {
                   "name": "shoot"
                 }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "retracter"
+                }
               }
             ]
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "ShootTrenchDepotToTowerDepot"
           }
         },
         {

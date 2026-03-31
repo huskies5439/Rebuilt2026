@@ -5,9 +5,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.Constants;
 import frc.robot.lib.ShotParams;
-import frc.robot.subsystems.Hood;
 import frc.robot.subsystems.Kickeur;
 import frc.robot.subsystems.Lanceur;
 import frc.robot.subsystems.Superstructure;
@@ -22,15 +20,13 @@ public class PreLancer extends Command {
   Superstructure superstructure;
   Kickeur kickeur;
   Lanceur lanceur;
-  Hood hood;
 
-  public PreLancer(Superstructure superstructure, Kickeur kickeur, Lanceur lanceur, Hood hood) {
+  public PreLancer(Superstructure superstructure, Kickeur kickeur, Lanceur lanceur) {
     this.superstructure = superstructure;
     this.kickeur = kickeur;
     this.lanceur = lanceur;
-    this.hood = hood;
 
-    addRequirements(lanceur, hood, kickeur, superstructure);
+    addRequirements(lanceur, kickeur, superstructure);
 
   }
 
@@ -46,13 +42,11 @@ public class PreLancer extends Command {
     lanceur.setPID(30);
     kickeur.setPID(20);
 
-    hood.setPID(Constants.kAngleHoodDepart);
-
   }
 
   @Override
   public void end(boolean interrupted) {
-    hood.stop();
+
   }
 
   // Returns true when the command should end.

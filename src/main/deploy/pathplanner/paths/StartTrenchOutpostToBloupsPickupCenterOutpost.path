@@ -8,8 +8,8 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 7.827163487927086,
-        "y": 0.650513375807931
+        "x": 6.158233088790541,
+        "y": 0.6259148094582836
       },
       "isLocked": true,
       "linkedName": "StartTrenchOutpost"
@@ -20,8 +20,8 @@
         "y": 1.8
       },
       "prevControl": {
-        "x": 7.084388857240381,
-        "y": 1.7499325726783683
+        "x": 5.997036144578313,
+        "y": 0.5709156626506025
       },
       "nextControl": null,
       "isLocked": false,
@@ -30,7 +30,7 @@
   ],
   "rotationTargets": [
     {
-      "waypointRelativePos": 0.14190871369294486,
+      "waypointRelativePos": 0.04232365145228512,
       "rotationDegrees": 0.0
     }
   ],
