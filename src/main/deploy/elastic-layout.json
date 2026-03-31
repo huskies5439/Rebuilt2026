@@ -851,7 +851,7 @@
             "title": "Vitesse Caroussel",
             "x": 0.0,
             "y": 0.0,
-            "width": 480.0,
+            "width": 320.0,
             "height": 416.0,
             "type": "Graph",
             "properties": {
@@ -947,7 +947,7 @@
           },
           {
             "title": "Courant Carroussel",
-            "x": 480.0,
+            "x": 320.0,
             "y": 0.0,
             "width": 448.0,
             "height": 416.0,
@@ -963,7 +963,7 @@
           },
           {
             "title": "Temperature Carroussel",
-            "x": 480.0,
+            "x": 352.0,
             "y": 416.0,
             "width": 192.0,
             "height": 128.0,
