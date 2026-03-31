@@ -9,9 +9,22 @@
           "data": {
             "commands": [
               {
-                "type": "path",
+                "type": "sequential",
                 "data": {
-                  "pathName": "StartTrenchDepotToBloupsPickupCenterDepot"
+                  "commands": [
+                    {
+                      "type": "path",
+                      "data": {
+                        "pathName": "StartTrenchDepotToBloupsPickupCenterDepot"
+                      }
+                    },
+                    {
+                      "type": "wait",
+                      "data": {
+                        "waitTime": 2.0
+                      }
+                    }
+                  ]
                 }
               },
               {
@@ -62,6 +75,12 @@
                 "type": "named",
                 "data": {
                   "name": "shoot"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "retracter"
                 }
               }
             ]

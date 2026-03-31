@@ -34,7 +34,7 @@ public class Hood extends SubsystemBase {
 
   private double conversion = maxPlanetary*(40.0/24.0)*(25.0/332.0)*360.0;
 
-  private double toleranceHood = 1.0;  
+  private double toleranceHood = 3.0;  
 
   private DigitalInput limitSwitch = new DigitalInput(9);
 

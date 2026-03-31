@@ -27,8 +27,7 @@ public class Coude extends SubsystemBase {
   private SparkFlex moteurGauche = new SparkFlex(21, MotorType.kBrushless);
   private SparkFlex moteurDroit = new SparkFlex(22, MotorType.kBrushless);
 
-  private SparkFlexConfig moteurConfigGauche = new SparkFlexConfig();
-  private SparkFlexConfig moteurConfigDroit = new SparkFlexConfig();
+  private SparkFlexConfig moteurConfig = new SparkFlexConfig();
 
   private double conversionCoude = (1 / 9.0) * 360.0;
 
@@ -37,7 +36,6 @@ public class Coude extends SubsystemBase {
   private final double kp = 0.1;
   private final double maxVelocity = 360;
   private final double maxAcceleration = 720;
-  private final double kR = 0.1;
 
   private ProfiledPIDController pidGauche = new ProfiledPIDController(kp, 0, 0,
       new TrapezoidProfile.Constraints(maxVelocity, maxAcceleration));
@@ -45,31 +43,26 @@ public class Coude extends SubsystemBase {
   private ProfiledPIDController pidDroit = new ProfiledPIDController(kp, 0, 0,
       new TrapezoidProfile.Constraints(maxVelocity, maxAcceleration));
 
-  private ArmFeedforward feedforward = new ArmFeedforward(0.0, 0.2, 0.0);// valeur à déterminer
+  private ArmFeedforward feedforward = new ArmFeedforward(0.0, 0.2, 0.0);
 
   private int stallLimit;
 
-  private int smartCurrentLimitDefault = 80;
+  private int smartCurrentLimitDefault = 80; //80 
 
   /** Creates a new Coude. */
   public Coude() {
 
     boolean inverted = true;
-    moteurConfigGauche.inverted(inverted);
-    moteurConfigGauche.idleMode(IdleMode.kBrake);
-    moteurConfigGauche.encoder.positionConversionFactor(conversionCoude);
-    moteurConfigGauche.encoder.velocityConversionFactor(conversionCoude / 60.0);
-    moteurConfigGauche.smartCurrentLimit(smartCurrentLimitDefault);
+    moteurConfig.inverted(inverted);
+    moteurConfig.idleMode(IdleMode.kBrake);
+    moteurConfig.encoder.positionConversionFactor(conversionCoude);
+    moteurConfig.encoder.velocityConversionFactor(conversionCoude / 60.0);
+    moteurConfig.smartCurrentLimit(40,80,50);
 
-    moteurGauche.configure(moteurConfigGauche, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+    moteurGauche.configure(moteurConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
-    moteurConfigDroit.inverted(!inverted);
-    moteurConfigDroit.idleMode(IdleMode.kBrake);
-    moteurConfigDroit.encoder.positionConversionFactor(conversionCoude);
-    moteurConfigDroit.encoder.velocityConversionFactor(conversionCoude / 60.0);
-    moteurConfigDroit.smartCurrentLimit(smartCurrentLimitDefault);
-
-    moteurDroit.configure(moteurConfigDroit, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+    moteurConfig.inverted(!inverted);
+    moteurDroit.configure(moteurConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
     resetEncodeurStartUp();
 
@@ -77,6 +70,8 @@ public class Coude extends SubsystemBase {
     pidDroit.setTolerance(2);
 
     currentLimit(false);
+
+
 
   }
 
@@ -95,7 +90,7 @@ public class Coude extends SubsystemBase {
   }
 
   public void monter() {
-    setVoltage(1);
+    setVoltage(1.5);
   }
 
   public void descendre() {
@@ -107,7 +102,7 @@ public class Coude extends SubsystemBase {
   }
 
   public void hold() {
-    setVoltage(feedForwardTotal(getAngleGauche(), 0), feedForwardTotal(getAngleDroit(), 0));
+    setVoltage(feedforward.calculate(getAngleGauche(), 0), feedforward.calculate(getAngleDroit(), 0));
   }
 
   //Télémétrie
@@ -153,27 +148,14 @@ public class Coude extends SubsystemBase {
 
   /// PID + feedForward
 
-  public double feedForwardRessort(double angle) {
-
-    return -kR * Math.sin(Math.toRadians(angle));
-
-  }
-
-  public double feedForwardTotal(double angle, double vitesse) {
-
-    return feedForwardRessort(angle) + feedforward.calculate(
-        Math.toRadians(angle), vitesse);
-
-  }
-
   public void setPID(double cible) {
     double voltagePIDDroit = pidDroit.calculate(getAngleDroit(), cible);
 
-    double voltageFFDroit = feedForwardTotal(getAngleDroit(), pidDroit.getSetpoint().velocity);
+    double voltageFFDroit = feedforward.calculate(getAngleDroit(), pidDroit.getSetpoint().velocity);
 
     double voltagePIDGauche = pidGauche.calculate(getAngleGauche(), cible);
 
-    double voltageFFGauche = feedForwardTotal(getAngleGauche(), pidGauche.getSetpoint().velocity);
+    double voltageFFGauche = feedforward.calculate(getAngleGauche(), pidGauche.getSetpoint().velocity);
 
     setVoltage(voltagePIDGauche + voltageFFGauche, voltagePIDDroit + voltageFFDroit);
 
@@ -192,15 +174,16 @@ public class Coude extends SubsystemBase {
   // smart current limit
   public void currentLimit(boolean isLimited) {
     if (isLimited) {
-      stallLimit = 10;
+      stallLimit = 30;
     } else {
       stallLimit = smartCurrentLimitDefault;
     }
-    moteurConfigGauche.smartCurrentLimit(stallLimit);
-    moteurConfigDroit.smartCurrentLimit(stallLimit);
 
-    moteurGauche.configure(moteurConfigGauche, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
-    moteurDroit.configure(moteurConfigDroit, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
+    SparkFlexConfig config = new SparkFlexConfig(); 
+    config.smartCurrentLimit(stallLimit); 
+
+    moteurGauche.configure(config, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
+    moteurDroit.configure(config, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
   }
 
   public double getCurrentLimitGauche() {

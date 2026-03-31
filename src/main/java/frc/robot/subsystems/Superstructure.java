@@ -137,7 +137,7 @@ public class Superstructure extends SubsystemBase {
 		double lastDistance = Double.MAX_VALUE;
 		Translation2d cibleTemporaire = cibleReelle;
 
-		for (int i = 0; i < 5; i++) {
+		for (int i = 0; i < 10; i++) {
 			double distance = getDistanceCible(cibleTemporaire);
 			double timeOfFlight = getTOF(distance);
 

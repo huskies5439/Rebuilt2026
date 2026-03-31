@@ -45,7 +45,7 @@ public class Lanceur extends SubsystemBase {
 
   private double vraieCible = 0.0;
 
-  private double toleranceLanceur = 1.0;
+  private double toleranceLanceur = 3.0;
 
   public Lanceur() {
     boolean inverted = true;

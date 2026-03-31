@@ -87,6 +87,7 @@ public class RobotContainer {
     NamedCommands.registerCommand("preShoot", new PreLancer(superstructure, kickeur, lanceur, hood));
     NamedCommands.registerCommand("shoot",
         new LancerFancy(basePilotable, lanceur, hood, tourelle, kickeur, carroussel, superstructure));
+    NamedCommands.registerCommand("retracter",  new RetracterGobeurDurantLancer(coude,gobeur));
     NamedCommands.registerCommand("grimper", new WaitCommand(1));
 
     // L'auto chooser doit être mis APRÈS les named commands
@@ -124,7 +125,7 @@ public class RobotContainer {
     // //à déterminer s'il faut lever légerment le gobeur
 
     // Protection coude
-    manette.x().onTrue(coude.PIDCommand(90));
+    manette.x().onTrue(coude.PIDCommand(120));
 
     // Grimpeur
     manette.povUp().whileTrue(grimpeur.monterCommand());
