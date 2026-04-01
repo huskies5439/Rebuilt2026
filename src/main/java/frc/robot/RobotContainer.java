@@ -99,13 +99,13 @@ public class RobotContainer {
 
   private void configureBindings() {
 
-    manette.a().whileTrue(carroussel.tournerCommand().alongWith(new RetracterGobeurDurantLancer(coude, gobeur)))
-    .onFalse(carroussel.debloquerCommand().withTimeout(0.5));
+    // manette.a().whileTrue(carroussel.tournerCommand().alongWith(new RetracterGobeurDurantLancer(coude, gobeur)))
+    // .onFalse(carroussel.debloquerCommand().withTimeout(0.5));
 
-    manette.b().toggleOnTrue(
-    kickeur.kickerPIDCommand()
-    .alongWith(lanceur.lancerPIDCommand())
-    .alongWith(hood.goToAnglePIDCommand()));
+    // manette.b().toggleOnTrue(
+    // kickeur.kickerPIDCommand()
+    // .alongWith(lanceur.lancerPIDCommand())
+    // .alongWith(hood.goToAnglePIDCommand()));
 
     manette.y().whileTrue(new SnapTrench(manette::getLeftY, basePilotable));
 

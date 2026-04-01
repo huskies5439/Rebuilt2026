@@ -53,7 +53,7 @@ public class Carroussel extends SubsystemBase {
   }
 
   public void tourner() {
-    setVoltage(SmartDashboard.getNumber("voltage carroussel", 0));
+    setVoltage(8.0);
   }
 
   public void debloquer() {
