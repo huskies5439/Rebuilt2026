@@ -280,7 +280,7 @@ public class Superstructure extends SubsystemBase {
 
 	/////// Cinématique d'un point P (tourelle) sur un corps rigide (robot)
 	/// voir l'équation de la vitesse:
-	/////// https://courses.grainger.illinois.edu/tam212/su2025/rkg.htmll#rkg-er
+	/////// https://courses.grainger.illinois.edu/tam212/su2025/rkg.html#rkg-er
 
 	// Correspond à \vect{r}_{PQ}
 	// C'est le vecteur de déplacement du point Q (centre du robot) vers le point P
