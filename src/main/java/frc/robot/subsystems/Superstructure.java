@@ -6,6 +6,8 @@ package frc.robot.subsystems;
 
 import java.io.File;
 import java.io.FileReader;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.DoubleSupplier;
@@ -106,7 +108,8 @@ public class Superstructure extends SubsystemBase {
 		field2d.setRobotPose(poseRobot);
 		field2d.getObject("cible virtuelle").setPose(new Pose2d(cibleVirtuelle, Rotation2d.kZero));
 		SmartDashboard.putData("field2d", field2d);
-
+		SmartDashboard.putBoolean("Hub actif", isHubActive());
+		SmartDashboard.putString("Shift Time", String.format("%.2f", new BigDecimal(remainingTime()).setScale(2, RoundingMode.FLOOR)));
 	}
 
 	public void setCibleReelle() {
@@ -339,19 +342,19 @@ public class Superstructure extends SubsystemBase {
 			case Blue -> redInactiveFirst;
 		};
 
-		if (matchTime > 130) {
+		if (matchTime > 130 - Constants.PREVISION_TIME) {
 			// Transition shift, hub is active.
 			return true;
-		} else if (matchTime > 105 - Constants.PREVISION_TIME) {
+		} else if (matchTime > 105 + Constants.PREVISION_TIME) {
 			// Shift 1
 			return shift1Active;
-		} else if (matchTime > 80 - Constants.PREVISION_TIME) {
+		} else if (matchTime > 80 + Constants.PREVISION_TIME) {
 			// Shift 2
 			return !shift1Active;
-		} else if (matchTime > 55 - Constants.PREVISION_TIME) {
+		} else if (matchTime > 55 + Constants.PREVISION_TIME) {
 			// Shift 3
 			return shift1Active;
-		} else if (matchTime > 30 - Constants.PREVISION_TIME) {
+		} else if (matchTime > 30 + Constants.PREVISION_TIME) {
 			// Shift 4
 			return !shift1Active;
 		} else {
@@ -360,4 +363,27 @@ public class Superstructure extends SubsystemBase {
 		}
 	}
 
+	public double remainingTime() {
+		double matchTime = DriverStation.getMatchTime();
+
+		if (matchTime > 130) {
+			// Transition shift, hub is active.
+			return matchTime - 130;
+		} else if (matchTime > 105) {
+			// Shift 1
+			return matchTime - 105;
+		} else if (matchTime > 80) {
+			// Shift 2
+			return matchTime - 80;
+		} else if (matchTime > 55) {
+			// Shift 3
+			return matchTime - 55;
+		} else if (matchTime > 30) {
+			// Shift 4
+			return matchTime - 30;
+		} else {
+			// End game, hub always active.
+			return matchTime;
+		}
+	}
 }

@@ -10,9 +10,9 @@
           {
             "title": "limelight",
             "x": 768.0,
-            "y": 0.0,
-            "width": 768.0,
-            "height": 576.0,
+            "y": 384.0,
+            "width": 320.0,
+            "height": 320.0,
             "type": "Camera Stream",
             "properties": {
               "topic": "/CameraPublisher/limelight",
@@ -38,7 +38,7 @@
             "x": 0.0,
             "y": 128.0,
             "width": 768.0,
-            "height": 512.0,
+            "height": 384.0,
             "type": "Field",
             "properties": {
               "topic": "/SmartDashboard/field2d",
@@ -52,6 +52,36 @@
               "robot_color": 4294198070,
               "trajectory_color": 4294967295,
               "show_robot_outside_widget": true
+            }
+          },
+          {
+            "title": "isHubActive",
+            "x": 768.0,
+            "y": 0.0,
+            "width": 384.0,
+            "height": 384.0,
+            "type": "Boolean Box",
+            "properties": {
+              "topic": "Robot/m_robotContainer/isHubActive",
+              "period": 0.06,
+              "data_type": "boolean",
+              "true_color": 4283215696,
+              "false_color": 4294198070,
+              "true_icon": "None",
+              "false_icon": "None"
+            }
+          },
+          {
+            "title": "Shift Time",
+            "x": 1152.0,
+            "y": 0.0,
+            "width": 384.0,
+            "height": 384.0,
+            "type": "Large Text Display",
+            "properties": {
+              "topic": "/SmartDashboard/Shift Time",
+              "period": 0.06,
+              "data_type": "string"
             }
           }
         ]

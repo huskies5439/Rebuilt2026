@@ -53,7 +53,7 @@ public class Carroussel extends SubsystemBase {
   }
 
   public void tourner() {
-    setVoltage(8.0);
+    setVoltage(10.0);
   }
 
   public void debloquer() {
