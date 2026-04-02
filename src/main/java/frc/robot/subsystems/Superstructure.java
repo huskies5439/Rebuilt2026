@@ -152,7 +152,7 @@ public class Superstructure extends SubsystemBase {
 
 			cibleTemporaire = cibleReelle.minus(projectionFutur);
 
-			if (Math.abs(distance - lastDistance) <= 0.25) {
+			if (Math.abs(distance - lastDistance) <= 0.1) {
 				break;
 			}
 			lastDistance = distance;
