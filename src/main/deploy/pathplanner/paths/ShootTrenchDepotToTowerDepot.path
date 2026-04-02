@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 4.25,
-        "y": 7.4
+        "x": 7.384855421686748,
+        "y": 6.0894096385542165
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.379963855421687,
-        "y": 7.018265060240964
+        "x": 5.514819277108435,
+        "y": 5.70767469879518
       },
       "isLocked": false,
       "linkedName": "ShootTrenchDepot"

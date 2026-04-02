@@ -27,7 +27,7 @@ public class RumbleControllerActiveHub extends Command {
   public RumbleControllerActiveHub(boolean isStart, CommandXboxController manette, Superstructure superstructure) {
     this.manette = manette;
     this.isStart = isStart;
-    addRequirements(superstructure);
+
   }
 
   @Override

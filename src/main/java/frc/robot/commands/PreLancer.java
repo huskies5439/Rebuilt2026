@@ -15,7 +15,6 @@ public class PreLancer extends Command {
 
   ShotParams shotParams;
 
-  boolean dynamique;
 
   Superstructure superstructure;
   Kickeur kickeur;
@@ -32,15 +31,15 @@ public class PreLancer extends Command {
 
   @Override
   public void initialize() {
-    dynamique = false;
+
   }
 
   @Override
   public void execute() {
-    // shotParams = superstructure.getShotParams(dynamique);
+    shotParams = superstructure.getGeneriqueShotParams(3.25);
 
-    lanceur.setPID(30);
-    kickeur.setPID(20);
+    lanceur.setPID(shotParams.getVitesseLanceur());
+    kickeur.setPID(shotParams.getVitesseKickeur());
 
   }
 

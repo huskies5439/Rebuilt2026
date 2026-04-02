@@ -42,6 +42,12 @@ public class EnvoyerShotParams extends Command {
   public void initialize() {
     dynamique = true;
     avecFin = true;
+
+    lanceur.resetPID();
+    kickeur.resetPID();
+    hood.resetPID();
+
+    
   }
 
   @Override

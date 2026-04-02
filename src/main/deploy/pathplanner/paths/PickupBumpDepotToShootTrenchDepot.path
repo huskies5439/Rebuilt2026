@@ -8,11 +8,27 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.1500240963855415,
-        "y": 6.887132530120482
+        "x": 5.777080962618744,
+        "y": 5.237820363303414
       },
       "isLocked": false,
       "linkedName": "PickupBumpDepot"
+    },
+    {
+      "anchor": {
+        "x": 6.630843373493977,
+        "y": 6.908987951807229
+      },
+      "prevControl": {
+        "x": 6.641771084337348,
+        "y": 5.59766265060241
+      },
+      "nextControl": {
+        "x": 6.625565697717125,
+        "y": 7.54230904502957
+      },
+      "isLocked": false,
+      "linkedName": null
     },
     {
       "anchor": {
@@ -20,23 +36,28 @@
         "y": 7.4
       },
       "prevControl": {
-        "x": 7.363,
-        "y": 7.619289156626506
+        "x": 5.631905057417232,
+        "y": 7.4626121199757165
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "ShootTrenchDepot"
+      "linkedName": "EndTrenchDepot"
     }
   ],
-  "rotationTargets": [],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 1.0273858921161723,
+      "rotationDegrees": 0.0
+    }
+  ],
   "constraintZones": [],
   "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 1.0,
-    "maxAcceleration": 1.0,
-    "maxAngularVelocity": 360.0,
-    "maxAngularAcceleration": 360.0,
+    "maxVelocity": 2.0,
+    "maxAcceleration": 2.0,
+    "maxAngularVelocity": 720.0,
+    "maxAngularAcceleration": 720.0,
     "nominalVoltage": 12.0002,
     "unlimited": false
   },
@@ -47,7 +68,7 @@
   "reversed": false,
   "folder": "path",
   "idealStartingState": {
-    "velocity": 0,
+    "velocity": 2.0,
     "rotation": -90.0
   },
   "useDefaultConstraints": true

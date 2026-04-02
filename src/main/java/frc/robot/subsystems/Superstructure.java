@@ -108,7 +108,6 @@ public class Superstructure extends SubsystemBase {
 		field2d.setRobotPose(poseRobot);
 		field2d.getObject("cible virtuelle").setPose(new Pose2d(cibleVirtuelle, Rotation2d.kZero));
 		SmartDashboard.putData("field2d", field2d);
-		SmartDashboard.putBoolean("Hub actif", isHubActive());
 		SmartDashboard.putString("Shift Time", String.format("%.2f", new BigDecimal(remainingTime()).setScale(2, RoundingMode.FLOOR)));
 	}
 
@@ -306,7 +305,7 @@ public class Superstructure extends SubsystemBase {
 				.plus(composanteRotationTourelle);
 	}
 
-	public boolean isHubActive() {
+	public boolean isHubActive(int decalage) {
 		Optional<Alliance> alliance = DriverStation.getAlliance();
 
 		// Hub is always enabled in autonomous.
@@ -342,25 +341,29 @@ public class Superstructure extends SubsystemBase {
 			case Blue -> redInactiveFirst;
 		};
 
-		if (matchTime > 130 - Constants.PREVISION_TIME) {
+		if (matchTime > 130 + decalage) {
 			// Transition shift, hub is active.
 			return true;
-		} else if (matchTime > 105 + Constants.PREVISION_TIME) {
+		} else if (matchTime > 105 +decalage ) {
 			// Shift 1
 			return shift1Active;
-		} else if (matchTime > 80 + Constants.PREVISION_TIME) {
+		} else if (matchTime > 80 + decalage) {
 			// Shift 2
 			return !shift1Active;
-		} else if (matchTime > 55 + Constants.PREVISION_TIME) {
+		} else if (matchTime > 55 + decalage) {
 			// Shift 3
 			return shift1Active;
-		} else if (matchTime > 30 + Constants.PREVISION_TIME) {
+		} else if (matchTime > 30 + decalage) {
 			// Shift 4
 			return !shift1Active;
 		} else {
 			// End game, hub always active.
 			return true;
 		}
+	}
+
+	public void isHubActive(){
+		isHubActive(0);
 	}
 
 	public double remainingTime() {
@@ -385,5 +388,14 @@ public class Superstructure extends SubsystemBase {
 			// End game, hub always active.
 			return matchTime;
 		}
+	}
+	public boolean hasWinAuto(){
+		String gameData = DriverStation.getGameSpecificMessage();
+		switch (gameData.charAt(0)) {
+			case 'R' : return Constants.isRedAlliance() ? true : false;
+			case 'B' : return Constants.isRedAlliance() ? false : true;
+			default : return false;
+		}
+		
 	}
 }

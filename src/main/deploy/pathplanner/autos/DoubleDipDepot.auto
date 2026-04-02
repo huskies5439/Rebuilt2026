@@ -57,6 +57,18 @@
                 "data": {
                   "name": "gober"
                 }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "preShoot"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "viser depot"
+                }
               }
             ]
           }
@@ -101,20 +113,51 @@
                 "data": {
                   "name": "gober"
                 }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "retracterHood"
+                }
               }
             ]
           }
         },
         {
-          "type": "path",
+          "type": "deadline",
           "data": {
-            "pathName": "PickupBumpDepotToShootTrenchDepot"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "PickupBumpDepotToShootTrenchDepot"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "preShoot"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "viser depot"
+                }
+              }
+            ]
           }
         },
         {
-          "type": "parallel",
+          "type": "deadline",
           "data": {
             "commands": [
+              {
+                "type": "wait",
+                "data": {
+                  "waitTime": 6.0
+                }
+              },
               {
                 "type": "named",
                 "data": {

@@ -21,7 +21,7 @@
                     {
                       "type": "wait",
                       "data": {
-                        "waitTime": 2.0
+                        "waitTime": 1.0
                       }
                     }
                   ]
@@ -57,6 +57,12 @@
                 "data": {
                   "name": "preShoot"
                 }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "viser depot"
+                }
               }
             ]
           }
@@ -68,7 +74,7 @@
               {
                 "type": "wait",
                 "data": {
-                  "waitTime": 15.0
+                  "waitTime": 6.0
                 }
               },
               {

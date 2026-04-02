@@ -46,6 +46,9 @@ public class BasePilotableDefaut extends Command {
   @Override
   public void initialize() {
     basePilotable.resetSetpoint();
+
+    maxVitesseLineaire = Constants.maxVitesseLineaire;
+    maxVitesseRotation = Constants.maxVitesseRotation;
   }
 
   @Override

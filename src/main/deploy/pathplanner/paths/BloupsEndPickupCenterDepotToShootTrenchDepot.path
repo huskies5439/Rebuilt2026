@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 7.4,
-        "y": 6.198686746987952
+        "x": 7.668975903614458,
+        "y": 5.980132530120482
       },
       "prevControl": null,
       "nextControl": {
-        "x": 7.188483098763623,
-        "y": 7.078059774326409
+        "x": 6.320650602409638,
+        "y": 7.116614457831326
       },
       "isLocked": false,
       "linkedName": "BloupsEndPickupCenterDepot"
@@ -20,8 +20,8 @@
         "y": 7.4
       },
       "prevControl": {
-        "x": 6.495697807512659,
-        "y": 7.596710071004363
+        "x": 5.057253012048192,
+        "y": 7.586506024096385
       },
       "nextControl": null,
       "isLocked": false,
@@ -33,10 +33,10 @@
   "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 1.0,
-    "maxAcceleration": 1.0,
-    "maxAngularVelocity": 360.0,
-    "maxAngularAcceleration": 360.0,
+    "maxVelocity": 2.0,
+    "maxAcceleration": 2.0,
+    "maxAngularVelocity": 720.0,
+    "maxAngularAcceleration": 720.0,
     "nominalVoltage": 12.0002,
     "unlimited": false
   },

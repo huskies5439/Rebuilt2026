@@ -54,12 +54,21 @@ public class TournerCarroussel extends Command {
       toleranceTourelle = 30.0; 
     }
     
+    // if(lanceur.atCible() && hood.atCible() && kickeur.atCible() && tourelle.atCible(toleranceTourelle)){
+    //   carroussel.tourner();
+    // }else{
+    //   carroussel.stop();
+    // }
     if(lanceur.atCible() && hood.atCible() && kickeur.atCible() && tourelle.atCible(toleranceTourelle)){
-      carroussel.tourner();
-    }else{
-      carroussel.stop();
+      convoyer = true;
     }
 
+    if(convoyer){
+            carroussel.tourner();
+
+    } else {
+      carroussel.stop();
+    }
   }
 
   @Override

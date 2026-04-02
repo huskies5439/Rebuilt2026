@@ -31,7 +31,7 @@ public class Tourelle extends SubsystemBase {
 
   //PID 
   private double vraieCible = 0.0; 
-  private ProfiledPIDController pidTourelle = new ProfiledPIDController(0.05, 0, 0.001, //Valeurs à déterminer
+  private ProfiledPIDController pidTourelle = new ProfiledPIDController(0.1, 0, 0.001, //Valeurs à déterminer
     new TrapezoidProfile.Constraints(720, 1440)); 
 
 
@@ -124,8 +124,8 @@ public class Tourelle extends SubsystemBase {
   public Command tournerAntiHoraire(){
     return Commands.runEnd(this::setVoltageAntiHoraire,this::stop,this); 
   }
-  public Command PIDCommand(){
-    return Commands.runEnd(()->this.setPID(180),this::stop,this);
+  public Command PIDCommand(double cible){
+    return Commands.runEnd(()->this.setPID(cible),this::stop,this);
   }
 
 }

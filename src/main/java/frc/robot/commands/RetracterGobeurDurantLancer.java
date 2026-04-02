@@ -14,10 +14,10 @@ public class RetracterGobeurDurantLancer extends Command {
   Coude coude;
   Gobeur gobeur;
 
-  double angleHaut = 45.0;
+  double angleHaut = 60.0;
 
   ProfiledPIDController pid = new ProfiledPIDController(0.1, 0, 0,
-      new TrapezoidProfile.Constraints(15, 150)); 
+      new TrapezoidProfile.Constraints(30, 150)); 
 
   public RetracterGobeurDurantLancer(Coude coude, Gobeur gobeur) {
     this.coude = coude;

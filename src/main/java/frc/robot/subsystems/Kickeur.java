@@ -38,7 +38,7 @@ public class Kickeur extends SubsystemBase {
 
   double conversionKickeur = (18.0 / 36.0);
 
-  private double toleranceKickeur = 2.0;
+  private double toleranceKickeur = 1;
 
 
   public Kickeur() {

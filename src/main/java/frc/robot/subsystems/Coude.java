@@ -57,7 +57,7 @@ public class Coude extends SubsystemBase {
     moteurConfig.idleMode(IdleMode.kBrake);
     moteurConfig.encoder.positionConversionFactor(conversionCoude);
     moteurConfig.encoder.velocityConversionFactor(conversionCoude / 60.0);
-    moteurConfig.smartCurrentLimit(40,80,50);
+    moteurConfig.smartCurrentLimit(50,80,50);
 
     moteurGauche.configure(moteurConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 

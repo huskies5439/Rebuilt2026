@@ -20,19 +20,15 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 @Logged(strategy = Strategy.OPT_IN)
 public class Gobeur extends SubsystemBase {
 
-
   private SparkFlex moteur = new SparkFlex(31, MotorType.kBrushless);
- 
 
   private SparkFlexConfig moteurConfig = new SparkFlexConfig();
-  
 
   public Gobeur() {
     moteurConfig.inverted(true);
     moteurConfig.idleMode(IdleMode.kCoast);
     moteur.configure(moteurConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
-    
   }
 
   @Override
@@ -52,14 +48,9 @@ public class Gobeur extends SubsystemBase {
     setVoltage(4);
   }
 
-  public void retractage(){
-    setVoltage(1);
+  public void retractage() {
+    setVoltage(2);
   }
-
-  public void recracher() {
-    setVoltage(-1);
-  }
-
 
   /// Commandes simples
 
@@ -67,10 +58,5 @@ public class Gobeur extends SubsystemBase {
 
     return Commands.runEnd(this::gober, this::stop, this);
   }
-
-  public Command recracherCommand() {//Pertinent ?????
-    return Commands.runEnd(this::recracher, this::stop, this);
-  }
-
 
 }
