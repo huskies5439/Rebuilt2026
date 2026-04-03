@@ -187,6 +187,7 @@ public class BasePilotable extends SubsystemBase {
   }
 
   ///////// Pose estimator
+  @Logged
   public Pose2d getPose() {
     return poseEstimator.getEstimatedPosition();
   }

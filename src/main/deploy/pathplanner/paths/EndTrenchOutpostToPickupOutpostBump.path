@@ -8,8 +8,8 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.960072289156627,
-        "y": 0.34866265060241053
+        "x": 6.292084337349398,
+        "y": 0.13380722891566282
       },
       "isLocked": false,
       "linkedName": "EndTrenchOutpost"
@@ -20,8 +20,8 @@
         "y": 3.0
       },
       "prevControl": {
-        "x": 5.678144578313253,
-        "y": 2.1148554216867463
+        "x": 6.193640444111439,
+        "y": 1.0804575774582472
       },
       "nextControl": null,
       "isLocked": false,
@@ -30,7 +30,11 @@
   ],
   "rotationTargets": [
     {
-      "waypointRelativePos": 0.4456431535269766,
+      "waypointRelativePos": 0.14,
+      "rotationDegrees": 0.0
+    },
+    {
+      "waypointRelativePos": 0.81,
       "rotationDegrees": 90.0
     }
   ],

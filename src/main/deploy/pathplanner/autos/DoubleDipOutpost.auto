@@ -5,9 +5,22 @@
     "data": {
       "commands": [
         {
-          "type": "path",
+          "type": "deadline",
           "data": {
-            "pathName": "StartTrenchOutpostToPickupCenterOutpost"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "StartTrenchOutpostToPickupCenterOutpost"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "gober"
+                }
+              }
+            ]
           }
         },
         {
@@ -42,6 +55,12 @@
               {
                 "type": "named",
                 "data": {
+                  "name": "gober"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
                   "name": "preShoot"
                 }
               },
@@ -61,7 +80,7 @@
               {
                 "type": "wait",
                 "data": {
-                  "waitTime": 6.0
+                  "waitTime": 5.0
                 }
               },
               {
@@ -90,16 +109,35 @@
                 }
               },
               {
+                "type": "sequential",
+                "data": {
+                  "commands": [
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "recracher ballon"
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "gober"
+                      }
+                    }
+                  ]
+                }
+              },
+              {
                 "type": "named",
                 "data": {
-                  "name": "gober"
+                  "name": "retracterHood"
                 }
               }
             ]
           }
         },
         {
-          "type": "parallel",
+          "type": "deadline",
           "data": {
             "commands": [
               {
@@ -130,7 +168,7 @@
               {
                 "type": "wait",
                 "data": {
-                  "waitTime": 10.0
+                  "waitTime": 6.0
                 }
               },
               {

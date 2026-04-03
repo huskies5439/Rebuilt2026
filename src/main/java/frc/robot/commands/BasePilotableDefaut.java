@@ -8,6 +8,7 @@ import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.subsystems.BasePilotable;
@@ -53,6 +54,8 @@ public class BasePilotableDefaut extends Command {
 
   @Override
   public void execute() {
+
+    SmartDashboard.putBoolean("RED ALLIANCE ?", Constants.isRedAlliance());
     // Lecture des joysticks
     vx = joystickVX.getAsDouble();
     vy = joystickVY.getAsDouble();

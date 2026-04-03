@@ -8,27 +8,11 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 5.842820443612898,
-        "y": 0.709394814695492
+        "x": 7.669206073528356,
+        "y": 2.8517515990013305
       },
       "isLocked": true,
       "linkedName": "EndPickupCenterOutpost"
-    },
-    {
-      "anchor": {
-        "x": 5.5489999999999995,
-        "y": 0.669265060240964
-      },
-      "prevControl": {
-        "x": 5.775545126337342,
-        "y": 0.8246799197202361
-      },
-      "nextControl": {
-        "x": 5.3066198250080285,
-        "y": 0.5029870146879287
-      },
-      "isLocked": true,
-      "linkedName": null
     },
     {
       "anchor": {
@@ -36,8 +20,8 @@
         "y": 0.6
       },
       "prevControl": {
-        "x": 4.594147837449248,
-        "y": 0.6496473145198465
+        "x": 7.435104654280376,
+        "y": 0.07550753934733223
       },
       "nextControl": null,
       "isLocked": false,
@@ -46,11 +30,7 @@
   ],
   "rotationTargets": [
     {
-      "waypointRelativePos": 0.5,
-      "rotationDegrees": 0.0
-    },
-    {
-      "waypointRelativePos": 0.9078838174273903,
+      "waypointRelativePos": 0.68,
       "rotationDegrees": 0.0
     }
   ],
@@ -66,14 +46,14 @@
     "unlimited": false
   },
   "goalEndState": {
-    "velocity": 1.5,
+    "velocity": 0.0,
     "rotation": 0.0
   },
   "reversed": false,
   "folder": "path",
   "idealStartingState": {
-    "velocity": 0,
-    "rotation": 113.0
+    "velocity": 2.0,
+    "rotation": 125.00000000000001
   },
   "useDefaultConstraints": true
 }

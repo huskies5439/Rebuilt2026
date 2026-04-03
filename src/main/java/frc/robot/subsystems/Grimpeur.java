@@ -24,7 +24,7 @@ public class Grimpeur extends SubsystemBase {
 
   private double conversion;
 
-  private double maxPosition = 87.0;
+  private double maxPosition = 80.0;
 
   private boolean grimpeurHaut = false;
 
@@ -64,13 +64,8 @@ public class Grimpeur extends SubsystemBase {
     setVoltage(0);
   }
 
-  public void monter() {
-    setVoltage(6);
-  }
 
-  public void descendre() {
-    setVoltage(-6);
-  }
+  
 
   @Logged
   public boolean grimpeurHaut() {
@@ -84,12 +79,12 @@ public class Grimpeur extends SubsystemBase {
   }
 
   /// COMMANDES
-  public Command monterCommand() {
-    return Commands.runEnd(this::monter, this::stop, this);
+  public Command monterPitCommand() {
+    return Commands.runEnd(()->setVoltage(2), this::stop, this);
   }
 
-  public Command descendreCommand() {
-    return Commands.runEnd(this::descendre, this::stop, this);
+  public Command descendrePitCommand() {
+    return Commands.runEnd(()->setVoltage(-2), this::stop, this);
   }
 
   public Command goMaxHauteur() {
@@ -97,7 +92,7 @@ public class Grimpeur extends SubsystemBase {
     return Commands.runOnce(() -> {
       grimpeurHaut = true;
     })
-        .andThen(Commands.runEnd(this::monter, this::stop, this).until(() -> {
+        .andThen(Commands.runEnd(()->setVoltage(4), this::stop, this).until(() -> {
           return getPosition() > maxPosition;
         }));
 
@@ -108,7 +103,7 @@ public class Grimpeur extends SubsystemBase {
     return Commands.runOnce(() -> {
       grimpeurHaut = false;
     })
-        .andThen(Commands.runEnd(this::descendre, this::stop, this).until(() -> {
+        .andThen(Commands.runEnd(()->setVoltage(-7), this::stop, this).until(() -> {
           return getPosition() < 0.0;
         }));
   }

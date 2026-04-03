@@ -109,9 +109,22 @@
                 }
               },
               {
-                "type": "named",
+                "type": "sequential",
                 "data": {
-                  "name": "gober"
+                  "commands": [
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "recracher ballon"
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "gober"
+                      }
+                    }
+                  ]
                 }
               },
               {

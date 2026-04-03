@@ -89,8 +89,7 @@ public class RobotContainer {
 
         FollowPathCommand.warmupCommand().schedule();
 
-        NamedCommands.registerCommand("gober",
-                gobeur.cracherCommand().withTimeout(1.0).andThen(coude.PIDCommand(0).alongWith(gobeur.goberCommand())));
+        NamedCommands.registerCommand("gober",coude.PIDCommand(0).alongWith(gobeur.goberCommand()));
         NamedCommands.registerCommand("preShoot", new PreLancer(superstructure, kickeur, lanceur));
         NamedCommands.registerCommand("shoot",
                 new LancerFancy(basePilotable, lanceur, hood, tourelle, kickeur, carroussel, superstructure));
@@ -99,11 +98,13 @@ public class RobotContainer {
         NamedCommands.registerCommand("viser depot", tourelle.PIDCommand(100));
         NamedCommands.registerCommand("viser outpost", tourelle.PIDCommand(-100));
         NamedCommands.registerCommand("retracterHood", hood.goToAnglePIDCommand(Constants.kAngleHoodDepart));
+        NamedCommands.registerCommand("recracher ballon", gobeur.cracherCommand().withTimeout(0.5) );
 
         // L'auto chooser doit être mis APRÈS les named commands
         autoChooser = AutoBuilder.buildAutoChooser();
 
         SmartDashboard.putData("Auto Chooser", autoChooser);
+
 
     }
 
@@ -139,16 +140,13 @@ public class RobotContainer {
         manette.x().onTrue(coude.PIDCommand(120));
 
         // Grimpeur
-        manette.start().whileTrue(grimpeur.monterCommand());
-        manette.back().whileTrue(grimpeur.descendreCommand());
+        manette.start().whileTrue(grimpeur.monterPitCommand());
+        manette.back().whileTrue(grimpeur.descendrePitCommand());
 
         manette.b().onTrue(new ConditionalCommand(
                 grimpeur.goMinHauteur(),
                 grimpeur.goMaxHauteur().alongWith(coude.PIDCommand(Constants.kAngleCoudeDepart).withTimeout(1.0)),
                 grimpeur::grimpeurHaut));
-
-        manette.leftTrigger().whileTrue(grimpeur.goMinHauteur());
-        manette.rightTrigger().whileTrue(grimpeur.goMaxHauteur());
 
         isHubActive.onTrue(new RumbleControllerActiveHub(true, manette, superstructure))
                 .onFalse(new RumbleControllerActiveHub(false, manette, superstructure));
