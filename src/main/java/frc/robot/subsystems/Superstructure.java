@@ -17,6 +17,7 @@ import com.opencsv.CSVReader;
 import com.opencsv.CSVReaderBuilder;
 
 import edu.wpi.first.epilogue.Logged;
+import edu.wpi.first.epilogue.NotLogged;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform2d;
@@ -30,6 +31,8 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.Cible;
@@ -52,6 +55,14 @@ public class Superstructure extends SubsystemBase {
 	private final Supplier<ChassisSpeeds> speedSupplier;
 	private final DoubleSupplier omegaSupplier;
 
+	private double trimLanceur;
+	private double trimKickeur;
+	private double trimTourelle;
+
+	private final double deltaLanceur;
+	private final double deltaKickeur;
+	private final double deltaTourelle;
+
 	// Look-Up-Table séparée des paramètres de tir afin d'itérer plus rapidement
 	InterpolatingDoubleTreeMap lutTOF = new InterpolatingDoubleTreeMap();
 
@@ -72,6 +83,14 @@ public class Superstructure extends SubsystemBase {
 		this.poseSupplier = poseSupplier;
 		this.speedSupplier = speedSupplier;
 		this.omegaSupplier = omegaSupplier;
+
+		trimLanceur = 0.0;
+		trimKickeur = 0.0;
+		trimTourelle = 0.0;
+
+		deltaLanceur = 1.0;
+		deltaKickeur = 1.0;
+		deltaTourelle = 2.0;
 
 		// Création de la LUT
 		// Il faut ajouter la librairie OpenCSV dans le build.gradle
@@ -397,15 +416,56 @@ public class Superstructure extends SubsystemBase {
 	}
 
 	public boolean hasWinAuto() {
-		String gameData = DriverStation.getGameSpecificMessage();
-		switch (gameData.charAt(0)) {
-			case 'R':
-				return Constants.isRedAlliance() ? true : false;
-			case 'B':
-				return Constants.isRedAlliance() ? false : true;
-			default:
-				return false;
+		if(DriverStation.isEnabled()){
+			String gameData = DriverStation.getGameSpecificMessage();
+			switch (gameData.charAt(0)) {
+				case 'R':
+					return Constants.isRedAlliance() ? true : false;
+				case 'B':
+					return Constants.isRedAlliance() ? false : true;
+				default :
+					return false;
+			}
+		}else{
+			return false; 
 		}
+	}
 
+	// TRIM
+
+	public double getTrimLanceur() {
+		return trimLanceur;
+	}
+
+	public double getTrimKickeur() {
+		return trimKickeur;
+	}
+
+	public double getTrimTourelle() {
+		return trimTourelle;
+	}
+
+	public Command plusTrimTourelle(){
+		return Commands.runOnce(()-> {trimTourelle += deltaTourelle;});
+	}
+
+	public Command moinsTrimTourelle(){
+		return Commands.runOnce(()-> {trimTourelle -= deltaTourelle;});
+	}
+
+	public Command plusTrimLanceur(){
+		return Commands.runOnce(()-> {trimLanceur += deltaLanceur;});
+	}
+
+	public Command moinsTrimLanceur(){
+		return Commands.runOnce(()-> {trimLanceur -= deltaLanceur;});
+	}
+
+	public Command plusTrimKickeur(){
+		return Commands.runOnce(()-> {trimKickeur += deltaKickeur;});
+	}
+
+	public Command moinsTrimKickeur(){
+		return Commands.runOnce(()-> {trimKickeur -= deltaKickeur;});
 	}
 }

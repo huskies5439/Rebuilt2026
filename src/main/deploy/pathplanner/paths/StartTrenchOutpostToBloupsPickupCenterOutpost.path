@@ -8,20 +8,20 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 4.969831325301204,
-        "y": 0.6364819277108438
+        "x": 4.650868746333032,
+        "y": 0.6081161637054304
       },
       "isLocked": false,
       "linkedName": "StartTrenchOutpost"
     },
     {
       "anchor": {
-        "x": 7.4,
-        "y": 1.8
+        "x": 7.669,
+        "y": 2.02
       },
       "prevControl": {
-        "x": 6.171879518072289,
-        "y": 0.5599879518072293
+        "x": 6.244024111661077,
+        "y": 0.7317124864174536
       },
       "nextControl": null,
       "isLocked": false,

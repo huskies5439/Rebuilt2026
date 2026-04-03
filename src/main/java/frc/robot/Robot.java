@@ -37,6 +37,7 @@ public class Robot extends TimedRobot {
     WebServer.start(5800, Filesystem.getDeployDirectory().getPath());
 
     SignalLogger.enableAutoLogging(false);
+    SignalLogger.stop();
   }
 
   /**

@@ -13,8 +13,7 @@ import frc.robot.subsystems.Superstructure;
 
 public class RumbleControllerActiveHub extends Command {
 
-  // Avant de descendre plus loin, veuillez noter que ce code est extrêmement
-  // beau!
+  // Avant de descendre plus loin, veuillez noter que ce code est extrêmement beau!
   // Vos yeux vont vous remercier!
   // RIP code laid 2026/03/27 à 2026/03/28 :(
 

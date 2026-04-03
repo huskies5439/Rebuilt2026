@@ -30,9 +30,28 @@
           }
         },
         {
-          "type": "path",
+          "type": "deadline",
           "data": {
-            "pathName": "EndPickupCenterOutpostToShoot"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "EndPickupCenterOutpostToShoot"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "preShoot"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "viser outpost"
+                }
+              }
+            ]
           }
         },
         {
@@ -61,12 +80,6 @@
           }
         },
         {
-          "type": "wait",
-          "data": {
-            "waitTime": 1.0
-          }
-        },
-        {
           "type": "deadline",
           "data": {
             "commands": [
@@ -86,9 +99,28 @@
           }
         },
         {
-          "type": "path",
+          "type": "parallel",
           "data": {
-            "pathName": "PickupBumpOutpostToTrenchOutpost"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "PickupBumpOutpostToTrenchOutpost"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "preShoot"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "viser outpost"
+                }
+              }
+            ]
           }
         },
         {

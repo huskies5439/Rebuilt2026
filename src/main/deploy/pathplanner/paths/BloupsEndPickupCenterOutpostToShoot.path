@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 7.4,
-        "y": 1.8
+        "x": 7.669,
+        "y": 2.02
       },
       "prevControl": null,
       "nextControl": {
-        "x": 7.166301204819278,
-        "y": 0.9533855421686745
+        "x": 6.320978854056358,
+        "y": 0.8837746745962785
       },
       "isLocked": true,
       "linkedName": "BloupsEndPickUpCenterOutpost"
@@ -20,8 +20,8 @@
         "y": 0.6
       },
       "prevControl": {
-        "x": 5.768951807228913,
-        "y": 0.3595903614457836
+        "x": 5.057723480837,
+        "y": 0.4133886967395565
       },
       "nextControl": null,
       "isLocked": false,

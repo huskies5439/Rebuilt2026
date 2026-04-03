@@ -8,8 +8,8 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.95867469879518,
-        "y": 7.411662650602409
+        "x": 6.270228915662651,
+        "y": 7.958048192771084
       },
       "isLocked": false,
       "linkedName": "EndTrenchDepot"
@@ -20,15 +20,24 @@
         "y": 5.0
       },
       "prevControl": {
-        "x": 6.738132530120483,
-        "y": 7.87398795180723
+        "x": 6.193734939759036,
+        "y": 6.919915662650602
       },
       "nextControl": null,
       "isLocked": false,
       "linkedName": "PickupBumpDepot"
     }
   ],
-  "rotationTargets": [],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.14190871369294353,
+      "rotationDegrees": 0.0
+    },
+    {
+      "waypointRelativePos": 0.8074688796680491,
+      "rotationDegrees": -90.0
+    }
+  ],
   "constraintZones": [],
   "pointTowardsZones": [],
   "eventMarkers": [],

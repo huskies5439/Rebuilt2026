@@ -56,9 +56,9 @@ public class EnvoyerShotParams extends Command {
     SmartDashboard.putNumber("shot params - lanceur", shotParams.getVitesseLanceur());
     SmartDashboard.putNumber("shot params - kickeur", shotParams.getVitesseKickeur());
     SmartDashboard.putNumber("shot params - Hood",   shotParams.getAngleHood());
-    lanceur.setPID(shotParams.getVitesseLanceur());
+    lanceur.setPID(shotParams.getVitesseLanceur() + superstructure.getTrimLanceur());
     hood.setPID(shotParams.getAngleHood());
-    kickeur.setPID(shotParams.getVitesseKickeur());
+    kickeur.setPID(shotParams.getVitesseKickeur() + superstructure.getTrimKickeur());
   }
 
   @Override

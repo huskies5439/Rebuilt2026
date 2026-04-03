@@ -52,11 +52,17 @@ public class Gobeur extends SubsystemBase {
     setVoltage(2);
   }
 
+  public void cracher(){
+    setVoltage(-4);
+  }
+
   /// Commandes simples
-
   public Command goberCommand() {
-
     return Commands.runEnd(this::gober, this::stop, this);
+  }
+
+   public Command cracherCommand() {
+    return Commands.runEnd(this::cracher, this::stop, this);
   }
 
 }

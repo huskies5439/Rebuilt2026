@@ -57,6 +57,18 @@
                 "data": {
                   "name": "gober"
                 }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "preShoot"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "viser depot"
+                }
               }
             ]
           }
