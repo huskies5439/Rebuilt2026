@@ -65,7 +65,7 @@ public class Superstructure extends SubsystemBase {
 
 	Field2d field2d = new Field2d();
 
-	private boolean lancerActif = false; 
+	private boolean lancerActif = false;
 
 	public Superstructure(Supplier<Pose2d> poseSupplier, Supplier<ChassisSpeeds> speedSupplier,
 			DoubleSupplier omegaSupplier) {
@@ -108,7 +108,8 @@ public class Superstructure extends SubsystemBase {
 		field2d.setRobotPose(poseRobot);
 		field2d.getObject("cible virtuelle").setPose(new Pose2d(cibleVirtuelle, Rotation2d.kZero));
 		SmartDashboard.putData("field2d", field2d);
-		SmartDashboard.putString("Shift Time", String.format("%.2f", new BigDecimal(remainingTime()).setScale(2, RoundingMode.FLOOR)));
+		SmartDashboard.putString("Shift Time",
+				String.format("%.2f", new BigDecimal(remainingTime()).setScale(2, RoundingMode.FLOOR)));
 	}
 
 	public void setCibleReelle() {
@@ -131,7 +132,7 @@ public class Superstructure extends SubsystemBase {
 		}
 	}
 
-	public boolean cibleIsHub(){
+	public boolean cibleIsHub() {
 		return cibleReelle == Cible.hubRouge || cibleReelle == Cible.hubBleu;
 	}
 
@@ -269,12 +270,17 @@ public class Superstructure extends SubsystemBase {
 				isProcheRectangle(PoseTrench.trenchRougeOutpost, demiX, demiY);
 	}
 
-	public boolean getLancerActif(){
-		return this.lancerActif; 
+	public boolean getLancerActif() {
+		return this.lancerActif;
 	}
 
-	public void setLancerActif(boolean lancerActif){
-		this.lancerActif = lancerActif; 
+	public void setLancerActif(boolean lancerActif) {
+		if (DriverStation.isTeleop()) {
+			this.lancerActif = lancerActif;
+		} else {
+			this.lancerActif = false;
+		}
+
 	}
 
 	/////// Cinématique d'un point P (tourelle) sur un corps rigide (robot)
@@ -344,7 +350,7 @@ public class Superstructure extends SubsystemBase {
 		if (matchTime > 130 + decalage) {
 			// Transition shift, hub is active.
 			return true;
-		} else if (matchTime > 105 +decalage ) {
+		} else if (matchTime > 105 + decalage) {
 			// Shift 1
 			return shift1Active;
 		} else if (matchTime > 80 + decalage) {
@@ -362,7 +368,7 @@ public class Superstructure extends SubsystemBase {
 		}
 	}
 
-	public void isHubActive(){
+	public void isHubActive() {
 		isHubActive(0);
 	}
 
@@ -389,13 +395,17 @@ public class Superstructure extends SubsystemBase {
 			return matchTime;
 		}
 	}
-	public boolean hasWinAuto(){
+
+	public boolean hasWinAuto() {
 		String gameData = DriverStation.getGameSpecificMessage();
 		switch (gameData.charAt(0)) {
-			case 'R' : return Constants.isRedAlliance() ? true : false;
-			case 'B' : return Constants.isRedAlliance() ? false : true;
-			default : return false;
+			case 'R':
+				return Constants.isRedAlliance() ? true : false;
+			case 'B':
+				return Constants.isRedAlliance() ? false : true;
+			default:
+				return false;
 		}
-		
+
 	}
 }

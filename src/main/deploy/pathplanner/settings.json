@@ -10,7 +10,7 @@
     "Depot",
     "Outpost"
   ],
-  "defaultMaxVel": 2.0,
+  "defaultMaxVel": 2.5,
   "defaultMaxAccel": 2.0,
   "defaultMaxAngVel": 720.0,
   "defaultMaxAngAccel": 720.0,
