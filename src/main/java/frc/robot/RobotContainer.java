@@ -94,14 +94,13 @@ public class RobotContainer {
         NamedCommands.registerCommand("shoot",
                 new LancerFancy(basePilotable, lanceur, hood, tourelle, kickeur, carroussel, superstructure));
         NamedCommands.registerCommand("retracter", new RetracterGobeurDurantLancer(coude, gobeur));
-        NamedCommands.registerCommand("grimper", new WaitCommand(1));
         NamedCommands.registerCommand("viser depot", tourelle.PIDCommand(100));
         NamedCommands.registerCommand("viser outpost", tourelle.PIDCommand(-100));
         NamedCommands.registerCommand("retracterHood", hood.goToAnglePIDCommand(Constants.kAngleHoodDepart));
         NamedCommands.registerCommand("recracher ballon", gobeur.cracherCommand().withTimeout(0.5) );
 
         // L'auto chooser doit être mis APRÈS les named commands
-        autoChooser = AutoBuilder.buildAutoChooser();
+       autoChooser = AutoBuilder.buildAutoChooser();
 
         SmartDashboard.putData("Auto Chooser", autoChooser);
 

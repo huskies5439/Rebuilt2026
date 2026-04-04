@@ -43,7 +43,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "BloupsEndPickupCenterDepotToShootTrenchDepot"
+                  "pathName": "FlexEndPickupCenterDepotToShootTrenchDepot"
                 }
               },
               {
@@ -68,7 +68,7 @@
           }
         },
         {
-          "type": "parallel",
+          "type": "deadline",
           "data": {
             "commands": [
               {
@@ -86,13 +86,26 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "retracter"
+                  "name": "gober"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "gober"
                 }
               },
               {
                 "type": "named",
                 "data": {
-                  "name": "gober"
+                  "name": "shoot"
                 }
               }
             ]
