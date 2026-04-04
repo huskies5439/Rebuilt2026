@@ -9,7 +9,7 @@
       "prevControl": null,
       "nextControl": {
         "x": 6.320978854056358,
-        "y": 0.8837746745962785
+        "y": 0.8837746745962782
       },
       "isLocked": true,
       "linkedName": "BloupsEndPickUpCenterOutpost"
@@ -21,7 +21,7 @@
       },
       "prevControl": {
         "x": 5.057723480837,
-        "y": 0.4133886967395565
+        "y": 0.4133886967395566
       },
       "nextControl": null,
       "isLocked": false,
