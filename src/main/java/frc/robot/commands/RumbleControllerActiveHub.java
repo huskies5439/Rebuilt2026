@@ -17,14 +17,16 @@ public class RumbleControllerActiveHub extends Command {
   // Vos yeux vont vous remercier!
   // RIP code laid 2026/03/27 à 2026/03/28 :(
 
-  CommandXboxController manette;
+  CommandXboxController manettePilote;
+  CommandXboxController manetteCopilote;
   boolean lastActive = false;
   boolean isStart;
 
   long startTime;
 
-  public RumbleControllerActiveHub(boolean isStart, CommandXboxController manette, Superstructure superstructure) {
-    this.manette = manette;
+  public RumbleControllerActiveHub(boolean isStart, CommandXboxController manettePilote, CommandXboxController manetteCopilote, Superstructure superstructure) {
+    this.manettePilote = manettePilote;
+    this.manetteCopilote = manetteCopilote;
     this.isStart = isStart;
 
   }
@@ -36,12 +38,14 @@ public class RumbleControllerActiveHub extends Command {
 
   @Override
   public void execute() {
-    manette.setRumble(isStart ? RumbleType.kLeftRumble : RumbleType.kRightRumble, 1.0);
+    manettePilote.setRumble(isStart ? RumbleType.kLeftRumble : RumbleType.kRightRumble, 1.0);
+    manetteCopilote.setRumble(isStart ? RumbleType.kLeftRumble : RumbleType.kRightRumble, 1.0);
   }
 
   @Override
   public void end(boolean interrupted) {
-    manette.setRumble(isStart ? RumbleType.kLeftRumble : RumbleType.kRightRumble, 0.0);
+    manettePilote.setRumble(isStart ? RumbleType.kLeftRumble : RumbleType.kRightRumble, 0.0);
+    manetteCopilote.setRumble(isStart ? RumbleType.kLeftRumble : RumbleType.kRightRumble, 0.0);
   }
 
   @Override

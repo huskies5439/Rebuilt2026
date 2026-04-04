@@ -149,8 +149,8 @@ public class RobotContainer {
                 grimpeur.goMaxHauteur().alongWith(coude.PIDCommand(Constants.kAngleCoudeDepart).withTimeout(1.0)),
                 grimpeur::grimpeurHaut));
 
-        isHubActive.onTrue(new RumbleControllerActiveHub(true, manettePilote, superstructure))
-                .onFalse(new RumbleControllerActiveHub(false, manettePilote, superstructure));
+        isHubActive.onTrue(new RumbleControllerActiveHub(true, manettePilote, manetteCopilote, superstructure))
+                .onFalse(new RumbleControllerActiveHub(false, manettePilote, manetteCopilote, superstructure));
 
         manetteCopilote.povUp().onTrue(superstructure.plusTrimLanceur().alongWith(superstructure.plusTrimKickeur()));
         manetteCopilote.povDown().onTrue(superstructure.moinsTrimLanceur().alongWith(superstructure.moinsTrimKickeur()));

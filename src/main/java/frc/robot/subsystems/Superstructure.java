@@ -333,10 +333,10 @@ public class Superstructure extends SubsystemBase {
 	public boolean isHubActive(int decalage) {
 		Optional<Alliance> alliance = DriverStation.getAlliance();
 
-		// Hub is always enabled in autonomous.
-		if (DriverStation.isAutonomousEnabled()) {
-			return true;
-		}
+		// // Hub is always enabled in autonomous.
+		// if (DriverStation.isAutonomousEnabled()) {
+		// 	return true;
+		// }
 		// At this point, if we're not teleop enabled, there is no hub.
 		if (!DriverStation.isTeleopEnabled()) {
 			return false;
