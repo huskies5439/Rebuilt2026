@@ -9,9 +9,22 @@
           "data": {
             "commands": [
               {
-                "type": "path",
+                "type": "sequential",
                 "data": {
-                  "pathName": "StartTrenchDepotToPickupCenterDepot"
+                  "commands": [
+                    {
+                      "type": "path",
+                      "data": {
+                        "pathName": "StartTrenchDepotToBloupsPickupCenterDepot"
+                      }
+                    },
+                    {
+                      "type": "wait",
+                      "data": {
+                        "waitTime": 1.0
+                      }
+                    }
+                  ]
                 }
               },
               {
@@ -30,26 +43,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "PickupCenterDepotToEndPickupCenterDepot"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "gober"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "deadline",
-          "data": {
-            "commands": [
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "EndPickupCenterDepotToShootTrenchDepot"
+                  "pathName": "BloupsEndPickupCenterDepotToShootTrenchDepot"
                 }
               },
               {
@@ -74,13 +68,13 @@
           }
         },
         {
-          "type": "deadline",
+          "type": "parallel",
           "data": {
             "commands": [
               {
                 "type": "path",
                 "data": {
-                  "pathName": "ShootTrenchDepotToTowerDepot"
+                  "pathName": "TrenchDepotToPickUpDepot"
                 }
               },
               {
@@ -94,14 +88,14 @@
                 "data": {
                   "name": "retracter"
                 }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "gober"
+                }
               }
             ]
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "grimper"
           }
         }
       ]

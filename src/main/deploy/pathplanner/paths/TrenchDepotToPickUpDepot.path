@@ -3,16 +3,16 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.6,
-        "y": 7.397
+        "x": 4.25,
+        "y": 7.4
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.673187619097311,
-        "y": 6.821672407761358
+        "x": 2.237903614457831,
+        "y": 6.919915662650602
       },
       "isLocked": false,
-      "linkedName": "transitionTrenchDepot"
+      "linkedName": "EndTrenchDepot"
     },
     {
       "anchor": {
@@ -20,8 +20,8 @@
         "y": 6.0
       },
       "prevControl": {
-        "x": 3.9253253012048197,
-        "y": 5.945361445783128
+        "x": 3.024698795180723,
+        "y": 5.9364216867469874
       },
       "nextControl": null,
       "isLocked": false,
@@ -30,7 +30,7 @@
   ],
   "rotationTargets": [
     {
-      "waypointRelativePos": 0.45,
+      "waypointRelativePos": 0.7040650406503983,
       "rotationDegrees": 180.0
     }
   ],
@@ -38,10 +38,10 @@
   "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 1.5,
-    "maxAcceleration": 3.0,
-    "maxAngularVelocity": 540.0,
-    "maxAngularAcceleration": 720.0,
+    "maxVelocity": 1.0,
+    "maxAcceleration": 1.0,
+    "maxAngularVelocity": 360.0,
+    "maxAngularAcceleration": 360.0,
     "nominalVoltage": 12.0,
     "unlimited": false
   },
@@ -53,7 +53,7 @@
   "folder": "path",
   "idealStartingState": {
     "velocity": 1.5,
-    "rotation": 180.0
+    "rotation": 0.0
   },
   "useDefaultConstraints": false
 }
