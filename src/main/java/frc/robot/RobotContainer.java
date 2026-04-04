@@ -39,7 +39,9 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 @Logged
 public class RobotContainer {
 
-    private final CommandXboxController manette = new CommandXboxController(0);
+    private final CommandXboxController manettePilote = new CommandXboxController(0);
+
+    private final CommandXboxController manetteCopilote = new CommandXboxController(1); 
 
     private final BasePilotable basePilotable;
     private final Superstructure superstructure;
@@ -77,8 +79,8 @@ public class RobotContainer {
 
         configureBindings();
 
-        basePilotable.setDefaultCommand(new BasePilotableDefaut(manette::getLeftY,
-                manette::getLeftX, manette::getRightX, basePilotable, superstructure));
+        basePilotable.setDefaultCommand(new BasePilotableDefaut(manettePilote::getLeftY,
+                manettePilote::getLeftX, manettePilote::getRightX, basePilotable, superstructure));
 
         coude.setDefaultCommand(coude.holdCommand());
 
@@ -118,9 +120,9 @@ public class RobotContainer {
         // .alongWith(lanceur.lancerPIDCommand())
         // .alongWith(hood.goToAnglePIDCommand()));
 
-        manette.a().whileTrue(new SnapTrench(manette::getLeftY, basePilotable));
+        manettePilote.a().whileTrue(new SnapTrench(manettePilote::getLeftY, basePilotable));
 
-        manette.rightBumper().and(protectionTrench)
+        manettePilote.rightBumper().and(protectionTrench)
                 .whileTrue(
                         new LancerFancy(basePilotable, lanceur, hood, tourelle, kickeur, carroussel,
                                 superstructure)
@@ -128,33 +130,33 @@ public class RobotContainer {
                 )
                 .onFalse(new PostLancer(lanceur, carroussel, kickeur, superstructure));
 
-        manette.rightBumper().and(protectionTrench).and(manette.leftBumper().negate())
+        manettePilote.rightBumper().and(protectionTrench).and(manettePilote.leftBumper().negate())
                 .whileTrue(new WaitCommand(1).andThen(new RetracterGobeurDurantLancer(coude, gobeur)));
 
         // Gober
-        manette.leftBumper().whileTrue(coude.PIDCommand(7).alongWith(gobeur.goberCommand()));
+        manettePilote.leftBumper().whileTrue(coude.PIDCommand(7).alongWith(gobeur.goberCommand()));
         // //à déterminer s'il faut lever légerment le gobeur
 
         // Protection coude
-        manette.x().onTrue(coude.PIDCommand(120));
+        manettePilote.x().onTrue(coude.PIDCommand(120));
 
         // Grimpeur
-        manette.start().whileTrue(grimpeur.monterPitCommand());
-        manette.back().whileTrue(grimpeur.descendrePitCommand());
+        manettePilote.start().whileTrue(grimpeur.monterPitCommand());
+        manettePilote.back().whileTrue(grimpeur.descendrePitCommand());
 
-        manette.b().onTrue(new ConditionalCommand(
+        manettePilote.b().onTrue(new ConditionalCommand(
                 grimpeur.goMinHauteur(),
                 grimpeur.goMaxHauteur().alongWith(coude.PIDCommand(Constants.kAngleCoudeDepart).withTimeout(1.0)),
                 grimpeur::grimpeurHaut));
 
-        isHubActive.onTrue(new RumbleControllerActiveHub(true, manette, superstructure))
-                .onFalse(new RumbleControllerActiveHub(false, manette, superstructure));
+        isHubActive.onTrue(new RumbleControllerActiveHub(true, manettePilote, superstructure))
+                .onFalse(new RumbleControllerActiveHub(false, manettePilote, superstructure));
 
-        manette.povUp().onTrue(superstructure.plusTrimLanceur().alongWith(superstructure.plusTrimKickeur()));
-        manette.povDown().onTrue(superstructure.moinsTrimLanceur().alongWith(superstructure.moinsTrimKickeur()));
+        manetteCopilote.povUp().onTrue(superstructure.plusTrimLanceur().alongWith(superstructure.plusTrimKickeur()));
+        manetteCopilote.povDown().onTrue(superstructure.moinsTrimLanceur().alongWith(superstructure.moinsTrimKickeur()));
 
-        manette.povLeft().onTrue(superstructure.plusTrimTourelle());
-        manette.povRight().onTrue(superstructure.moinsTrimTourelle());
+        manetteCopilote.povLeft().onTrue(superstructure.plusTrimTourelle());
+        manetteCopilote.povRight().onTrue(superstructure.moinsTrimTourelle());
 
     }
 
