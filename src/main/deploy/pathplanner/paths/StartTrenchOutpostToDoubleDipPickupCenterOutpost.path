@@ -1,0 +1,68 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 4.4,
+        "y": 0.6
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 4.906623340370254,
+        "y": 0.6491303469566961
+      },
+      "isLocked": true,
+      "linkedName": "StartTrenchOutpost"
+    },
+    {
+      "anchor": {
+        "x": 8.25,
+        "y": 0.6
+      },
+      "prevControl": {
+        "x": 7.293,
+        "y": 0.6000000000000001
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "PickupCenterOutpost"
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [
+    {
+      "name": "Constraints Zone",
+      "minWaypointRelativePos": 0.10054054054054054,
+      "maxWaypointRelativePos": 0.7513513513513513,
+      "constraints": {
+        "maxVelocity": 4.0,
+        "maxAcceleration": 3.0,
+        "maxAngularVelocity": 720.0,
+        "maxAngularAcceleration": 720.0,
+        "nominalVoltage": 12.0,
+        "unlimited": false
+      }
+    }
+  ],
+  "pointTowardsZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 2.5,
+    "maxAcceleration": 2.5,
+    "maxAngularVelocity": 720.0,
+    "maxAngularAcceleration": 720.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 0.0,
+    "rotation": 110.0
+  },
+  "reversed": false,
+  "folder": "path",
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": 0.0
+  },
+  "useDefaultConstraints": false
+}

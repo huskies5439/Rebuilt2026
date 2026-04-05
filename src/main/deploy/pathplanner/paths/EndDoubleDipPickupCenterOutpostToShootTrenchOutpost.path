@@ -52,7 +52,7 @@
   "reversed": false,
   "folder": "path",
   "idealStartingState": {
-    "velocity": 2.0,
+    "velocity": 0.0,
     "rotation": 125.00000000000001
   },
   "useDefaultConstraints": true

@@ -3,41 +3,32 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 4.25,
-        "y": 7.4
+        "x": 8.25,
+        "y": 0.6
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.270228915662651,
-        "y": 7.958048192771084
+        "x": 8.293710843373495,
+        "y": 1.7692650602409636
       },
       "isLocked": false,
-      "linkedName": "EndTrenchDepot"
+      "linkedName": "PickupCenterOutpost"
     },
     {
       "anchor": {
-        "x": 5.7,
-        "y": 5.0
+        "x": 7.8,
+        "y": 3.2
       },
       "prevControl": {
-        "x": 6.193734939759036,
-        "y": 6.919915662650602
+        "x": 8.586945715637869,
+        "y": 2.7081662469500474
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "PickupBumpDepot"
+      "linkedName": "EndPickupCenterOutpost"
     }
   ],
-  "rotationTargets": [
-    {
-      "waypointRelativePos": 0.14190871369294353,
-      "rotationDegrees": 0.0
-    },
-    {
-      "waypointRelativePos": 0.8074688796680491,
-      "rotationDegrees": -90.0
-    }
-  ],
+  "rotationTargets": [],
   "constraintZones": [],
   "pointTowardsZones": [],
   "eventMarkers": [],
@@ -50,14 +41,14 @@
     "unlimited": false
   },
   "goalEndState": {
-    "velocity": 2.0,
-    "rotation": -90.0
+    "velocity": 0,
+    "rotation": 125.00000000000001
   },
   "reversed": false,
   "folder": "path",
   "idealStartingState": {
-    "velocity": 0,
-    "rotation": 0.0
+    "velocity": 0.0,
+    "rotation": 110.0
   },
   "useDefaultConstraints": false
 }

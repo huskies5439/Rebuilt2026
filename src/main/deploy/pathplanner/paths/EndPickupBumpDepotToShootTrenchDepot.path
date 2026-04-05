@@ -4,28 +4,28 @@
     {
       "anchor": {
         "x": 5.7,
-        "y": 3.0
+        "y": 5.0
       },
       "prevControl": null,
       "nextControl": {
-        "x": 5.77707993764364,
-        "y": 2.7621793044900156
+        "x": 5.777080962618744,
+        "y": 5.237820363303414
       },
       "isLocked": false,
-      "linkedName": "PickupBumpOutpost"
+      "linkedName": "PickupBumpDepot"
     },
     {
       "anchor": {
-        "x": 5.975,
-        "y": 1.224
+        "x": 5.975180722891566,
+        "y": 6.876204819277109
       },
       "prevControl": {
-        "x": 5.953134581742194,
-        "y": 1.923658419147809
+        "x": 5.953325301204821,
+        "y": 6.1768313253012055
       },
       "nextControl": {
-        "x": 5.992898406659602,
-        "y": 0.6512796083261506
+        "x": 5.993089682942343,
+        "y": 7.449291540902015
       },
       "isLocked": false,
       "linkedName": null
@@ -33,20 +33,20 @@
     {
       "anchor": {
         "x": 4.25,
-        "y": 0.6
+        "y": 7.4
       },
       "prevControl": {
-        "x": 5.931694519944108,
-        "y": 0.6320552895784224
+        "x": 5.9314698795180725,
+        "y": 7.367951807228916
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "EndTrenchOutpost"
+      "linkedName": "EndTrenchDepot"
     }
   ],
   "rotationTargets": [
     {
-      "waypointRelativePos": 1.03,
+      "waypointRelativePos": 1.0273858921161723,
       "rotationDegrees": 0.0
     }
   ],
@@ -68,8 +68,8 @@
   "reversed": false,
   "folder": "path",
   "idealStartingState": {
-    "velocity": 2.0,
-    "rotation": 90.0
+    "velocity": 0.0,
+    "rotation": -90.0
   },
   "useDefaultConstraints": false
 }

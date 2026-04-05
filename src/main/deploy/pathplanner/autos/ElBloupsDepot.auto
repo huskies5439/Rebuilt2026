@@ -43,7 +43,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "BloupsEndPickupCenterDepotToShootTrenchDepot"
+                  "pathName": "EndBloupPickupCenterDepotToShootTrenchDepot"
                 }
               },
               {
