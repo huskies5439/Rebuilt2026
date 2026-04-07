@@ -19,24 +19,28 @@ import frc.robot.subsystems.Superstructure;
 
 public class FollowPathDistance extends ParallelRaceGroup {
 
-  //Superstructure est là pour le isProche
-  public FollowPathDistance(Pose2d cible, BasePilotable basePilotable, Superstructure superstructure, FancyPathGeneration fancyPath) {
-    addRequirements(basePilotable);
-    addCommands(
-      Commands.defer(
-        ()-> {
-          basePilotable.resetPID();
-          PathPlannerPath path = fancyPath.genererPath(cible);
-          return basePilotable.followPath(path);
-        },
-        Set.of(basePilotable)),//Je suspecte qu'il faudra changer ça pour Set.of(basePilotable)
+    //Superstructure est là pour le isProche
+    public FollowPathDistance(
+        Pose2d cible,
+        BasePilotable basePilotable,
+        Superstructure superstructure,
+        FancyPathGeneration fancyPath
+    ) {
+        addRequirements(basePilotable);
+        addCommands(
+            Commands.defer(
+                () -> {
+                    basePilotable.resetPID();
+                    PathPlannerPath path = fancyPath.genererPath(cible);
+                    return basePilotable.followPath(path);
+                }, Set.of(basePilotable)),//Je suspecte qu'il faudra changer ça pour Set.of(basePilotable)
 
-        new WaitUntilCommand(()-> superstructure.isProche(cible, 1.5))
-    );
-  }
+            new WaitUntilCommand(() -> superstructure.isProche(cible, 1.5)));
+    }
 
-   /*
-     * Les méthodes sont effectuées au démarrage du robot, le defer fait en sorte qu'il appèle la fonction quand il en a besoin.
+    /*
+     * Les méthodes sont effectuées au démarrage du robot, le defer fait en sorte qu'il appèle la fonction quand il
+     * en a besoin.
      * Dans followPath, nous utilisons la pose actuelle du robot pour faire le path (sinon restait à 0,0).
      */
 }

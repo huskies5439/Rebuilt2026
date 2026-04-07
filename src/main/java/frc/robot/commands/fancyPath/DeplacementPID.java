@@ -11,38 +11,41 @@ import frc.robot.subsystems.BasePilotable;
 import frc.robot.subsystems.Superstructure;
 
 public class DeplacementPID extends Command {
-  BasePilotable basePilotable;
-  Superstructure superstructure; //juste pour le isProche()
-  Pose2d cible;
 
-  public DeplacementPID(Pose2d cible, BasePilotable basePilotable, Superstructure superstructure) {
-    this.basePilotable = basePilotable;
-    this.superstructure = superstructure;
-    this.cible = cible;
+    BasePilotable basePilotable;
+    Superstructure superstructure; //juste pour le isProche()
+    Pose2d cible;
 
-    addRequirements(basePilotable);
-  }
+    public DeplacementPID(Pose2d cible, BasePilotable basePilotable, Superstructure superstructure) {
+        this.basePilotable = basePilotable;
+        this.superstructure = superstructure;
+        this.cible = cible;
 
-  @Override
-  public void initialize() {}
+        addRequirements(basePilotable);
+    }
 
-  @Override
-  public void execute() {
-    basePilotable.setPID(cible);
-  }
+    @Override
+    public void initialize() {}
+
+    @Override
+    public void execute() {
+        basePilotable.setPID(cible);
+    }
 
 
-  @Override
-  public void end(boolean interrupted) {
-    basePilotable.setX();
-  }
+    @Override
+    public void end(boolean interrupted) {
+        basePilotable.setX();
+    }
 
-  @Override
-  public boolean isFinished() {
-    return superstructure.isProche(cible, 0.05) && isAngleProche(5);
-  }
+    @Override
+    public boolean isFinished() {
+        return superstructure.isProche(cible, 0.05) && isAngleProche(5);
+    }
 
-   private boolean isAngleProche(double tolerance) {//Il y a probablement une façon plus clean de faire en soustrayant les Pose2D
-    return Math.abs(basePilotable.getPose().getRotation().getDegrees()-cible.getRotation().getDegrees()) <= tolerance;
-  }
+    private boolean isAngleProche(double tolerance) {//Il y a probablement une façon plus clean de faire en
+        // soustrayant les Pose2D
+        return Math.abs(basePilotable.getPose().getRotation().getDegrees() - cible.getRotation().getDegrees()) <=
+               tolerance;
+    }
 }

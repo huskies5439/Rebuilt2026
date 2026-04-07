@@ -26,132 +26,120 @@ import frc.robot.Constants;
 
 @Logged(strategy = Strategy.OPT_IN)
 public class Hood extends SubsystemBase {
-  private SparkMax moteur = new SparkMax(41, MotorType.kBrushless);
-  private SparkMaxConfig config = new SparkMaxConfig();
 
-  // moteur avec maxPlanetary, enngrenage 40 vers 24, 16 * dent utiliser/nombre de dents théorique * 360 degrées
-  private double maxPlanetary = (1.0/5.0)*(1.0/5.0)*(1.0/4.0);
+    private SparkMax moteur = new SparkMax(41, MotorType.kBrushless);
+    private SparkMaxConfig config = new SparkMaxConfig();
 
-  private double conversion = maxPlanetary*(40.0/24.0)*(25.0/332.0)*360.0;
+    // moteur avec maxPlanetary, enngrenage 40 vers 24, 16 * dent utiliser/nombre de dents théorique * 360 degrées
+    private double maxPlanetary = (1.0 / 5.0) * (1.0 / 5.0) * (1.0 / 4.0);
 
-  private double toleranceHood = 3.0;  
+    private double conversion = maxPlanetary * (40.0 / 24.0) * (25.0 / 332.0) * 360.0;
 
-  private DigitalInput limitSwitch = new DigitalInput(9);
+    private double toleranceHood = 3.0;
 
-  private ProfiledPIDController profiledPID = new ProfiledPIDController(1, 0, 0,
-      new TrapezoidProfile.Constraints(60, 180));
+    private DigitalInput limitSwitch = new DigitalInput(9);
 
-  private double vraieCible = Constants.kAngleHoodDepart; 
+    private ProfiledPIDController profiledPID =
+        new ProfiledPIDController(1, 0, 0, new TrapezoidProfile.Constraints(60, 180));
+
+    private double vraieCible = Constants.kAngleHoodDepart;
 
 
-  public Hood() {
+    public Hood() {
 
-    config.inverted(true);
-    config.idleMode(IdleMode.kBrake);
-    config.encoder.positionConversionFactor(conversion);
-    config.encoder.velocityConversionFactor(conversion / 60.0);
-    config.softLimit.forwardSoftLimit(Constants.kAngleHoodDepart).reverseSoftLimit(44); 
-    config.softLimit.forwardSoftLimitEnabled(true).reverseSoftLimitEnabled(true);
-    moteur.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+        config.inverted(true);
+        config.idleMode(IdleMode.kBrake);
+        config.encoder.positionConversionFactor(conversion);
+        config.encoder.velocityConversionFactor(conversion / 60.0);
+        config.softLimit.forwardSoftLimit(Constants.kAngleHoodDepart).reverseSoftLimit(44);
+        config.softLimit.forwardSoftLimitEnabled(true).reverseSoftLimitEnabled(true);
+        moteur.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
-    profiledPID.setTolerance(5);
+        profiledPID.setTolerance(5);
 
-    SmartDashboard.putNumber("Cible Hood",Constants.kAngleHoodDepart);
+        SmartDashboard.putNumber("Cible Hood", Constants.kAngleHoodDepart);
 
-    resetEncodeur();
+        resetEncodeur();
 
-  }
-
-  @Override
-  public void periodic() {
-
-    if (isLimitSwitch()) {
-      resetEncodeur();
     }
-      SmartDashboard.putNumber("Goal Hood", profiledPID.getGoal().position);
-      SmartDashboard.putNumber("Setpoint", profiledPID.getSetpoint().velocity); 
-  }
 
-  public void setVoltage(double voltage) {
-    moteur.setVoltage(voltage);
-  }
+    @Override
+    public void periodic() {
 
-  @Logged
-  public double getAngle() {
-    return moteur.getEncoder().getPosition();
-  }
+        if (isLimitSwitch()) {
+            resetEncodeur();
+        }
+        SmartDashboard.putNumber("Goal Hood", profiledPID.getGoal().position);
+        SmartDashboard.putNumber("Setpoint", profiledPID.getSetpoint().velocity);
+    }
 
-  @Logged
-  public double getVitesse() {
-    return moteur.getEncoder().getVelocity();
-  }
+    //Moteur
+    public void setVoltage(double voltage) {
+        moteur.setVoltage(voltage);
+    }
 
-  public void resetEncodeur() {
-    moteur.getEncoder().setPosition(Constants.kAngleHoodDepart);
-  }
+    public void stop() {
+        //resetPID();
+        setVoltage(0);
+    }
 
-  public void stop() {
-    //resetPID();
-    setVoltage(0);
-  }
+    //Encodeur
+    @Logged
+    public double getAngle() {
+        return moteur.getEncoder().getPosition();
+    }
 
-  public void sortir() {
-    setVoltage(-3);
-  }
+    @Logged
+    public double getVitesse() {
+        return moteur.getEncoder().getVelocity();
+    }
 
-  public void rentrer() {
-    setVoltage(3);
-  }
+    public void resetEncodeur() {
+        moteur.getEncoder().setPosition(Constants.kAngleHoodDepart);
+    }
 
-  public Command rentrerCommand() {
-    return Commands.runEnd(this::rentrer, this::stop, this);
-  }
+    //Cibles
+    public void setCible(double cible) {
+        this.vraieCible = cible;
+    }
 
-  public Command sortirCommand() {
-    return Commands.runEnd(this::sortir, this::stop, this);
-  }
+    public double getCible() {
+        return vraieCible;
+    }
 
-  //Cibles 
-  public void setCible(double cible){
-    this.vraieCible = cible;
-  }
+    /// PID
+    public void setPID(double cible) {
+        setCible(cible);
+        double voltage = profiledPID.calculate(getAngle(), cible);
+        setVoltage(voltage);
+    }
 
-  public double getCible(){
-    return vraieCible; 
-  }
+    public void resetPID() {
+        setCible(getAngle());
+        profiledPID.reset(getAngle());
+    }
 
-  /// PID
-  public void setPID(double cible) {
-      setCible(cible);
-      double voltage = profiledPID.calculate(getAngle(), cible);
-      setVoltage(voltage); 
-  }
+    @Logged(name = "At Cible Hood")
+    public boolean atCible() {
+        return Math.abs(getAngle() - getCible()) <= toleranceHood;
+    }
 
-  public void resetPID() {
-    setCible(getAngle());
-    profiledPID.reset(getAngle());
-  }
+    // Limit switch
+    @Logged
+    public boolean isLimitSwitch() {
+        return !limitSwitch.get();
+    }
 
-  @Logged(name = "At Cible Hood")
-  public boolean atCible() {
-    return Math.abs(getAngle() - getCible()) <= toleranceHood; 
-  }
+    //Commandes
+    public Command goToAnglePIDCommand(double cible) {
+        return Commands
+            .runOnce(this::resetPID, this)
+            .andThen(Commands.runEnd(() -> this.setPID(cible), this::stop, this));
+    }
 
-  // Limit switch
-  @Logged
-  public boolean isLimitSwitch() {
-    return !limitSwitch.get();
-  }
+    public Command goToAnglePIDCommand() {
+        return Commands.defer(() -> goToAnglePIDCommand(SmartDashboard.getNumber("Cible Hood", 0)), Set.of(this));
+    }
 
-  public Command goToAnglePIDCommand(double cible) {
-    return Commands.runOnce(this::resetPID, this).andThen(Commands.runEnd(() -> this.setPID(cible),this::stop , this));
-  }
-
-  public Command goToAnglePIDCommand() {
-    return Commands.defer(()->{return goToAnglePIDCommand(SmartDashboard.getNumber("Cible Hood", 0));}, Set.of(this));
-  }
-  
-  
- 
 
 }

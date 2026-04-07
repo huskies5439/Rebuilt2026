@@ -10,47 +10,45 @@ import frc.robot.subsystems.Kickeur;
 import frc.robot.subsystems.Lanceur;
 import frc.robot.subsystems.Superstructure;
 
-/* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class PreLancer extends Command {
 
-  ShotParams shotParams;
+    ShotParams shotParams;
 
+    Superstructure superstructure;
+    Kickeur kickeur;
+    Lanceur lanceur;
 
-  Superstructure superstructure;
-  Kickeur kickeur;
-  Lanceur lanceur;
+    public PreLancer(Superstructure superstructure, Kickeur kickeur, Lanceur lanceur) {
+        this.superstructure = superstructure;
+        this.kickeur = kickeur;
+        this.lanceur = lanceur;
 
-  public PreLancer(Superstructure superstructure, Kickeur kickeur, Lanceur lanceur) {
-    this.superstructure = superstructure;
-    this.kickeur = kickeur;
-    this.lanceur = lanceur;
+        addRequirements(lanceur, kickeur, superstructure);
 
-    addRequirements(lanceur, kickeur, superstructure);
+    }
 
-  }
+    @Override
+    public void initialize() {
 
-  @Override
-  public void initialize() {
+    }
 
-  }
+    @Override
+    public void execute() {
+        shotParams = superstructure.getGeneriqueShotParams(3.25);
 
-  @Override
-  public void execute() {
-    shotParams = superstructure.getGeneriqueShotParams(3.25);
+        lanceur.setPID(shotParams.getVitesseLanceur());
+        kickeur.setPID(shotParams.getVitesseKickeur());
 
-    lanceur.setPID(shotParams.getVitesseLanceur());
-    kickeur.setPID(shotParams.getVitesseKickeur());
+    }
 
-  }
+    @Override
+    public void end(boolean interrupted) {
 
-  @Override
-  public void end(boolean interrupted) {
+    }
 
-  }
-
-  // Returns true when the command should end.
-  @Override
-  public boolean isFinished() {
-    return false;
-  }
+    // Returns true when the command should end.
+    @Override
+    public boolean isFinished() {
+        return false;
+    }
 }

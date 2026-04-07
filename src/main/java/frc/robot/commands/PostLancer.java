@@ -14,15 +14,12 @@ import frc.robot.subsystems.Superstructure;
 
 public class PostLancer extends SequentialCommandGroup {
 
-  public PostLancer(Lanceur lanceur, Carroussel carroussel, Kickeur kickeur, Superstructure superstructure) {
+    public PostLancer(Lanceur lanceur, Carroussel carroussel, Kickeur kickeur, Superstructure superstructure) {
 
-    addCommands(
-        Commands.runOnce(()-> superstructure.setLancerActif(false)), 
-        Commands.runOnce(carroussel::stop, carroussel),
-        new WaitCommand(0.5),
-        Commands.runOnce(lanceur::stop, lanceur).alongWith(Commands.runOnce(kickeur::stop, kickeur))
-        
-
-    );
-  }
+        addCommands(
+            Commands.runOnce(() -> superstructure.setLancerActif(false)),
+            Commands.runOnce(carroussel::stop, carroussel),
+            new WaitCommand(0.5),
+            Commands.runOnce(lanceur::stop, lanceur).alongWith(Commands.runOnce(kickeur::stop, kickeur)));
+    }
 }

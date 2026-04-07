@@ -24,108 +24,113 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 @Logged
 public class Tourelle extends SubsystemBase {
 
-  //moteur 
-  private SparkFlex moteurTourelle = new SparkFlex(52, MotorType.kBrushless); //Max CAN ID = 62
-  private SparkFlexConfig configTourelle = new SparkFlexConfig(); 
-  private double conversionTourelle = 20.0 / 200.0 * 360.0; //moteur gear 20 dents tourelle 200 dents, 360 degrés
+    //moteur
+    private SparkFlex moteurTourelle = new SparkFlex(52, MotorType.kBrushless); //Max CAN ID = 62
+    private SparkFlexConfig configTourelle = new SparkFlexConfig();
+    private double conversionTourelle = 20.0 / 200.0 * 360.0; //moteur gear 20 dents tourelle 200 dents, 360 degrés
 
-  //PID 
-  private double vraieCible = 0.0; 
-  private ProfiledPIDController pidTourelle = new ProfiledPIDController(0.1, 0, 0.001, //Valeurs à déterminer
-    new TrapezoidProfile.Constraints(720, 1440)); 
-
-
-  public Tourelle() {
-    //Moteur + config 
-    configTourelle.inverted(true); 
-    configTourelle.idleMode(IdleMode.kBrake); 
-    configTourelle.encoder.positionConversionFactor(conversionTourelle);
-    configTourelle.encoder.velocityConversionFactor(conversionTourelle / 60.0);
-    configTourelle.softLimit.forwardSoftLimit(200.0).reverseSoftLimit(-200.0); //Faudrait peut être call la fonction pour l'enable? 
-    configTourelle.softLimit.forwardSoftLimitEnabled(true).reverseSoftLimitEnabled(true);
-    moteurTourelle.configure(configTourelle, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters); 
-
-    //PID 
-    resetEncoder();
-  }
+    //PID
+    private double vraieCible = 0.0;
+    private ProfiledPIDController pidTourelle = new ProfiledPIDController(
+        0.1, 0, 0.001, //Valeurs à déterminer
+        new TrapezoidProfile.Constraints(720, 1440));
 
 
-  @Override
-  public void periodic() {
+    public Tourelle() {
+        //Moteur + config
+        configTourelle.inverted(true);
+        configTourelle.idleMode(IdleMode.kBrake);
+        configTourelle.encoder.positionConversionFactor(conversionTourelle);
+        configTourelle.encoder.velocityConversionFactor(conversionTourelle / 60.0);
+        configTourelle.softLimit
+            .forwardSoftLimit(200.0)
+            .reverseSoftLimit(-200.0); //Faudrait peut être call la fonction pour l'enable?
+        configTourelle.softLimit.forwardSoftLimitEnabled(true).reverseSoftLimitEnabled(true);
+        moteurTourelle.configure(configTourelle, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
-  }
-
-  public void setVoltage(double voltage){
-    moteurTourelle.setVoltage(voltage);
-  }
-
-  private void setVoltageHoraire(){
-    setVoltage(-1);
-  }
-  private void setVoltageAntiHoraire(){
-    setVoltage(1);
-  }
-
-  public void stop(){
-    setVoltage(0);
-    resetPID();
-  }
-
-  public double getAngleReel(){
-    return moteurTourelle.getEncoder().getPosition(); 
-  } 
-
-  public double getAngleAbsolu(){
-    return MathUtil.inputModulus(getAngleReel(),-180.0,180.0);
-  }
+        //PID
+        resetEncoder();
+    }
 
 
-  @Logged
-  public double getVitesse(){
-    return moteurTourelle.getEncoder().getVelocity(); 
-  } 
+    @Override
+    public void periodic() {
 
-  public void resetEncoder(){
-    moteurTourelle.getEncoder().setPosition(0); 
-  }
+    }
 
-  //Cibles 
-  public void setCible(double cible){
-    this.vraieCible = cible;
-  }
+    //Moteur
+    public void setVoltage(double voltage) {
+        moteurTourelle.setVoltage(voltage);
+    }
 
-  public double getCible(){
-    return vraieCible; 
-  }
+    private void setVoltageHoraire() {
+        setVoltage(-1);
+    }
+    private void setVoltageAntiHoraire() {
+        setVoltage(1);
+    }
 
-  //PID 
-  public void setPID(double cible){
-     setCible(cible);
-    double voltagePID = pidTourelle.calculate(getAngleReel(),cible); 
-    setVoltage(voltagePID);
-  }
+    public void stop() {
+        setVoltage(0);
+        resetPID();
+    }
 
-  public void resetPID(){
-    setCible(getAngleReel());
-    pidTourelle.reset(getAngleReel());
-  }
+    //Encodeur
+    public double getAngleReel() {
+        return moteurTourelle.getEncoder().getPosition();
+    }
 
-  @NotLogged
-  public boolean atCible(double toleranceTourelle){
-    return Math.abs(getAngleReel() - getCible()) <= toleranceTourelle;  
-  } 
+    public double getAngleAbsolu() {
+        return MathUtil.inputModulus(getAngleReel(), -180.0, 180.0);
+    }
 
 
-  //Commandes temporaires 
-  public Command tournerHoraire(){
-    return Commands.runEnd(this::setVoltageHoraire, this::stop, this); 
-  }
+    @Logged
+    public double getVitesse() {
+        return moteurTourelle.getEncoder().getVelocity();
+    }
 
-  public Command tournerAntiHoraire(){
-    return Commands.runEnd(this::setVoltageAntiHoraire,this::stop,this); 
-  }
-  public Command PIDCommand(double cible){
-    return Commands.runEnd(()->this.setPID(cible),this::stop,this);
-  }
+    public void resetEncoder() {
+        moteurTourelle.getEncoder().setPosition(0);
+    }
+
+    //Cibles
+    public void setCible(double cible) {
+        this.vraieCible = cible;
+    }
+
+    public double getCible() {
+        return vraieCible;
+    }
+
+    //PID
+    public void setPID(double cible) {
+        setCible(cible);
+        double voltagePID = pidTourelle.calculate(getAngleReel(), cible);
+        setVoltage(voltagePID);
+    }
+
+    public void resetPID() {
+        setCible(getAngleReel());
+        pidTourelle.reset(getAngleReel());
+    }
+
+    @NotLogged
+    public boolean atCible(double toleranceTourelle) {
+        return Math.abs(getAngleReel() - getCible()) <= toleranceTourelle;
+    }
+
+    //Commandes
+    public Command tournerHoraire() {
+        return Commands.runEnd(this::setVoltageHoraire, this::stop, this);
+    }
+
+    public Command tournerAntiHoraire() {
+        return Commands.runEnd(this::setVoltageAntiHoraire, this::stop, this);
+    }
+
+    public Command PIDCommand(double cible) {
+        return Commands.runEnd(() -> this.setPID(cible), this::stop, this);
+    }
 
 }

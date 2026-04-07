@@ -20,49 +20,49 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 @Logged(strategy = Strategy.OPT_IN)
 public class Gobeur extends SubsystemBase {
 
-  private SparkFlex moteur = new SparkFlex(31, MotorType.kBrushless);
+    private SparkFlex moteur = new SparkFlex(31, MotorType.kBrushless);
 
-  private SparkFlexConfig moteurConfig = new SparkFlexConfig();
+    private SparkFlexConfig moteurConfig = new SparkFlexConfig();
 
-  public Gobeur() {
-    moteurConfig.inverted(true);
-    moteurConfig.idleMode(IdleMode.kCoast);
-    moteur.configure(moteurConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+    public Gobeur() {
+        moteurConfig.inverted(true);
+        moteurConfig.idleMode(IdleMode.kCoast);
+        moteur.configure(moteurConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
-  }
+    }
 
-  @Override
-  public void periodic() {
+    @Override
+    public void periodic() {
+    }
 
-  }
+    //Moteur
+    public void setVoltage(double voltage) {
+        moteur.setVoltage(voltage);
+    }
 
-  public void setVoltage(double voltage) {
-    moteur.setVoltage(voltage);
-  }
+    public void stop() {
+        setVoltage(0);
+    }
 
-  public void stop() {
-    setVoltage(0);
-  }
+    public void gober() {
+        setVoltage(4);
+    }
 
-  public void gober() {
-    setVoltage(4);
-  }
+    public void retractage() {
+        setVoltage(2);
+    }
 
-  public void retractage() {
-    setVoltage(2);
-  }
+    public void cracher() {
+        setVoltage(-4);
+    }
 
-  public void cracher(){
-    setVoltage(-4);
-  }
+    //Commandes
+    public Command goberCommand() {
+        return Commands.runEnd(this::gober, this::stop, this);
+    }
 
-  /// Commandes simples
-  public Command goberCommand() {
-    return Commands.runEnd(this::gober, this::stop, this);
-  }
-
-   public Command cracherCommand() {
-    return Commands.runEnd(this::cracher, this::stop, this);
-  }
+    public Command cracherCommand() {
+        return Commands.runEnd(this::cracher, this::stop, this);
+    }
 
 }

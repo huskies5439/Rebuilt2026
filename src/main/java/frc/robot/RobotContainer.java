@@ -8,10 +8,10 @@ import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.FollowPathCommand;
 
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.epilogue.Logged;
+import edu.wpi.first.wpilibj2.command.*;
 import frc.robot.commands.BasePilotableDefaut;
 import frc.robot.commands.LancerFancy;
 import frc.robot.commands.PostLancer;
@@ -29,10 +29,6 @@ import frc.robot.subsystems.Kickeur;
 import frc.robot.subsystems.Lanceur;
 import frc.robot.subsystems.Superstructure;
 import frc.robot.subsystems.Tourelle;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Commands;
-import edu.wpi.first.wpilibj2.command.ConditionalCommand;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
@@ -41,7 +37,7 @@ public class RobotContainer {
 
     private final CommandXboxController manettePilote = new CommandXboxController(0);
 
-    private final CommandXboxController manetteCopilote = new CommandXboxController(1); 
+    private final CommandXboxController manetteCopilote = new CommandXboxController(1);
 
     private final BasePilotable basePilotable;
     private final Superstructure superstructure;
@@ -62,8 +58,8 @@ public class RobotContainer {
 
     public RobotContainer() {
         basePilotable = new BasePilotable();
-        superstructure = new Superstructure(basePilotable::getPose, basePilotable::getChassisSpeeds,
-                basePilotable::getOmegaGyro);
+        superstructure =
+            new Superstructure(basePilotable::getPose, basePilotable::getChassisSpeeds, basePilotable::getOmegaGyro);
         tourelle = new Tourelle();
         carroussel = new Carroussel();
         lanceur = new Lanceur();
@@ -79,34 +75,52 @@ public class RobotContainer {
 
         configureBindings();
 
-        basePilotable.setDefaultCommand(new BasePilotableDefaut(manettePilote::getLeftY,
-                manettePilote::getLeftX, manettePilote::getRightX, basePilotable, superstructure));
+        basePilotable.setDefaultCommand(new BasePilotableDefaut(
+            manettePilote::getLeftY,
+            manettePilote::getLeftX,
+            manettePilote::getRightX,
+            basePilotable,
+            superstructure));
 
         coude.setDefaultCommand(coude.holdCommand());
 
         hood.setDefaultCommand(hood.goToAnglePIDCommand(Constants.kAngleHoodDepart));
 
         lanceur.setDefaultCommand(Commands.run(lanceur::stop, lanceur));
+
         kickeur.setDefaultCommand(Commands.run(kickeur::stop, kickeur));
 
-        FollowPathCommand.warmupCommand().schedule();
+        CommandScheduler.getInstance().schedule(FollowPathCommand.warmupCommand());
 
-        NamedCommands.registerCommand("gober",coude.PIDCommand(0).alongWith(gobeur.goberCommand()));
+        NamedCommands.registerCommand("gober", coude.PIDCommand(0).alongWith(gobeur.goberCommand()));
+
         NamedCommands.registerCommand("preShoot", new PreLancer(superstructure, kickeur, lanceur));
-        NamedCommands.registerCommand("shoot",
-                new LancerFancy(basePilotable, lanceur, hood, tourelle, kickeur, carroussel, superstructure));
+
+        NamedCommands.registerCommand(
+            "shoot",
+            new LancerFancy(
+                basePilotable,
+                lanceur,
+                hood,
+                tourelle,
+                kickeur,
+                carroussel,
+                superstructure));
+
         NamedCommands.registerCommand("retracter", new RetracterGobeurDurantLancer(coude, gobeur));
+
         NamedCommands.registerCommand("viser depot", tourelle.PIDCommand(100));
+
         NamedCommands.registerCommand("viser outpost", tourelle.PIDCommand(-100));
+
         NamedCommands.registerCommand("retracterHood", hood.goToAnglePIDCommand(Constants.kAngleHoodDepart));
-        NamedCommands.registerCommand("recracher ballon", gobeur.cracherCommand().withTimeout(0.5) );
+
+        NamedCommands.registerCommand("recracher ballon", gobeur.cracherCommand().withTimeout(0.5));
 
         // L'auto chooser doit être mis APRÈS les named commands
-       autoChooser = AutoBuilder.buildAutoChooser();
+        autoChooser = AutoBuilder.buildAutoChooser();
 
         SmartDashboard.putData("Auto Chooser", autoChooser);
-
-
     }
 
     private void configureBindings() {
@@ -122,20 +136,20 @@ public class RobotContainer {
 
         manettePilote.a().whileTrue(new SnapTrench(manettePilote::getLeftY, basePilotable));
 
-        manettePilote.rightBumper().and(protectionTrench)
-                .whileTrue(
-                        new LancerFancy(basePilotable, lanceur, hood, tourelle, kickeur, carroussel,
-                                superstructure)
+        manettePilote
+            .rightBumper()
+            .and(protectionTrench)
+            .whileTrue(new LancerFancy(basePilotable, lanceur, hood, tourelle, kickeur, carroussel, superstructure))
+            .onFalse(new PostLancer(lanceur, carroussel, kickeur, superstructure));
 
-                )
-                .onFalse(new PostLancer(lanceur, carroussel, kickeur, superstructure));
-
-        manettePilote.rightBumper().and(protectionTrench).and(manettePilote.leftBumper().negate())
-                .whileTrue(new WaitCommand(1).andThen(new RetracterGobeurDurantLancer(coude, gobeur)));
+        manettePilote
+            .rightBumper()
+            .and(protectionTrench)
+            .and(manettePilote.leftBumper().negate())
+            .whileTrue(new WaitCommand(1).andThen(new RetracterGobeurDurantLancer(coude, gobeur)));
 
         // Gober
         manettePilote.leftBumper().whileTrue(coude.PIDCommand(7).alongWith(gobeur.goberCommand()));
-        // //à déterminer s'il faut lever légerment le gobeur
 
         // Protection coude
         manettePilote.x().onTrue(coude.PIDCommand(120));
@@ -145,15 +159,18 @@ public class RobotContainer {
         manettePilote.back().whileTrue(grimpeur.descendrePitCommand());
 
         manettePilote.b().onTrue(new ConditionalCommand(
-                grimpeur.goMinHauteur(),
-                grimpeur.goMaxHauteur().alongWith(coude.PIDCommand(Constants.kAngleCoudeDepart).withTimeout(1.0)),
-                grimpeur::grimpeurHaut));
+            grimpeur.goMinHauteur(),
+            grimpeur.goMaxHauteur().alongWith(coude.PIDCommand(Constants.kAngleCoudeDepart).withTimeout(1.0)),
+            grimpeur::grimpeurHaut));
 
-        isHubActive.onTrue(new RumbleControllerActiveHub(true, manettePilote, manetteCopilote, superstructure))
-                .onFalse(new RumbleControllerActiveHub(false, manettePilote, manetteCopilote, superstructure));
+        isHubActive
+            .onTrue(new RumbleControllerActiveHub(true, manettePilote, manetteCopilote))
+            .onFalse(new RumbleControllerActiveHub(false, manettePilote, manetteCopilote));
 
         manetteCopilote.povUp().onTrue(superstructure.plusTrimLanceur().alongWith(superstructure.plusTrimKickeur()));
-        manetteCopilote.povDown().onTrue(superstructure.moinsTrimLanceur().alongWith(superstructure.moinsTrimKickeur()));
+        manetteCopilote
+            .povDown()
+            .onTrue(superstructure.moinsTrimLanceur().alongWith(superstructure.moinsTrimKickeur()));
 
         manetteCopilote.povLeft().onTrue(superstructure.plusTrimTourelle());
         manetteCopilote.povRight().onTrue(superstructure.moinsTrimTourelle());
@@ -162,6 +179,5 @@ public class RobotContainer {
 
     public Command getAutonomousCommand() {
         return autoChooser.getSelected();
-        // return new WaitCommand(1);
     }
 }

@@ -16,99 +16,105 @@ import frc.robot.subsystems.Superstructure;
 
 public class BasePilotableDefaut extends Command {
 
-  private BasePilotable basePilotable;
-  private DoubleSupplier joystickVX;
-  private DoubleSupplier joystickVY;
-  private DoubleSupplier joystickOmega;
+    private BasePilotable basePilotable;
+    private DoubleSupplier joystickVX;
+    private DoubleSupplier joystickVY;
+    private DoubleSupplier joystickOmega;
 
-  private Superstructure superstructure;
+    private Superstructure superstructure;
 
-  private double deadband = 0.05;
+    private double deadband = 0.05;
 
-  private double vx;
-  private double vy;
-  private double omega;
+    private double vx;
+    private double vy;
+    private double omega;
 
-  private double maxVitesseLineaire;
-  private double maxVitesseRotation;
+    private double maxVitesseLineaire;
+    private double maxVitesseRotation;
 
-  public BasePilotableDefaut(DoubleSupplier joystickVX, DoubleSupplier joystickVY, DoubleSupplier joystickOmega,
-      BasePilotable basePilotable, Superstructure superstructure) {
-    this.basePilotable = basePilotable;
-    this.superstructure = superstructure;
+    public BasePilotableDefaut(
+        DoubleSupplier joystickVX,
+        DoubleSupplier joystickVY,
+        DoubleSupplier joystickOmega,
+        BasePilotable basePilotable,
+        Superstructure superstructure
+    ) {
+        this.basePilotable = basePilotable;
+        this.superstructure = superstructure;
 
-    this.joystickVX = joystickVX;
-    this.joystickVY = joystickVY;
-    this.joystickOmega = joystickOmega;
+        this.joystickVX = joystickVX;
+        this.joystickVY = joystickVY;
+        this.joystickOmega = joystickOmega;
 
-    addRequirements(basePilotable);
-  }
-
-  @Override
-  public void initialize() {
-    basePilotable.resetSetpoint();
-
-    maxVitesseLineaire = Constants.maxVitesseLineaire;
-    maxVitesseRotation = Constants.maxVitesseRotation;
-  }
-
-  @Override
-  public void execute() {
-
-    SmartDashboard.putBoolean("RED ALLIANCE ?", Constants.isRedAlliance());
-    // Lecture des joysticks
-    vx = joystickVX.getAsDouble();
-    vy = joystickVY.getAsDouble();
-    omega = joystickOmega.getAsDouble();
-
-    // appliquer une deadband sur les joysticks et corriger la direction
-    vx = -MathUtil.applyDeadband(vx, deadband);
-    vy = -MathUtil.applyDeadband(vy, deadband);
-    omega = -MathUtil.applyDeadband(omega, deadband);
-
-    // Mettre les joysticks "au carré" pour adoucir les déplacements
-    vx = vx * Math.abs(vx);
-    vy = vy * Math.abs(vy);
-    omega = omega * Math.abs(omega);
-
-    // Convertir les valeurs des Joysticks selon les vitesses maximales du robot en
-    // téléop
-    if (superstructure.getLancerActif() && superstructure.cibleIsHub()) {
-      maxVitesseLineaire = Constants.maxVitesseLineaireLancer;
-      maxVitesseRotation = Constants.maxVitesseRotationLancer;
-    } else {
-      maxVitesseLineaire = Constants.maxVitesseLineaire;
-      maxVitesseRotation = Constants.maxVitesseRotation;
+        addRequirements(basePilotable);
     }
 
-    vx = vx * maxVitesseLineaire;
-    vy = vy * maxVitesseLineaire;
-    omega = omega * maxVitesseRotation;
+    @Override
+    public void initialize() {
+        basePilotable.resetSetpoint();
 
-    // inversion du field oriented selon l'alliance
-    double invert = 1;
-    if (Constants.isRedAlliance()) {
-      invert = -1;
+        maxVitesseLineaire = Constants.maxVitesseLineaire;
+        maxVitesseRotation = Constants.maxVitesseRotation;
     }
 
-    // Création du ChassisSpeed en field Oriented.
-    ChassisSpeeds speeds = ChassisSpeeds.fromFieldRelativeSpeeds(
-        vx * invert,
-        vy * invert,
-        omega,
-        basePilotable.getPose().getRotation());
+    @Override
+    public void execute() {
 
-    // Envoyer les vitesses aux modules
-    basePilotable.conduireChassisSetPoint(speeds);
+        SmartDashboard.putBoolean("RED ALLIANCE ?", Constants.isRedAlliance());
+        // Lecture des joysticks
+        vx = joystickVX.getAsDouble();
+        vy = joystickVY.getAsDouble();
+        omega = joystickOmega.getAsDouble();
 
-  }
+        // appliquer une deadband sur les joysticks et corriger la direction
+        vx = -MathUtil.applyDeadband(vx, deadband);
+        vy = -MathUtil.applyDeadband(vy, deadband);
+        omega = -MathUtil.applyDeadband(omega, deadband);
 
-  @Override
-  public void end(boolean interrupted) {
-  }
+        // Mettre les joysticks "au carré" pour adoucir les déplacements
+        vx = vx * Math.abs(vx);
+        vy = vy * Math.abs(vy);
+        omega = omega * Math.abs(omega);
 
-  @Override
-  public boolean isFinished() {
-    return false;
-  }
+        // Convertir les valeurs des Joysticks selon les vitesses maximales du robot en
+        // téléop
+        if (superstructure.getLancerActif() && superstructure.cibleIsHub()) {
+            maxVitesseLineaire = Constants.maxVitesseLineaireLancer;
+            maxVitesseRotation = Constants.maxVitesseRotationLancer;
+        }
+        else {
+            maxVitesseLineaire = Constants.maxVitesseLineaire;
+            maxVitesseRotation = Constants.maxVitesseRotation;
+        }
+
+        vx = vx * maxVitesseLineaire;
+        vy = vy * maxVitesseLineaire;
+        omega = omega * maxVitesseRotation;
+
+        // inversion du field oriented selon l'alliance
+        double invert = 1;
+        if (Constants.isRedAlliance()) {
+            invert = -1;
+        }
+
+        // Création du ChassisSpeed en field Oriented.
+        ChassisSpeeds speeds = ChassisSpeeds.fromFieldRelativeSpeeds(
+            vx * invert,
+            vy * invert,
+            omega,
+            basePilotable.getPose().getRotation());
+
+        // Envoyer les vitesses aux modules
+        basePilotable.conduireChassisSetPoint(speeds);
+
+    }
+
+    @Override
+    public void end(boolean interrupted) {
+    }
+
+    @Override
+    public boolean isFinished() {
+        return false;
+    }
 }

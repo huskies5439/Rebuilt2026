@@ -22,13 +22,13 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.units.measure.LinearVelocity;
 
 public class FancyPathGeneration {
+
     private final Supplier<Pose2d> poseSupplier;
     private final Supplier<ChassisSpeeds> speedSupplier;
 
     private PathConstraints pathConstraints;
 
-    public FancyPathGeneration(Supplier<Pose2d> poseSupplier,
-            Supplier<ChassisSpeeds> speedSupplier) {
+    public FancyPathGeneration(Supplier<Pose2d> poseSupplier, Supplier<ChassisSpeeds> speedSupplier) {
         this.poseSupplier = poseSupplier;
         this.speedSupplier = speedSupplier;
 
@@ -36,8 +36,6 @@ public class FancyPathGeneration {
     }
 
     public PathPlannerPath genererPath(Pose2d cible) {
-    
-
         // Hyper Important : Il faut mettre la méthode "flipped" pour ajuster pour
         // RedAlliance
         // Fonction pas mentionnée dans la doc !!
@@ -57,10 +55,10 @@ public class FancyPathGeneration {
 
         // Utilise le déplacement et la vitesse actuelle pour le début du path
         PathPlannerPath path = new PathPlannerPath(
-                waypoints,
-                pathConstraints, 
-                new IdealStartingState(getVitesseRobot(), rotation2d),
-                new GoalEndState(0.0, cible.getRotation()));
+            waypoints,
+                                                   pathConstraints,
+                                                   new IdealStartingState(getVitesseRobot(), rotation2d),
+                                                   new GoalEndState(0.0, cible.getRotation()));
         return path;
     }
 
@@ -90,25 +88,27 @@ public class FancyPathGeneration {
 
     private LinearVelocity getVitesseRobot() {
         ChassisSpeeds chassisSpeeds = speedSupplier.get();
-        return MetersPerSecond.of(
-                new Translation2d(chassisSpeeds.vxMetersPerSecond, chassisSpeeds.vyMetersPerSecond).getNorm());
+        return MetersPerSecond.of(new Translation2d(
+            chassisSpeeds.vxMetersPerSecond,
+                                                    chassisSpeeds.vyMetersPerSecond).getNorm());
     }
 
     private Rotation2d getRotationSelonDistance(Pose2d cible) {
         // Mets le robot a 0,0 pour trouver la distance entre le robot et la cible
         Translation2d distance = cible.minus(poseSupplier.get()).getTranslation();
         // Si le robot est proche, on pointe vers la cible ou dans le sens de la cible
-        Double distanceMinimum = 0.10;
+        double distanceMinimum = 0.10;
         return (distance.getNorm() < distanceMinimum) ? cible.getRotation() : distance.getAngle();
     }
 
-    /////// Obtenir les paramètres de Pathplanner automatiquement
+    //Obtenir les paramètres de Pathplanner automatiquement
     public PathConstraints getPPAppConstraints() {
         PathPlannerPath pathConfig = null;
 
         try {
             pathConfig = PathPlannerPath.fromPathFile("config");
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             e.printStackTrace();
         }
 
