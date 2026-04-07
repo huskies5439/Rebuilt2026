@@ -131,7 +131,7 @@ public class Superstructure extends SubsystemBase {
         //            String.format(
         //                "%.2f",
         //                new BigDecimal(remainingTime()).setScale(2, RoundingMode.FLOOR)));
-        SmartDashboard.putString("Shift Time", String.format("%.2f", remainingTime()));
+        SmartDashboard.putString("Shift Time", String.format("%05.2f", remainingTime()));
     }
 
     public void setCibleReelle() {
