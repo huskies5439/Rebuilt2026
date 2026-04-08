@@ -61,13 +61,7 @@ public class BasePilotable extends SubsystemBase {
     private final SwerveSetpointGenerator setpointGenerator;
     private SwerveSetpoint previousSetpoint;
 
-    // Initialisation PoseEstimator
-    SwerveDrivePoseEstimator poseEstimator = new SwerveDrivePoseEstimator(
-        Constants.kDriveKinematics,
-        Rotation2d.fromDegrees(getAngleGyro()),
-        new SwerveModulePosition[] {avantGauche.getPosition(), avantDroite.getPosition(), arriereGauche.getPosition(),
-            arriereDroite.getPosition()},
-        Pose2d.kZero);
+    SwerveDrivePoseEstimator poseEstimator;
 
 
     public BasePilotable() {
@@ -76,6 +70,14 @@ public class BasePilotable extends SubsystemBase {
         resetGyro();
         resetEncoders();
         resetOdometry(new Pose2d());
+
+        // Initialisation PoseEstimator
+        poseEstimator = new SwerveDrivePoseEstimator(
+        Constants.kDriveKinematics,
+        Rotation2d.fromDegrees(getAngleGyro()),
+        new SwerveModulePosition[] {avantGauche.getPosition(), avantDroite.getPosition(), arriereGauche.getPosition(),
+            arriereDroite.getPosition()},
+        Pose2d.kZero);
 
         // Aller chercher la configuration du robot dans Pathplanner
         // Nécessaire pour swerveSetpointGenerator ET AutoBuilder

@@ -15,7 +15,7 @@ import edu.wpi.first.wpilibj2.command.*;
 import frc.robot.commands.BasePilotableDefaut;
 import frc.robot.commands.LancerFancy;
 import frc.robot.commands.PostLancer;
-import frc.robot.commands.PreLancer;
+import frc.robot.commands.PreLancerAutonome;
 import frc.robot.commands.RetracterGobeurDurantLancer;
 import frc.robot.commands.RumbleControllerActiveHub;
 import frc.robot.commands.SnapTrench;
@@ -94,7 +94,7 @@ public class RobotContainer {
 
         NamedCommands.registerCommand("gober", coude.PIDCommand(0).alongWith(gobeur.goberCommand()));
 
-        NamedCommands.registerCommand("preShoot", new PreLancer(superstructure, kickeur, lanceur));
+        NamedCommands.registerCommand("preShoot", new PreLancerAutonome(superstructure, kickeur, lanceur));
 
         NamedCommands.registerCommand(
             "shoot",

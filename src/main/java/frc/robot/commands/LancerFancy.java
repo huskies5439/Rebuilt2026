@@ -31,6 +31,6 @@ public class LancerFancy extends ParallelCommandGroup {
             new ViserTourelle(tourelle, superstructure),
             new TournerCarroussel(lanceur, hood, tourelle, basePilotable, carroussel, kickeur, superstructure),
 
-            Commands.runOnce(() -> superstructure.setLancerActif(true)));
+            Commands.runOnce(() -> superstructure.setRalentissementLancer(true)));
     }
 }

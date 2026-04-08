@@ -10,7 +10,7 @@ import frc.robot.subsystems.Kickeur;
 import frc.robot.subsystems.Lanceur;
 import frc.robot.subsystems.Superstructure;
 
-public class PreLancer extends Command {
+public class PreLancerAutonome extends Command {
 
     ShotParams shotParams;
 
@@ -18,7 +18,7 @@ public class PreLancer extends Command {
     Kickeur kickeur;
     Lanceur lanceur;
 
-    public PreLancer(Superstructure superstructure, Kickeur kickeur, Lanceur lanceur) {
+    public PreLancerAutonome(Superstructure superstructure, Kickeur kickeur, Lanceur lanceur) {
         this.superstructure = superstructure;
         this.kickeur = kickeur;
         this.lanceur = lanceur;

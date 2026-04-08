@@ -73,7 +73,7 @@ public class Superstructure extends SubsystemBase {
 
     Field2d field2d = new Field2d();
 
-    private boolean lancerActif = false;
+    private boolean ralentissementLancer = false;
 
     public Superstructure(
         Supplier<Pose2d> poseSupplier,
@@ -299,16 +299,16 @@ public class Superstructure extends SubsystemBase {
     }
 
     //Vitesse du robot selon lanceur
-    public boolean getLancerActif() {
-        return this.lancerActif;
+    public boolean ralentissementDurantLancer() {
+        return this.ralentissementLancer;
     }
 
-    public void setLancerActif(boolean lancerActif) {
+    public void setRalentissementLancer(boolean lancerActif) {
         if (DriverStation.isTeleop()) {
-            this.lancerActif = lancerActif;
+            this.ralentissementLancer = lancerActif;
         }
         else {
-            this.lancerActif = false;
+            this.ralentissementLancer = false;
         }
 
     }
