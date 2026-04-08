@@ -24,192 +24,175 @@ import frc.robot.Constants;
 @Logged(strategy = Strategy.OPT_IN)
 public class Coude extends SubsystemBase {
 
-  private SparkFlex moteurGauche = new SparkFlex(21, MotorType.kBrushless);
-  private SparkFlex moteurDroit = new SparkFlex(22, MotorType.kBrushless);
+    private SparkFlex moteurGauche = new SparkFlex(21, MotorType.kBrushless);
+    private SparkFlex moteurDroit = new SparkFlex(22, MotorType.kBrushless);
 
-  private SparkFlexConfig moteurConfig = new SparkFlexConfig();
+    private SparkFlexConfig moteurConfig = new SparkFlexConfig();
 
-  private double conversionCoude = (1 / 9.0) * 360.0;
+    private double conversionCoude = (1 / 9.0) * 360.0;
 
-  /// PID et feedForward
+    /// PID et feedForward
 
-  private final double kp = 0.1;
-  private final double maxVelocity = 360;
-  private final double maxAcceleration = 720;
+    private final double kp = 0.1;
+    private final double maxVelocity = 360;
+    private final double maxAcceleration = 720;
 
-  private ProfiledPIDController pidGauche = new ProfiledPIDController(kp, 0, 0,
-      new TrapezoidProfile.Constraints(maxVelocity, maxAcceleration));
+    private ProfiledPIDController pidGauche =
+        new ProfiledPIDController(kp, 0, 0, new TrapezoidProfile.Constraints(maxVelocity, maxAcceleration));
 
-  private ProfiledPIDController pidDroit = new ProfiledPIDController(kp, 0, 0,
-      new TrapezoidProfile.Constraints(maxVelocity, maxAcceleration));
+    private ProfiledPIDController pidDroit =
+        new ProfiledPIDController(kp, 0, 0, new TrapezoidProfile.Constraints(maxVelocity, maxAcceleration));
 
-  private ArmFeedforward feedforward = new ArmFeedforward(0.0, 0.2, 0.0);
+    private ArmFeedforward feedforward = new ArmFeedforward(0.0, 0.2, 0.0);
 
-  private int stallLimit;
+    private int stallLimit;
 
-  private int smartCurrentLimitDefault = 80; //80 
+    private int smartCurrentLimitDefault = 80; //80
 
-  /** Creates a new Coude. */
-  public Coude() {
+    /** Creates a new Coude. */
+    public Coude() {
 
-    boolean inverted = true;
-    moteurConfig.inverted(inverted);
-    moteurConfig.idleMode(IdleMode.kBrake);
-    moteurConfig.encoder.positionConversionFactor(conversionCoude);
-    moteurConfig.encoder.velocityConversionFactor(conversionCoude / 60.0);
-    moteurConfig.smartCurrentLimit(50,80,50);
+        boolean inverted = true;
+        moteurConfig.inverted(inverted);
+        moteurConfig.idleMode(IdleMode.kBrake);
+        moteurConfig.encoder.positionConversionFactor(conversionCoude);
+        moteurConfig.encoder.velocityConversionFactor(conversionCoude / 60.0);
+        moteurConfig.smartCurrentLimit(50, 80, 50);
 
-    moteurGauche.configure(moteurConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+        moteurGauche.configure(moteurConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
-    moteurConfig.inverted(!inverted);
-    moteurDroit.configure(moteurConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+        moteurConfig.inverted(!inverted);
+        moteurDroit.configure(moteurConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
-    resetEncodeurStartUp();
+        resetEncodeurStartUp();
 
-    pidGauche.setTolerance(2);
-    pidDroit.setTolerance(2);
+        pidGauche.setTolerance(2);
+        pidDroit.setTolerance(2);
 
-    currentLimit(false);
+        currentLimit(false);
 
 
-
-  }
-
-  @Override
-  public void periodic() {
-
-  }
-
-  public void setVoltage(double voltageGauche, double voltageDroit) {
-    moteurGauche.setVoltage(voltageGauche);
-    moteurDroit.setVoltage(voltageDroit);
-  }
-
-  public void setVoltage(double voltage) {
-    setVoltage(voltage, voltage);
-  }
-
-  public void monter() {
-    setVoltage(1.5);
-  }
-
-  public void descendre() {
-    setVoltage(-1);
-  }
-
-  public void stop() {
-    setVoltage(0);
-  }
-
-  public void hold() {
-    setVoltage(feedforward.calculate(getAngleGauche(), 0), feedforward.calculate(getAngleDroit(), 0));
-  }
-
-  //Télémétrie
-  @Logged(name = "Courant Coude Gauche")
-  public double getCourantGauche(){
-    return moteurGauche.getOutputCurrent();
-  }
-
-  @Logged(name = "Courant Coude Droit")
-  public double getCourantDroit(){
-    return moteurDroit.getOutputCurrent();
-  }
-
-  /// Encodeur Gauche
-  @Logged
-  public double getAngleGauche() {
-    return moteurGauche.getEncoder().getPosition();
-  }
-
-  @Logged
-  public double getVitesseGauche() {
-    return moteurGauche.getEncoder().getVelocity();
-  }
-
-  /// Encodeur Droit
-
-  @Logged
-  public double getAngleDroit() {
-    return moteurDroit.getEncoder().getPosition();
-  }
-
-  @Logged
-  public double getVitesseDroit() {
-    return moteurDroit.getEncoder().getVelocity();
-  }
-
-  /// Encodeurs
-
-  public void resetEncodeurStartUp() {
-    moteurDroit.getEncoder().setPosition(Constants.kAngleCoudeDepart);
-    moteurGauche.getEncoder().setPosition(Constants.kAngleCoudeDepart);
-  }
-
-  /// PID + feedForward
-
-  public void setPID(double cible) {
-    double voltagePIDDroit = pidDroit.calculate(getAngleDroit(), cible);
-
-    double voltageFFDroit = feedforward.calculate(getAngleDroit(), pidDroit.getSetpoint().velocity);
-
-    double voltagePIDGauche = pidGauche.calculate(getAngleGauche(), cible);
-
-    double voltageFFGauche = feedforward.calculate(getAngleGauche(), pidGauche.getSetpoint().velocity);
-
-    setVoltage(voltagePIDGauche + voltageFFGauche, voltagePIDDroit + voltageFFDroit);
-
-  }
-
-  public void resetPID() {
-    pidDroit.reset(getAngleDroit());
-    pidGauche.reset(getAngleGauche());
-  }
-
-  @Logged
-  public boolean atCible() {
-    return pidDroit.atGoal() && pidGauche.atGoal();
-  }
-
-  // smart current limit
-  public void currentLimit(boolean isLimited) {
-    if (isLimited) {
-      stallLimit = 30;
-    } else {
-      stallLimit = smartCurrentLimitDefault;
     }
 
-    SparkFlexConfig config = new SparkFlexConfig(); 
-    config.smartCurrentLimit(stallLimit); 
+    @Override
+    public void periodic() {
 
-    moteurGauche.configure(config, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
-    moteurDroit.configure(config, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
-  }
+    }
 
-  public double getCurrentLimitGauche() {
-    return moteurGauche.getOutputCurrent();
-  }
+    public void setVoltage(double voltageGauche, double voltageDroit) {
+        moteurGauche.setVoltage(voltageGauche);
+        moteurDroit.setVoltage(voltageDroit);
+    }
 
-  public double getCurrentLimitDroite() {
-    return moteurDroit.getOutputCurrent();
-  }
+    //Moteur
+    public void setVoltage(double voltage) {
+        setVoltage(voltage, voltage);
+    }
 
-  /// commandes
+    public void stop() {
+        setVoltage(0);
+    }
 
-  public Command monterCommand() {
-    return Commands.runEnd(this::monter, this::stop, this);
-  }
+    public void hold() {
+        setVoltage(feedforward.calculate(getAngleGauche(), 0), feedforward.calculate(getAngleDroit(), 0));
+    }
 
-  public Command descendreCommand() {
-    return Commands.runEnd(this::descendre, this::stop, this);
-  }
+    //Télémétrie
+    @Logged(name = "Courant Coude Gauche")
+    public double getCourantGauche() {
+        return moteurGauche.getOutputCurrent();
+    }
 
-  public Command holdCommand() {
-    return Commands.run(this::hold, this);
-  }
+    @Logged(name = "Courant Coude Droit")
+    public double getCourantDroit() {
+        return moteurDroit.getOutputCurrent();
+    }
 
-  public Command PIDCommand(double cible) {
-    return Commands.runOnce(this::resetPID, this).andThen(Commands.run(() -> this.setPID(cible), this));
-  }
+    /// Encodeur Gauche
+    @Logged
+    public double getAngleGauche() {
+        return moteurGauche.getEncoder().getPosition();
+    }
+
+    @Logged
+    public double getVitesseGauche() {
+        return moteurGauche.getEncoder().getVelocity();
+    }
+
+    /// Encodeur Droit
+
+    @Logged
+    public double getAngleDroit() {
+        return moteurDroit.getEncoder().getPosition();
+    }
+
+    @Logged
+    public double getVitesseDroit() {
+        return moteurDroit.getEncoder().getVelocity();
+    }
+
+    //Encodeurs
+    public void resetEncodeurStartUp() {
+        moteurDroit.getEncoder().setPosition(Constants.kAngleCoudeDepart);
+        moteurGauche.getEncoder().setPosition(Constants.kAngleCoudeDepart);
+    }
+
+    //PID + feedForward
+
+    public void setPID(double cible) {
+        double voltagePIDDroit = pidDroit.calculate(getAngleDroit(), cible);
+
+        double voltageFFDroit = feedforward.calculate(getAngleDroit(), pidDroit.getSetpoint().velocity);
+
+        double voltagePIDGauche = pidGauche.calculate(getAngleGauche(), cible);
+
+        double voltageFFGauche = feedforward.calculate(getAngleGauche(), pidGauche.getSetpoint().velocity);
+
+        setVoltage(voltagePIDGauche + voltageFFGauche, voltagePIDDroit + voltageFFDroit);
+
+    }
+
+    public void resetPID() {
+        pidDroit.reset(getAngleDroit());
+        pidGauche.reset(getAngleGauche());
+    }
+
+    @Logged
+    public boolean atCible() {
+        return pidDroit.atGoal() && pidGauche.atGoal();
+    }
+
+    // smart current limit
+    public void currentLimit(boolean isLimited) {
+        if (isLimited) {
+            stallLimit = 30;
+        }
+        else {
+            stallLimit = smartCurrentLimitDefault;
+        }
+
+        SparkFlexConfig config = new SparkFlexConfig();
+        config.smartCurrentLimit(stallLimit);
+
+        moteurGauche.configure(config, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
+        moteurDroit.configure(config, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
+    }
+
+    public double getCurrentLimitGauche() {
+        return moteurGauche.getOutputCurrent();
+    }
+
+    public double getCurrentLimitDroite() {
+        return moteurDroit.getOutputCurrent();
+    }
+
+    //Commandes
+    public Command holdCommand() {
+        return Commands.run(this::hold, this);
+    }
+
+    public Command PIDCommand(double cible) {
+        return Commands.runOnce(this::resetPID, this).andThen(Commands.run(() -> this.setPID(cible), this));
+    }
 
 }

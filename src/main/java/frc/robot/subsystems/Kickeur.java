@@ -8,9 +8,7 @@ import java.util.Set;
 
 import com.revrobotics.PersistMode;
 import com.revrobotics.ResetMode;
-import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkFlex;
-import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkFlexConfig;
@@ -27,128 +25,108 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 @Logged(strategy = Strategy.OPT_IN)
 public class Kickeur extends SubsystemBase {
-  private SparkFlex moteur = new SparkFlex(51, MotorType.kBrushless);
-  private SparkClosedLoopController pidFlex = moteur.getClosedLoopController();
-  private SparkFlexConfig config = new SparkFlexConfig();
 
-  private PIDController pid = new PIDController(0.1, 0, 0.001);
-  private SimpleMotorFeedforward ff = new SimpleMotorFeedforward(0.203, 0.216);
-  private SlewRateLimiter limiter = new SlewRateLimiter(100);
-  private double vraieCible = 0.0;
+    private SparkFlex moteur = new SparkFlex(51, MotorType.kBrushless);
+    private SparkFlexConfig config = new SparkFlexConfig();
 
-  double conversionKickeur = (18.0 / 36.0);
+    private PIDController pid = new PIDController(0.1, 0, 0.001);
+    private SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(0.203, 0.216);
+    private SlewRateLimiter limiter = new SlewRateLimiter(100);
+    private double vraieCible = 0.0;
 
-  private double toleranceKickeur = 1;
+    double conversionKickeur = (18.0 / 36.0);
+
+    private double toleranceKickeur = 1;
 
 
-  public Kickeur() {
-    config.inverted(true);
-    config.idleMode(IdleMode.kCoast);
+    public Kickeur() {
+        config.inverted(true);
+        config.idleMode(IdleMode.kCoast);
 
-    config.encoder.positionConversionFactor(conversionKickeur);
-    config.encoder.velocityConversionFactor(conversionKickeur / 60.0);
-    config.encoder.quadratureMeasurementPeriod(10);
-    config.encoder.quadratureAverageDepth(2);
+        config.encoder.positionConversionFactor(conversionKickeur);
+        config.encoder.velocityConversionFactor(conversionKickeur / 60.0);
 
-    //Les gains PID des Flex sont en duty cycle (entre 0-1), donc il faut diviser par 12...
-    config.closedLoop.p(0.1/12.0).i(0).d(0.001/12.0).outputRange(-1, 1);
-    //Les gains FF des Flex sont en Volts, donc on est ok avec nos pratiques actuelles
-    config.closedLoop.feedForward.kS(0.203).kV(0.216);
+        //L'encodeur interne est bucketer pour trouver la vitesse.
+        //On diminue la periode de mesure et le nombre de mesure utiliser.
+        config.encoder.quadratureMeasurementPeriod(10);
+        config.encoder.quadratureAverageDepth(2);
 
-    //////ALLER ACTIVER LE PID FLEX DANS SETPID POUR TESTER
+        moteur.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
-    moteur.configure(config, ResetMode.kResetSafeParameters,
-        PersistMode.kPersistParameters);
+        SmartDashboard.putNumber("voltage kickeur", 5);// Initialise input open loop dans le dashboard
+        SmartDashboard.putNumber("cible kickeur", 27);// Initialise input PID dans le dashboard
 
-    SmartDashboard.putNumber("voltage kickeur", 5);// Initialise input open loop dans le dashboard
-    SmartDashboard.putNumber("cible kickeur", 27);//// Initialise input PID dans le dashboard
+        resetEncodeur();
+    }
 
-    resetEncodeur();///// Nécessaire ?????
-  }
+    @Override
+    public void periodic() {
+    }
 
-  @Override
-  public void periodic() {
-  }
+    // Moteur
+    public void setVoltage(double voltage) {
+        moteur.setVoltage(voltage);
+    }
 
-  // MOTEUR
-  public void setVoltage(double voltage) {
-    moteur.setVoltage(voltage);
-  }
+    public void debloquer() {
+        setVoltage(-2);
+    }
 
-  public void tourner() {
-    setVoltage(SmartDashboard.getNumber("voltage kickeur", 0));
-  }
+    public void stop() {
+        resetPID();
+        setVoltage(0);
+    }
 
-  public void debloquer() {
-    setVoltage(-2);
-  }
+    //Encodeur
+    public double getPosition() {////// nécessaire ??
+        return moteur.getEncoder().getPosition();
+    }
 
-  public void stop() {
-    setVoltage(0);
-    resetPID();
-  }
+    @Logged(name = "Vitesse Kickeur")
+    public double getVitesse() {
+        return moteur.getEncoder().getVelocity();
+    }
 
-  /////// ENCODEUR
+    public void resetEncodeur() {
+        moteur.getEncoder().setPosition(0);
+    }
 
-  public double getPosition() {////// nécessaire ??
-    return moteur.getEncoder().getPosition();
-  }
+    // PID
+    // vraie cible pour déterminer si le lanceur est vraiment à le Kickeur plutot
+    // que celle corrigée
+    public void setVraieCible(double cible) {
+        vraieCible = cible;
+    }
 
-  @Logged(name = "Vitesse Kickeur")
-  public double getVitesse() {
-    return moteur.getEncoder().getVelocity();
-  }
+    public double getVraieCible() {
+        return vraieCible;
+    }
 
-  public void resetEncodeur() {
-    moteur.getEncoder().setPosition(0);
-  }
+    public void setPID(double cible) {
+        setVraieCible(cible);
+        double cibleCorriger = limiter.calculate(cible);
+        setVoltage(feedforward.calculate(cibleCorriger) + pid.calculate(getVitesse(), cibleCorriger));
+    }
 
-  // PID
-  // vraie cible pour déterminer si le lanceur est vraiment à le Kickeur plutot
-  // que
-  // celle corrigée
-  public void setVraieCible(double cible) {
-    vraieCible = cible;
-  }
+    @Logged(name = "At Cible Kickeur")
+    public boolean atCible() {
+        return Math.abs(getVitesse() - getVraieCible()) <= toleranceKickeur;
+    }
 
-  public double getVraieCible() {
-    return vraieCible;
-  }
+    public void resetPID() {
+        setVraieCible(0);
+        pid.reset();
+    }
 
-  public void setPID(double cible) {
-    setVraieCible(cible);
-    double cibleCorriger = limiter.calculate(cible);
-    setVoltage(
-        ff.calculate(cibleCorriger) + pid.calculate(getVitesse(), cibleCorriger));
-    
-    //pidFlex.setSetpoint(cibleCorriger, ControlType.kVelocity);
-  }
+    /// ///// COMMAND
+    public Command kickerPIDCommand(double cible) {
+        return Commands
+            .runOnce(() -> limiter.reset(getVitesse()))
+            .andThen(Commands.runEnd(() -> setPID(cible), this::stop, this));
+    }
 
-  @Logged(name = "At Cible Kickeur")
-  public boolean atCible() {
-    return Math.abs(getVitesse() - getVraieCible()) <= toleranceKickeur;
-  }
-
-  public void resetPID() {
-    setVraieCible(0);
-    pid.reset();
-    //pidFlex ne semble pas avoir besoin de reset
-  }
-
-  //////// COMMAND
-  public Command tournerCommand() {
-    return Commands.runEnd(this::tourner, this::stop, this);
-  }
-
-  public Command kickerPIDCommand(double cible) {
-    return Commands.runOnce(() -> limiter.reset(getVitesse()))
-        .andThen(Commands.runEnd(() -> setPID(cible), this::stop, this));
-  }
-
-  public Command kickerPIDCommand() {// Version Dashboard
-    return Commands.defer(() -> {
-      return kickerPIDCommand(SmartDashboard.getNumber("cible kickeur", 0));
-    }, Set.of(this));
-  }
+    public Command kickerPIDCommand() {// Version Dashboard
+        return Commands.defer(() -> kickerPIDCommand(SmartDashboard.getNumber("cible kickeur", 0)), Set.of(this));
+    }
 
 }

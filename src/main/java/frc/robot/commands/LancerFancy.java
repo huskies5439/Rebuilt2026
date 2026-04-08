@@ -16,14 +16,21 @@ import frc.robot.subsystems.Tourelle;
 
 public class LancerFancy extends ParallelCommandGroup {
 
-  public LancerFancy(BasePilotable basePilotable, Lanceur lanceur, Hood hood, Tourelle tourelle, Kickeur kickeur,
-      Carroussel carroussel, Superstructure superstructure) {
+    public LancerFancy(
+        BasePilotable basePilotable,
+        Lanceur lanceur,
+        Hood hood,
+        Tourelle tourelle,
+        Kickeur kickeur,
+        Carroussel carroussel,
+        Superstructure superstructure
+    ) {
 
-    addCommands(
-        new EnvoyerShotParams(lanceur, hood, kickeur, superstructure),
-        new ViserTourelle(tourelle, superstructure),
-        new TournerCarroussel(lanceur, hood, tourelle, basePilotable, carroussel, kickeur, superstructure),
+        addCommands(
+            new EnvoyerShotParams(lanceur, hood, kickeur, superstructure),
+            new ViserTourelle(tourelle, superstructure),
+            new TournerCarroussel(lanceur, hood, tourelle, basePilotable, carroussel, kickeur, superstructure),
 
-        Commands.runOnce(() -> superstructure.setLancerActif(true)));
-  }
+            Commands.runOnce(() -> superstructure.setLancerActif(true)));
+    }
 }

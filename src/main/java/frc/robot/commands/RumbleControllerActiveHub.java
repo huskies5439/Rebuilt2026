@@ -9,48 +9,50 @@ import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants;
-import frc.robot.subsystems.Superstructure;
 
 public class RumbleControllerActiveHub extends Command {
 
-  // Avant de descendre plus loin, veuillez noter que ce code est extrêmement beau!
-  // Vos yeux vont vous remercier!
-  // RIP code laid 2026/03/27 à 2026/03/28 :(
+    // Avant de descendre plus loin, veuillez noter que ce code est extrêmement beau!
+    // Vos yeux vont vous remercier!
+    // RIP code laid 2026/03/27 à 2026/03/28 :(
 
-  CommandXboxController manettePilote;
-  CommandXboxController manetteCopilote;
-  boolean lastActive = false;
-  boolean isStart;
+    CommandXboxController manettePilote;
+    CommandXboxController manetteCopilote;
+    boolean isStart;
 
-  long startTime;
+    long startTime;
 
-  public RumbleControllerActiveHub(boolean isStart, CommandXboxController manettePilote, CommandXboxController manetteCopilote, Superstructure superstructure) {
-    this.manettePilote = manettePilote;
-    this.manetteCopilote = manetteCopilote;
-    this.isStart = isStart;
+    public RumbleControllerActiveHub(
+        boolean isStart,
+        CommandXboxController manettePilote,
+        CommandXboxController manetteCopilote
+    ) {
+        this.manettePilote = manettePilote;
+        this.manetteCopilote = manetteCopilote;
+        this.isStart = isStart;
 
-  }
+    }
 
-  @Override
-  public void initialize() {
-    startTime = System.currentTimeMillis();
-  }
+    @Override
+    public void initialize() {
+        startTime = System.currentTimeMillis();
+    }
 
-  @Override
-  public void execute() {
-    manettePilote.setRumble(isStart ? RumbleType.kLeftRumble : RumbleType.kRightRumble, 1.0);
-    manetteCopilote.setRumble(isStart ? RumbleType.kLeftRumble : RumbleType.kRightRumble, 1.0);
-  }
+    @Override
+    public void execute() {
+        manettePilote.setRumble(isStart ? RumbleType.kLeftRumble : RumbleType.kRightRumble, 1.0);
+        manetteCopilote.setRumble(isStart ? RumbleType.kLeftRumble : RumbleType.kRightRumble, 1.0);
+    }
 
-  @Override
-  public void end(boolean interrupted) {
-    manettePilote.setRumble(isStart ? RumbleType.kLeftRumble : RumbleType.kRightRumble, 0.0);
-    manetteCopilote.setRumble(isStart ? RumbleType.kLeftRumble : RumbleType.kRightRumble, 0.0);
-  }
+    @Override
+    public void end(boolean interrupted) {
+        manettePilote.setRumble(isStart ? RumbleType.kLeftRumble : RumbleType.kRightRumble, 0.0);
+        manetteCopilote.setRumble(isStart ? RumbleType.kLeftRumble : RumbleType.kRightRumble, 0.0);
+    }
 
-  @Override
-  public boolean isFinished() {
-    return System.currentTimeMillis() - startTime >= Constants.VIBRATION_TIME * 1000;
-  }
+    @Override
+    public boolean isFinished() {
+        return System.currentTimeMillis() - startTime >= Constants.VIBRATION_TIME * 1000;
+    }
 
 }

@@ -11,50 +11,42 @@ import frc.robot.subsystems.Coude;
 import frc.robot.subsystems.Gobeur;
 
 public class RetracterGobeurDurantLancer extends Command {
-  Coude coude;
-  Gobeur gobeur;
 
-  double angleHaut = 60.0;
+    Coude coude;
+    Gobeur gobeur;
 
-  ProfiledPIDController pid = new ProfiledPIDController(0.1, 0, 0,
-      new TrapezoidProfile.Constraints(30, 150)); 
+    double angleHaut = 60.0;
 
-  public RetracterGobeurDurantLancer(Coude coude, Gobeur gobeur) {
-    this.coude = coude;
-    this.gobeur = gobeur;
+    ProfiledPIDController pid = new ProfiledPIDController(0.1, 0, 0, new TrapezoidProfile.Constraints(30, 150));
 
-    addRequirements(coude, gobeur);
-  }
+    public RetracterGobeurDurantLancer(Coude coude, Gobeur gobeur) {
+        this.coude = coude;
+        this.gobeur = gobeur;
 
-  @Override
-  public void initialize() {
-    // coude.currentLimit(true);
-    pid.reset(coude.getAngleDroit());
-    
-  }
+        addRequirements(coude, gobeur);
+    }
 
-  @Override
-  public void execute() {
-    // if (coude.getAngleDroit() <= angleHaut && coude.getAngleGauche() <= angleHaut) {
-    //   gobeur.retractage();
-    //   coude.monter();
-    // } else {
-    //   coude.stop();
-    // }
-    double voltage = pid.calculate(coude.getAngleDroit(),angleHaut); 
-    coude.setVoltage(voltage);
-    gobeur.retractage();
-  }
+    @Override
+    public void initialize() {
+        pid.reset(coude.getAngleDroit());
 
-  @Override
-  public void end(boolean interrupted) {
-    // coude.currentLimit(false);
-    gobeur.stop();
-    coude.stop();
-  }
+    }
 
-  @Override
-  public boolean isFinished() {
-    return false;
-  }
+    @Override
+    public void execute() {
+        double voltage = pid.calculate(coude.getAngleDroit(), angleHaut);
+        coude.setVoltage(voltage);
+        gobeur.retractage();
+    }
+
+    @Override
+    public void end(boolean interrupted) {
+        gobeur.stop();
+        coude.stop();
+    }
+
+    @Override
+    public boolean isFinished() {
+        return false;
+    }
 }

@@ -21,81 +21,78 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 @Logged(strategy = Strategy.OPT_IN)
 public class Carroussel extends SubsystemBase {
 
-  private SparkFlex moteur = new SparkFlex(11, MotorType.kBrushless);
+    private SparkFlex moteur = new SparkFlex(11, MotorType.kBrushless);
 
-  private SparkFlexConfig config = new SparkFlexConfig();
+    private SparkFlexConfig config = new SparkFlexConfig();
 
-  // moteur avec maxPlanetary, poulie 36 vers 72, 360 degrées
-  private double maxPlanetary = 9.0;
-  private double conversion = (1.0 / maxPlanetary) * (36.0 / 72.0) * 360;
+    // moteur avec maxPlanetary, poulie 36 vers 72, 360 degrées
+    private double maxPlanetary = 9.0;
+    private double conversion = (1.0 / maxPlanetary) * (36.0 / 72.0) * 360;
 
-  public Carroussel() {
+    public Carroussel() {
 
-    config.inverted(false);
-    config.idleMode(IdleMode.kBrake);
-    config.encoder.positionConversionFactor(conversion);
-    config.encoder.velocityConversionFactor(conversion / 60.0);
-    moteur.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+        config.inverted(false);
+        config.idleMode(IdleMode.kBrake);
+        config.encoder.positionConversionFactor(conversion);
+        config.encoder.velocityConversionFactor(conversion / 60.0);
+        moteur.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
-    SmartDashboard.putNumber("voltage carroussel", 10);// Initialise input open loop dans le dashboard
-    SmartDashboard.putNumber("cible carroussel", 0);//// Initialise input PID dans le dashboard
+        SmartDashboard.putNumber("voltage carroussel", 10);// Initialise input open loop dans le dashboard
+        SmartDashboard.putNumber("cible carroussel", 0);//// Initialise input PID dans le dashboard
 
-  }
+    }
 
-  @Override
-  public void periodic() {
+    @Override
+    public void periodic() {
 
-  }
+    }
 
-  ////////// MOTEUR
-  public void setVoltage(double voltage) {
-    moteur.setVoltage(voltage);
-  }
+    //Moteur
+    public void setVoltage(double voltage) {
+        moteur.setVoltage(voltage);
+    }
 
-  public void tourner() {
-    setVoltage(12.0);
-  }
+    public void tourner() {
+        setVoltage(12.0);
+    }
 
-  public void debloquer() {
-    setVoltage(-6);
-  }
+    public void debloquer() {
+        setVoltage(-6);
+    }
 
-  
 
-  public void stop() {
-    setVoltage(0);
-  }
+    public void stop() {
+        setVoltage(0);
+    }
 
-  //Télémétrie
-  @Logged(name = "Courant Carroussel")
-  public double getCourant(){
-    return moteur.getOutputCurrent();
-  }
+    //Télémétrie
+    @Logged(name = "Courant Carroussel")
+    public double getCourant() {
+        return moteur.getOutputCurrent();
+    }
 
-  @Logged(name = "Temperature Carroussel")
-  public double getTemperature(){
-    return moteur.getMotorTemperature();
-  }
+    @Logged(name = "Temperature Carroussel")
+    public double getTemperature() {
+        return moteur.getMotorTemperature();
+    }
 
-  //////// ENCODEUR
+    //Encodeur
+    public double getPosition() {///// nécessaire ??
+        return (moteur.getEncoder().getPosition());
+    }
 
-  public double getPosition() {///// nécessaire ??
-    return (moteur.getEncoder().getPosition());
-  }
+    @Logged(name = "Vitesse Caroussel")
+    public double getVitesse() {
+        return moteur.getEncoder().getVelocity();
+    }
 
-  @Logged(name = "Vitesse Caroussel")
-  public double getVitesse() {
-    return moteur.getEncoder().getVelocity();
-  }
+    //Commandes
+    public Command tournerCommand() {
+        return Commands.runEnd(this::tourner, this::stop, this);
+    }
 
-  ////// Commandes
-
-  public Command tournerCommand() {
-    return Commands.runEnd(this::tourner, this::stop, this);
-  }
-
-  public Command debloquerCommand() {
-    return Commands.runEnd(this::debloquer, this::stop, this);
-  }
+    public Command debloquerCommand() {
+        return Commands.runEnd(this::debloquer, this::stop, this);
+    }
 
 }

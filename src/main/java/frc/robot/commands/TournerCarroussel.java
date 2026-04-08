@@ -15,69 +15,72 @@ import frc.robot.subsystems.Tourelle;
 
 public class TournerCarroussel extends Command {
 
-  Lanceur lanceur;
-  Hood hood;
-  Tourelle tourelle;
-  BasePilotable basePilotable;
-  Carroussel carroussel; 
-  Kickeur kickeur; 
-  Superstructure superstructure; 
-  boolean finish = false; 
+    Lanceur lanceur;
+    Hood hood;
+    Tourelle tourelle;
+    BasePilotable basePilotable;
+    Carroussel carroussel;
+    Kickeur kickeur;
+    Superstructure superstructure;
 
-  boolean conditionSansTourelle;
-  boolean convoyer;
-  double toleranceTourelle; 
+    boolean conditionSansTourelle;
+    boolean convoyer;
+    double toleranceTourelle;
 
-  public TournerCarroussel(Lanceur lanceur, Hood hood, Tourelle tourelle, BasePilotable basePilotable, Carroussel carroussel, Kickeur kickeur, Superstructure superstructure) {
-    this.lanceur = lanceur;
-    this.hood = hood;
-    this.tourelle = tourelle;
-    this.basePilotable = basePilotable;
-    this.carroussel = carroussel;
-    this.kickeur = kickeur;
-    this.superstructure = superstructure; 
-    addRequirements(carroussel);
-  }
-
-  @Override
-  public void initialize() {
-    conditionSansTourelle = false;
-    convoyer = false;
-
-  }
-
-  @Override
-  public void execute() {
-    if(superstructure.cibleIsHub()){
-      toleranceTourelle = 10.0; 
-    }else{
-      toleranceTourelle = 30.0; 
-    }
-    
-    // if(lanceur.atCible() && hood.atCible() && kickeur.atCible() && tourelle.atCible(toleranceTourelle)){
-    //   carroussel.tourner();
-    // }else{
-    //   carroussel.stop();
-    // }
-    if(lanceur.atCible() && hood.atCible() && kickeur.atCible() && tourelle.atCible(toleranceTourelle)){
-      convoyer = true;
+    public TournerCarroussel(
+        Lanceur lanceur,
+        Hood hood,
+        Tourelle tourelle,
+        BasePilotable basePilotable,
+        Carroussel carroussel,
+        Kickeur kickeur,
+        Superstructure superstructure
+    ) {
+        this.lanceur = lanceur;
+        this.hood = hood;
+        this.tourelle = tourelle;
+        this.basePilotable = basePilotable;
+        this.carroussel = carroussel;
+        this.kickeur = kickeur;
+        this.superstructure = superstructure;
+        addRequirements(carroussel);
     }
 
-    if(convoyer){
+    @Override
+    public void initialize() {
+        conditionSansTourelle = false;
+        convoyer = false;
+
+    }
+
+    @Override
+    public void execute() {
+        if (superstructure.cibleIsHub()) {
+            toleranceTourelle = 10.0;
+        }
+        else {
+            toleranceTourelle = 30.0;
+        }
+
+        if (lanceur.atCible() && hood.atCible() && kickeur.atCible() && tourelle.atCible(toleranceTourelle)) {
+            convoyer = true;
+        }
+
+        if (convoyer) {
             carroussel.tourner();
-
-    } else {
-      carroussel.stop();
+        }
+        else {
+            carroussel.stop();
+        }
     }
-  }
 
-  @Override
-  public void end(boolean interrupted) {
-    carroussel.stop();
-  }
+    @Override
+    public void end(boolean interrupted) {
+        carroussel.stop();
+    }
 
-  @Override
-  public boolean isFinished() {
-    return false; 
-  }
+    @Override
+    public boolean isFinished() {
+        return false;
+    }
 }

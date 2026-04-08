@@ -15,19 +15,18 @@ import frc.robot.subsystems.Superstructure;
 
 public class EnvoyerShotParams extends Command {
 
-  Lanceur lanceur;
-  Hood hood;
-  Kickeur kickeur;
-  Superstructure superstructure;
+    Lanceur lanceur;
+    Hood hood;
+    Kickeur kickeur;
+    Superstructure superstructure;
 
-  ShotParams shotParams;
+    ShotParams shotParams;
 
-  boolean dynamique;
-  boolean avecFin; //Si on veut régler la séquence de fin avec un autre commande
+    boolean dynamique;
+    boolean avecFin; //Si on veut régler la séquence de fin avec un autre commande
 
 
-  public EnvoyerShotParams(Lanceur lanceur, Hood hood,  Kickeur kickeur,
-       Superstructure superstructure) {
+    public EnvoyerShotParams(Lanceur lanceur, Hood hood, Kickeur kickeur, Superstructure superstructure) {
 
         this.lanceur = lanceur;
         this.hood = hood;
@@ -36,42 +35,42 @@ public class EnvoyerShotParams extends Command {
 
         addRequirements(lanceur, hood, kickeur, superstructure);
 
-  }
-
-  @Override
-  public void initialize() {
-    dynamique = true;
-    avecFin = true;
-
-    lanceur.resetPID();
-    kickeur.resetPID();
-    hood.resetPID();
-
-    
-  }
-
-  @Override
-  public void execute() {
-    shotParams = superstructure.getShotParams(dynamique);
-    SmartDashboard.putNumber("shot params - lanceur", shotParams.getVitesseLanceur());
-    SmartDashboard.putNumber("shot params - kickeur", shotParams.getVitesseKickeur());
-    SmartDashboard.putNumber("shot params - Hood",   shotParams.getAngleHood());
-    lanceur.setPID(shotParams.getVitesseLanceur() + superstructure.getTrimLanceur());
-    hood.setPID(shotParams.getAngleHood());
-    kickeur.setPID(shotParams.getVitesseKickeur() + superstructure.getTrimKickeur());
-  }
-
-  @Override
-  public void end(boolean interrupted) {
-    if(avecFin){
-      lanceur.stop();
-      hood.stop();
-      kickeur.stop();
     }
-  }
 
-  @Override
-  public boolean isFinished() {
-    return false;
-  }
+    @Override
+    public void initialize() {
+        dynamique = true;
+        avecFin = true;
+
+        lanceur.resetPID();
+        kickeur.resetPID();
+        hood.resetPID();
+
+
+    }
+
+    @Override
+    public void execute() {
+        shotParams = superstructure.getShotParams(dynamique);
+        SmartDashboard.putNumber("shot params - lanceur", shotParams.getVitesseLanceur());
+        SmartDashboard.putNumber("shot params - kickeur", shotParams.getVitesseKickeur());
+        SmartDashboard.putNumber("shot params - Hood", shotParams.getAngleHood());
+        lanceur.setPID(shotParams.getVitesseLanceur() + superstructure.getTrimLanceur());
+        hood.setPID(shotParams.getAngleHood());
+        kickeur.setPID(shotParams.getVitesseKickeur() + superstructure.getTrimKickeur());
+    }
+
+    @Override
+    public void end(boolean interrupted) {
+        if (avecFin) {
+            lanceur.stop();
+            hood.stop();
+            kickeur.stop();
+        }
+    }
+
+    @Override
+    public boolean isFinished() {
+        return false;
+    }
 }

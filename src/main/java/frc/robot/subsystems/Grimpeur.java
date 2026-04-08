@@ -19,93 +19,81 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 @Logged(strategy = Strategy.OPT_IN)
 public class Grimpeur extends SubsystemBase {
-  private SparkFlex moteur = new SparkFlex(59, MotorType.kBrushless);
-  private SparkFlexConfig config = new SparkFlexConfig();
 
-  private double conversion;
+    private SparkFlex moteur = new SparkFlex(59, MotorType.kBrushless);
+    private SparkFlexConfig config = new SparkFlexConfig();
 
-  private double maxPosition = 80.0;
+    private double conversion;
 
-  private boolean grimpeurHaut = false;
+    private double maxPosition = 80.0;
 
-  public Grimpeur() {
+    private boolean grimpeurHaut = false;
 
-    config.inverted(true);
-    config.idleMode(IdleMode.kBrake);
-    conversion = 1;
-    config.encoder.positionConversionFactor(conversion); //// à vérifier
-    config.encoder.velocityConversionFactor(conversion / 60);
-    // config.softLimit.forwardSoftLimit(maxPosition).reverseSoftLimit(angleMax);
-    // config.softLimit.forwardSoftLimitEnabled(true).reverseSoftLimitEnabled(true);
-    moteur.configure(config, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters);
-    resetEncoder();
+    public Grimpeur() {
 
-  }
+        config.inverted(true);
+        config.idleMode(IdleMode.kBrake);
+        conversion = 1;
+        config.encoder.positionConversionFactor(conversion);
+        config.encoder.velocityConversionFactor(conversion / 60);
+        moteur.configure(config, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters);
+        resetEncoder();
 
-  @Override
-  public void periodic() {
+    }
 
-  }
+    @Override
+    public void periodic() {
 
-  public void setVoltage(double voltage) {
-    moteur.setVoltage(voltage);
-  }
+    }
 
-  @Logged
-  public double getPosition() {
-    return moteur.getEncoder().getPosition();
-  }
+    //Moteur
+    public void setVoltage(double voltage) {
+        moteur.setVoltage(voltage);
+    }
 
-  public double getVelocity() {
-    return moteur.getEncoder().getVelocity();
-  }
+    public void stop() {
+        setVoltage(0);
+    }
 
-  public void stop() {
-    setVoltage(0);
-  }
+    //Encodeur
+    public void resetEncoder() {
+        moteur.getEncoder().setPosition(0);
+    }
 
+    @Logged
+    public double getPosition() {
+        return moteur.getEncoder().getPosition();
+    }
 
-  
+    public double getVelocity() {
+        return moteur.getEncoder().getVelocity();
+    }
 
-  @Logged
-  public boolean grimpeurHaut() {
-    return grimpeurHaut;
-  }
+    @Logged
+    public boolean grimpeurHaut() {
+        return grimpeurHaut;
+    }
 
-  ///// ENCODEUR
+    //Commandes
+    public Command monterPitCommand() {
+        return Commands.runEnd(() -> setVoltage(2), this::stop, this);
+    }
 
-  public void resetEncoder() {
-    moteur.getEncoder().setPosition(0);
-  }
+    public Command descendrePitCommand() {
+        return Commands.runEnd(() -> setVoltage(-2), this::stop, this);
+    }
 
-  /// COMMANDES
-  public Command monterPitCommand() {
-    return Commands.runEnd(()->setVoltage(2), this::stop, this);
-  }
+    public Command goMaxHauteur() {
+        return Commands.runOnce(() -> {
+            grimpeurHaut = true;
+        }).andThen(Commands.runEnd(() -> setVoltage(4), this::stop, this).until(() -> getPosition() > maxPosition));
 
-  public Command descendrePitCommand() {
-    return Commands.runEnd(()->setVoltage(-2), this::stop, this);
-  }
+    }
 
-  public Command goMaxHauteur() {
-
-    return Commands.runOnce(() -> {
-      grimpeurHaut = true;
-    })
-        .andThen(Commands.runEnd(()->setVoltage(4), this::stop, this).until(() -> {
-          return getPosition() > maxPosition;
-        }));
-
-  }
-
-  public Command goMinHauteur() {
-
-    return Commands.runOnce(() -> {
-      grimpeurHaut = false;
-    })
-        .andThen(Commands.runEnd(()->setVoltage(-7), this::stop, this).until(() -> {
-          return getPosition() < 0.0;
-        }));
-  }
+    public Command goMinHauteur() {
+        return Commands.runOnce(() -> {
+            grimpeurHaut = false;
+        }).andThen(Commands.runEnd(() -> setVoltage(-7), this::stop, this).until(() -> getPosition() < 0.0));
+    }
 
 }

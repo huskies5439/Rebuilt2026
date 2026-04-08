@@ -13,11 +13,15 @@ import frc.robot.subsystems.Superstructure;
 
 public class GoToFancy extends SequentialCommandGroup {
 
-  public GoToFancy(Pose2d cible, BasePilotable basePilotable, Superstructure superstructure, FancyPathGeneration fancyPath) {
+    public GoToFancy(
+        Pose2d cible,
+        BasePilotable basePilotable,
+        Superstructure superstructure,
+        FancyPathGeneration fancyPath
+    ) {
 
-    addCommands(
-      new FollowPathDistance(cible, basePilotable, superstructure, fancyPath),
-      new DeplacementPID(cible, basePilotable, superstructure)
-    );
-  }
+        addCommands(
+            new FollowPathDistance(cible, basePilotable, superstructure, fancyPath),
+            new DeplacementPID(cible, basePilotable, superstructure));
+    }
 }
