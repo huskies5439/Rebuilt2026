@@ -36,7 +36,7 @@ import frc.robot.Constants.Cible;
 import frc.robot.Constants.PoseTrench;
 import frc.robot.lib.ShotParams;
 
-@Logged
+@Logged(strategy = Logged.Strategy.OPT_IN)
 public class Superstructure extends SubsystemBase {
 
     Transform2d deplacementTourelle = new Transform2d(-0.153, -0.153, Rotation2d.kZero);
@@ -159,6 +159,7 @@ public class Superstructure extends SubsystemBase {
         }
     }
 
+    @Logged
     public boolean cibleIsHub() {
         return cibleReelle == Cible.hubRouge || cibleReelle == Cible.hubBleu;
     }
@@ -212,10 +213,12 @@ public class Superstructure extends SubsystemBase {
         return getVecteurCible(cibleVirtuelle);
     }
 
+    @Logged
     public double getDistanceCibleVirtuelle() {
         return getDistanceCible(cibleVirtuelle);
     }
 
+    @Logged
     public double getAngleCibleVirtuelle() {
         return getAngleCible(cibleVirtuelle);
     }
@@ -225,10 +228,12 @@ public class Superstructure extends SubsystemBase {
         return getVecteurCible(cibleReelle);
     }
 
+    @Logged
     public double getDistanceCibleReelle() {
         return getDistanceCible(cibleReelle);
     }
 
+    @Logged
     public double getAngleCibleReelle() {
         return getAngleCible(cibleReelle);
     }
@@ -283,6 +288,7 @@ public class Superstructure extends SubsystemBase {
                poseY > cible.getY() - demiY;
     }
 
+    @Logged
     public boolean isProcheTrench() {
         double demiX = 0.35;
         double demiY = 0.61;
@@ -307,9 +313,9 @@ public class Superstructure extends SubsystemBase {
 
     }
 
-    /// //// Cinématique d'un point P (tourelle) sur un corps rigide (robot)
-    /// voir l'équation de la vitesse:
-    /// //// https://courses.grainger.illinois.edu/tam212/su2025/rkg.html#rkg-er
+    // Cinématique d'un point P (tourelle) sur un corps rigide (robot)
+    // voir l'équation de la vitesse:
+    // https://courses.grainger.illinois.edu/tam212/su2025/rkg.html#rkg-er
 
     // Correspond à \vect{r}_{PQ}
     // C'est le vecteur de déplacement du point Q (centre du robot) vers le point P
