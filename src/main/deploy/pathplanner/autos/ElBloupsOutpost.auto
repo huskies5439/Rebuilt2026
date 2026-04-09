@@ -9,7 +9,7 @@
           "data": {
             "commands": [
               {
-                "type": "parallel",
+                "type": "sequential",
                 "data": {
                   "commands": [
                     {
@@ -21,7 +21,7 @@
                     {
                       "type": "wait",
                       "data": {
-                        "waitTime": 2.0
+                        "waitTime": 1.0
                       }
                     }
                   ]
@@ -56,6 +56,12 @@
                 "type": "named",
                 "data": {
                   "name": "viser outpost"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "gober"
                 }
               }
             ]

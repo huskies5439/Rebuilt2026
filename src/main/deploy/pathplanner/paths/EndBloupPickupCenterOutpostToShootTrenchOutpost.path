@@ -28,12 +28,7 @@
       "linkedName": "EndTrenchOutpost"
     }
   ],
-  "rotationTargets": [
-    {
-      "waypointRelativePos": 0.6614107883817387,
-      "rotationDegrees": 0.0
-    }
-  ],
+  "rotationTargets": [],
   "constraintZones": [],
   "pointTowardsZones": [],
   "eventMarkers": [],
