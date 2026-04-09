@@ -36,7 +36,7 @@ import frc.robot.Constants.Cible;
 import frc.robot.Constants.PoseTrench;
 import frc.robot.lib.ShotParams;
 
-@Logged(strategy = Logged.Strategy.OPT_IN)
+@Logged
 public class Superstructure extends SubsystemBase {
 
     Transform2d deplacementTourelle = new Transform2d(-0.153, -0.153, Rotation2d.kZero);

@@ -48,8 +48,7 @@ public class BasePilotable extends SubsystemBase {
     private Pigeon2 gyro = new Pigeon2(0);
 
     // Les 3 PID de la base pilotable utilisés par PathPlanner.
-    private PPHolonomicDriveController ppHolonomicDriveController =
-        new PPHolonomicDriveController(
+    private PPHolonomicDriveController ppHolonomicDriveController = new PPHolonomicDriveController(
             new PIDConstants(PidBasePilotable.kPLineaire, 0, 0),
             new PIDConstants(PidBasePilotable.kPRot, 0, PidBasePilotable.kDRot));
 
@@ -63,21 +62,22 @@ public class BasePilotable extends SubsystemBase {
 
     SwerveDrivePoseEstimator poseEstimator;
 
-
     public BasePilotable() {
 
         // Reset initial
         resetGyro();
         resetEncoders();
-        resetOdometry(new Pose2d());
 
         // Initialisation PoseEstimator
         poseEstimator = new SwerveDrivePoseEstimator(
-        Constants.kDriveKinematics,
-        Rotation2d.fromDegrees(getAngleGyro()),
-        new SwerveModulePosition[] {avantGauche.getPosition(), avantDroite.getPosition(), arriereGauche.getPosition(),
-            arriereDroite.getPosition()},
-        Pose2d.kZero);
+                Constants.kDriveKinematics,
+                Rotation2d.fromDegrees(getAngleGyro()),
+                new SwerveModulePosition[] { avantGauche.getPosition(), avantDroite.getPosition(),
+                        arriereGauche.getPosition(),
+                        arriereDroite.getPosition() },
+                Pose2d.kZero);
+
+        resetOdometry(new Pose2d());
 
         // Aller chercher la configuration du robot dans Pathplanner
         // Nécessaire pour swerveSetpointGenerator ET AutoBuilder
@@ -86,21 +86,20 @@ public class BasePilotable extends SubsystemBase {
 
             robotConfig = RobotConfig.fromGUISettings();
 
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
         // AutoBuilder permet de générer les trajets autonomes et de followPath
         AutoBuilder.configure(
-            this::getPose,
-            this::resetOdometry,
-            this::getChassisSpeeds,
-            (speeds, feedforward) -> conduireChassis(speeds),
-            ppHolonomicDriveController,
-            robotConfig,
-            Constants::isRedAlliance,
-            this);
+                this::getPose,
+                this::resetOdometry,
+                this::getChassisSpeeds,
+                (speeds, feedforward) -> conduireChassis(speeds),
+                ppHolonomicDriveController,
+                robotConfig,
+                Constants::isRedAlliance,
+                this);
 
         // Configuration Setpoint Generator, 3.94 Valeur selon la freespeed
         // du neo 550
@@ -113,16 +112,15 @@ public class BasePilotable extends SubsystemBase {
     public void periodic() {
         // Update du Pose Estimator
         poseEstimator.update(
-            Rotation2d.fromDegrees(getAngleGyro()),
-            new SwerveModulePosition[] {avantGauche.getPosition(), avantDroite.getPosition(),
-                arriereGauche.getPosition(), arriereDroite.getPosition()});
-
+                Rotation2d.fromDegrees(getAngleGyro()),
+                new SwerveModulePosition[] { avantGauche.getPosition(), avantDroite.getPosition(),
+                        arriereGauche.getPosition(), arriereDroite.getPosition() });
 
         setLimelightRobotOrientation();
         addVisionPosition("limelight");
     }
 
-    //FONCTIONS QUI PARLENT DIRECTEMENT AUX MODULES SWERVES
+    // FONCTIONS QUI PARLENT DIRECTEMENT AUX MODULES SWERVES
     // ModuleState = Vitesse de la roue, angle de la roue
     public void setModuleStates(SwerveModuleState[] desiredStates) {
         avantGauche.setDesiredState(desiredStates[0]);
@@ -132,8 +130,8 @@ public class BasePilotable extends SubsystemBase {
     }
 
     public SwerveModuleState[] getModuleStates() {
-        return new SwerveModuleState[] {avantGauche.getState(), avantDroite.getState(), arriereGauche.getState(),
-            arriereDroite.getState()};
+        return new SwerveModuleState[] { avantGauche.getState(), avantDroite.getState(), arriereGauche.getState(),
+                arriereDroite.getState() };
     }
 
     // Sets the wheels into an X formation to prevent movement.
@@ -144,15 +142,15 @@ public class BasePilotable extends SubsystemBase {
         arriereDroite.setDesiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(45)));
     }
 
-    //FONCTIONS QUI PARLENT DIRECTEMENT AU CHASSIS
-    //ChassisSpeeds = Vx, Vy, Omega
+    // FONCTIONS QUI PARLENT DIRECTEMENT AU CHASSIS
+    // ChassisSpeeds = Vx, Vy, Omega
 
     public ChassisSpeeds getChassisSpeeds() {
         return Constants.kDriveKinematics.toChassisSpeeds(
-            avantDroite.getState(),
-            avantGauche.getState(),
-            arriereDroite.getState(),
-            arriereGauche.getState());
+                avantDroite.getState(),
+                avantGauche.getState(),
+                arriereDroite.getState(),
+                arriereGauche.getState());
     }
 
     public void conduireChassis(ChassisSpeeds chassisSpeeds) {
@@ -167,8 +165,9 @@ public class BasePilotable extends SubsystemBase {
         conduireChassis(new ChassisSpeeds(0, 0, 0));
     }
 
-    //FONCTIONS QUI PARLENT AU CHASSIS AVEC LA CORRECTION DU SWERVE SETPOINT GENERATOR
-    //Nécessite swerveSetPointGenerator, donc robotConfig d'un projet PP
+    // FONCTIONS QUI PARLENT AU CHASSIS AVEC LA CORRECTION DU SWERVE SETPOINT
+    // GENERATOR
+    // Nécessite swerveSetPointGenerator, donc robotConfig d'un projet PP
 
     public void conduireChassisSetPoint(ChassisSpeeds speeds) {
         previousSetpoint = setpointGenerator.generateSetpoint(previousSetpoint, speeds, 0.02);
@@ -182,7 +181,7 @@ public class BasePilotable extends SubsystemBase {
         previousSetpoint = new SwerveSetpoint(getChassisSpeeds(), getModuleStates(), DriveFeedforwards.zeros(4));
     }
 
-    //Pose estimator
+    // Pose estimator
     @Logged
     public Pose2d getPose() {
         return poseEstimator.getEstimatedPosition();
@@ -191,30 +190,30 @@ public class BasePilotable extends SubsystemBase {
     public void resetOdometry(Pose2d pose) { // pose est à la pose où reset, c'est
         // typiquement l'origine du terrain
         poseEstimator.resetPosition(
-            Rotation2d.fromDegrees(getAngleGyro()),
-            new SwerveModulePosition[] {avantGauche.getPosition(), avantDroite.getPosition(),
-                arriereGauche.getPosition(), arriereDroite.getPosition()},
-            pose);
+                Rotation2d.fromDegrees(getAngleGyro()),
+                new SwerveModulePosition[] { avantGauche.getPosition(), avantDroite.getPosition(),
+                        arriereGauche.getPosition(), arriereDroite.getPosition() },
+                pose);
     }
 
-    //Limelight
+    // Limelight
     // MegaTag2 : il faut connaître l'angle du robot
     // Donc TOUJOURS ouvrir le robot/compiler en pointant 0°
     // Voir la documentation limelight, il se peut que ça change l'an
     // prochain !
     public void setLimelightRobotOrientation() {
         LimelightHelpers.SetRobotOrientation(
-            "limelight",
-            poseEstimator.getEstimatedPosition().getRotation().getDegrees(),
-            0,
-            0,
-            0,
-            0,
-            0);
+                "limelight",
+                poseEstimator.getEstimatedPosition().getRotation().getDegrees(),
+                0,
+                0,
+                0,
+                0,
+                0);
     }
 
     public void addVisionPosition(String nomComplet) {
-        //Parametre Limelight
+        // Parametre Limelight
         poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(0.7, 0.7, 9999999));
 
         LimelightHelpers.PoseEstimate poseEstimate = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2(nomComplet);
@@ -235,7 +234,7 @@ public class BasePilotable extends SubsystemBase {
         }
     }
 
-    //Encodeurs
+    // Encodeurs
     // Pas besoin de méthode pour obtenir la position des encodeurs, tout ça
     // passe directement par la pose2D du robot
     public void resetEncoders() {
@@ -245,7 +244,7 @@ public class BasePilotable extends SubsystemBase {
         arriereDroite.resetEncoders();
     }
 
-    //Gyro
+    // Gyro
     @Logged(name = "gyro")
     public double getAngleGyro() {
         return gyro.getYaw().getValueAsDouble();
@@ -259,8 +258,7 @@ public class BasePilotable extends SubsystemBase {
         gyro.setYaw(0);
     }
 
-
-    //Fonctions pour le fancy path generator
+    // Fonctions pour le fancy path generator
     public Command followPath(PathPlannerPath path) {
 
         return AutoBuilder.followPath(path);
