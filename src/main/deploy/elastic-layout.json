@@ -36,7 +36,7 @@
           {
             "title": "field2d",
             "x": 0.0,
-            "y": 416.0,
+            "y": 288.0,
             "width": 704.0,
             "height": 256.0,
             "type": "Field",
@@ -72,7 +72,7 @@
             "x": 352.0,
             "y": 0.0,
             "width": 352.0,
-            "height": 416.0,
+            "height": 288.0,
             "type": "Boolean Box",
             "properties": {
               "topic": "Robot/m_robotContainer/isHubActive",
@@ -89,7 +89,7 @@
             "x": 0.0,
             "y": 0.0,
             "width": 352.0,
-            "height": 416.0,
+            "height": 288.0,
             "type": "Boolean Box",
             "properties": {
               "topic": "Robot/m_robotContainer/superstructure/hasWinAuto",
@@ -788,14 +788,14 @@
           },
           {
             "title": "getAngleCibleReelle",
-            "x": 832.0,
+            "x": 768.0,
             "y": 0.0,
-            "width": 192.0,
+            "width": 256.0,
             "height": 128.0,
             "type": "Text Display",
             "properties": {
               "topic": "Robot/m_robotContainer/superstructure/getAngleCibleReelle",
-              "period": 0.06,
+              "period": 0.033,
               "data_type": "double",
               "show_submit_button": false
             }
@@ -953,6 +953,20 @@
               "false_color": 4294198070,
               "true_icon": "None",
               "false_icon": "None"
+            }
+          },
+          {
+            "title": "getAngleReel",
+            "x": 768.0,
+            "y": 128.0,
+            "width": 256.0,
+            "height": 128.0,
+            "type": "Text Display",
+            "properties": {
+              "topic": "Robot/m_robotContainer/tourelle/getAngleReel",
+              "period": 0.06,
+              "data_type": "double",
+              "show_submit_button": false
             }
           }
         ]
