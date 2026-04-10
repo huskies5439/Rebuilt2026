@@ -78,6 +78,6 @@ public final class Constants {
         }
     }
 
-    public static final int PREVISION_TIME = 2;
-    public static final double VIBRATION_TIME = 1.0;
+    public static final int PREVISION_TIME = 3;
+    public static final double VIBRATION_TIME = 3.067;
 }
