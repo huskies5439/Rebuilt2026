@@ -15,7 +15,7 @@ public class RetracterGobeurDurantLancer extends Command {
     Coude coude;
     Gobeur gobeur;
 
-    double angleHaut = 60.0;
+    double angleHaut = 45.0;
 
     ProfiledPIDController pid = new ProfiledPIDController(0.1, 0, 0, new TrapezoidProfile.Constraints(30, 150));
 

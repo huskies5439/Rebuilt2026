@@ -4,12 +4,12 @@
     {
       "anchor": {
         "x": 7.8,
-        "y": 3.2
+        "y": 2.6
       },
       "prevControl": null,
       "nextControl": {
         "x": 7.669206073528356,
-        "y": 2.8517515990013305
+        "y": 2.2517515990013304
       },
       "isLocked": true,
       "linkedName": "EndPickupCenterOutpost"

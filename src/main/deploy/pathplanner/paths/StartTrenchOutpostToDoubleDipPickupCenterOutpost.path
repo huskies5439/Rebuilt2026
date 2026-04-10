@@ -23,17 +23,42 @@
         "x": 7.293,
         "y": 0.6000000000000001
       },
-      "nextControl": null,
+      "nextControl": {
+        "x": 8.5,
+        "y": 0.6
+      },
       "isLocked": false,
       "linkedName": "PickupCenterOutpost"
+    },
+    {
+      "anchor": {
+        "x": 7.8,
+        "y": 2.6
+      },
+      "prevControl": {
+        "x": 8.621482565179397,
+        "y": 1.6209952016939464
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "EndPickupCenterOutpost"
     }
   ],
-  "rotationTargets": [],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.3,
+      "rotationDegrees": 0.0
+    },
+    {
+      "waypointRelativePos": 0.83,
+      "rotationDegrees": 100.0
+    }
+  ],
   "constraintZones": [
     {
       "name": "Constraints Zone",
       "minWaypointRelativePos": 0.10054054054054054,
-      "maxWaypointRelativePos": 0.7513513513513513,
+      "maxWaypointRelativePos": 0.75,
       "constraints": {
         "maxVelocity": 4.0,
         "maxAcceleration": 3.0,
@@ -56,7 +81,7 @@
   },
   "goalEndState": {
     "velocity": 0.0,
-    "rotation": 110.0
+    "rotation": 125.00000000000001
   },
   "reversed": false,
   "folder": "path",

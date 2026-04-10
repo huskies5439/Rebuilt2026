@@ -23,15 +23,35 @@
         "x": 7.293079490281219,
         "y": 7.4
       },
-      "nextControl": null,
+      "nextControl": {
+        "x": 8.5,
+        "y": 7.4
+      },
       "isLocked": false,
       "linkedName": "PickupCenterDepot"
+    },
+    {
+      "anchor": {
+        "x": 7.8,
+        "y": 5.4
+      },
+      "prevControl": {
+        "x": 8.623615277608053,
+        "y": 6.377658926765856
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "EndPickupCenterDepot"
     }
   ],
   "rotationTargets": [
     {
       "waypointRelativePos": 0.3012448132780026,
       "rotationDegrees": 0.0
+    },
+    {
+      "waypointRelativePos": 0.8325203252032399,
+      "rotationDegrees": -100.0
     }
   ],
   "constraintZones": [
@@ -61,7 +81,7 @@
   },
   "goalEndState": {
     "velocity": 0.0,
-    "rotation": -110.0
+    "rotation": -125.00000000000001
   },
   "reversed": false,
   "folder": "path",

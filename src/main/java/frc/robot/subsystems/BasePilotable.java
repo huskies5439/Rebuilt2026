@@ -222,13 +222,31 @@ public class BasePilotable extends SubsystemBase {
             return;
         }
 
-        if (Math.abs(getOmegaGyro()) > 720) {
+        if (Math.abs(getOmegaGyro()) > 360) {
             doRejectUpdate = true;
         }
         if (poseEstimate.tagCount == 0) {
             doRejectUpdate = true;
         }
         SmartDashboard.putBoolean(nomComplet, !doRejectUpdate);
+        if (!doRejectUpdate) {
+            poseEstimator.addVisionMeasurement(poseEstimate.pose, poseEstimate.timestampSeconds);
+        }
+    }
+
+    public void MegaTag1() {
+        // Parametre Limelight
+        poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(0.3, 0.3, 9999999));
+
+        LimelightHelpers.PoseEstimate poseEstimate = LimelightHelpers.getBotPoseEstimate_wpiBlue("limelight");
+        boolean doRejectUpdate = false;
+        if (poseEstimate == null) {
+            return;
+        }
+
+        if (poseEstimate.tagCount == 0) {
+            doRejectUpdate = true;
+        }
         if (!doRejectUpdate) {
             poseEstimator.addVisionMeasurement(poseEstimate.pose, poseEstimate.timestampSeconds);
         }

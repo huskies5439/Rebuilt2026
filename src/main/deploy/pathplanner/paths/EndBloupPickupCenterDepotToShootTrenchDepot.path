@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 7.668975903614458,
-        "y": 5.980132530120482
+        "x": 7.669,
+        "y": 5.7
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.320650602409638,
-        "y": 7.116614457831326
+        "x": 6.32067469879518,
+        "y": 6.836481927710844
       },
       "isLocked": false,
       "linkedName": "BloupsEndPickupCenterDepot"

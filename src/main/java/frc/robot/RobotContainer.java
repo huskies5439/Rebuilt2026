@@ -175,6 +175,10 @@ public class RobotContainer {
         manetteCopilote.povLeft().onTrue(superstructure.plusTrimTourelle());
         manetteCopilote.povRight().onTrue(superstructure.moinsTrimTourelle());
 
+        //top secret
+
+        manetteCopilote.a().onTrue(Commands.runOnce(basePilotable :: MegaTag1));
+
     }
 
     public Command getAutonomousCommand() {

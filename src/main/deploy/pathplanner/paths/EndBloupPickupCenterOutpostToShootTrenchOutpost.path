@@ -4,12 +4,12 @@
     {
       "anchor": {
         "x": 7.669,
-        "y": 2.02
+        "y": 2.3
       },
       "prevControl": null,
       "nextControl": {
         "x": 6.320978854056358,
-        "y": 0.8837746745962782
+        "y": 1.163774674596278
       },
       "isLocked": true,
       "linkedName": "BloupsEndPickUpCenterOutpost"
