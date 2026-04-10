@@ -6,7 +6,6 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.subsystems.Carroussel;
 import frc.robot.subsystems.Kickeur;
 import frc.robot.subsystems.Lanceur;
@@ -18,8 +17,7 @@ public class PostLancer extends SequentialCommandGroup {
 
         addCommands(
             Commands.runOnce(() -> superstructure.setRalentissementLancer(false)),
-            carroussel.debloquerCommand(),
-            new WaitCommand(0.5),
+            carroussel.debloquerCommand().withTimeout(0.5),
             Commands.runOnce(lanceur::stop, lanceur).alongWith(Commands.runOnce(kickeur::stop, kickeur))
             .alongWith(Commands.runOnce(carroussel::stop)));
     }
