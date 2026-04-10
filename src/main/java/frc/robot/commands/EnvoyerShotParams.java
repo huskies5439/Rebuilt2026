@@ -26,12 +26,13 @@ public class EnvoyerShotParams extends Command {
     boolean avecFin; //Si on veut régler la séquence de fin avec un autre commande
 
 
-    public EnvoyerShotParams(Lanceur lanceur, Hood hood, Kickeur kickeur, Superstructure superstructure) {
+    public EnvoyerShotParams(Lanceur lanceur, Hood hood, Kickeur kickeur, Superstructure superstructure, boolean avecFin) {
 
         this.lanceur = lanceur;
         this.hood = hood;
         this.kickeur = kickeur;
         this.superstructure = superstructure;
+        this.avecFin = avecFin;
 
         addRequirements(lanceur, hood, kickeur, superstructure);
 
@@ -40,8 +41,7 @@ public class EnvoyerShotParams extends Command {
     @Override
     public void initialize() {
         dynamique = true;
-        avecFin = true;
-
+        
         lanceur.resetPID();
         kickeur.resetPID();
         hood.resetPID();

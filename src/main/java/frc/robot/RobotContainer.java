@@ -85,9 +85,9 @@ public class RobotContainer {
 
         hood.setDefaultCommand(hood.goToAnglePIDCommand(Constants.kAngleHoodDepart));
 
-        lanceur.setDefaultCommand(Commands.run(lanceur::stop, lanceur));
+        // lanceur.setDefaultCommand(Commands.run(lanceur::stop, lanceur));
 
-        kickeur.setDefaultCommand(Commands.run(kickeur::stop, kickeur));
+        // kickeur.setDefaultCommand(Commands.run(kickeur::stop, kickeur));
 
         CommandScheduler.getInstance().schedule(FollowPathCommand.warmupCommand());
 
@@ -104,7 +104,7 @@ public class RobotContainer {
                 tourelle,
                 kickeur,
                 carroussel,
-                superstructure));
+                superstructure, true));
 
         NamedCommands.registerCommand("retracter", new RetracterGobeurDurantLancer(coude, gobeur));
 
@@ -138,7 +138,7 @@ public class RobotContainer {
         manettePilote
             .rightBumper()
             .and(protectionTrench)
-            .whileTrue(new LancerFancy(basePilotable, lanceur, hood, tourelle, kickeur, carroussel, superstructure))
+            .whileTrue(new LancerFancy(basePilotable, lanceur, hood, tourelle, kickeur, carroussel, superstructure, false))
             .onFalse(new PostLancer(lanceur, carroussel, kickeur, superstructure));
 
         manettePilote

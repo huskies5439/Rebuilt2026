@@ -17,7 +17,7 @@ public class PostLancer extends SequentialCommandGroup {
 
         addCommands(
             Commands.runOnce(() -> superstructure.setRalentissementLancer(false)),
-            carroussel.debloquerCommand().withTimeout(0.5),
+            carroussel.debloquerCommand().withTimeout(1),
             Commands.runOnce(lanceur::stop, lanceur).alongWith(Commands.runOnce(kickeur::stop, kickeur))
             .alongWith(Commands.runOnce(carroussel::stop)));
     }
