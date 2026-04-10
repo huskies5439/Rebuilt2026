@@ -32,7 +32,7 @@ public class Tourelle extends SubsystemBase {
     //PID
     private double vraieCible = 0.0;
     private ProfiledPIDController pidTourelle = new ProfiledPIDController(
-        0.06, 0, 0.002, //Valeurs à déterminer
+        0.07, 0, 0.003, //Valeurs à déterminer
         new TrapezoidProfile.Constraints(720, 1440));
 
 
