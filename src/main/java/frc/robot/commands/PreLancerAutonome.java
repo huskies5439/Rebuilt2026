@@ -37,7 +37,7 @@ public class PreLancerAutonome extends Command {
         shotParams = superstructure.getGeneriqueShotParams(3.25);
 
         lanceur.setPID(shotParams.getVitesseLanceur());
-        kickeur.setPID(shotParams.getVitesseKickeur());
+        // kickeur.setPID(shotParams.getVitesseKickeur());
 
     }
 

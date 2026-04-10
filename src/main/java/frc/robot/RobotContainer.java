@@ -48,7 +48,6 @@ public class RobotContainer {
     private final Coude coude;
     private final Hood hood;
     private final Kickeur kickeur;
-    private final Grimpeur grimpeur;
 
     private Trigger protectionTrench;
 
@@ -67,7 +66,7 @@ public class RobotContainer {
         coude = new Coude();
         hood = new Hood();
         kickeur = new Kickeur();
-        grimpeur = new Grimpeur();
+
 
         isHubActive = new Trigger(() -> superstructure.isHubActive(Constants.PREVISION_TIME));
 
@@ -153,16 +152,7 @@ public class RobotContainer {
 
         // Protection coude
         manettePilote.x().onTrue(coude.PIDCommand(120));
-
-        // Grimpeur
-        manettePilote.start().whileTrue(grimpeur.monterPitCommand());
-        manettePilote.back().whileTrue(grimpeur.descendrePitCommand());
-
-        manettePilote.b().onTrue(new ConditionalCommand(
-            grimpeur.goMinHauteur(),
-            grimpeur.goMaxHauteur().alongWith(coude.PIDCommand(Constants.kAngleCoudeDepart).withTimeout(1.0)),
-            grimpeur::grimpeurHaut));
-
+      
         isHubActive
             .onTrue(new RumbleControllerActiveHub(true, manettePilote, manetteCopilote))
             .onFalse(new RumbleControllerActiveHub(false, manettePilote, manetteCopilote));
