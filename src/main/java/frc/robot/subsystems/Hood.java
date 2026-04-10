@@ -40,7 +40,7 @@ public class Hood extends SubsystemBase {
     private DigitalInput limitSwitch = new DigitalInput(9);
 
     private ProfiledPIDController profiledPID =
-        new ProfiledPIDController(1, 0, 0, new TrapezoidProfile.Constraints(60, 180));
+        new ProfiledPIDController(1, 0, 0, new TrapezoidProfile.Constraints(90, 360));
 
     private double vraieCible = Constants.kAngleHoodDepart;
 

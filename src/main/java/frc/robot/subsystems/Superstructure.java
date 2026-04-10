@@ -290,7 +290,7 @@ public class Superstructure extends SubsystemBase {
 
     @Logged
     public boolean isProcheTrench() {
-        double demiX = 0.35;
+        double demiX = 0.7;
         double demiY = 0.61;
         return isProcheRectangle(PoseTrench.trenchBleuDepot, demiX, demiY) ||
                isProcheRectangle(PoseTrench.trenchBleuOutpost, demiX, demiY) ||
