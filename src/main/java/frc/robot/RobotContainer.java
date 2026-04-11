@@ -148,7 +148,7 @@ public class RobotContainer {
             .whileTrue(new WaitCommand(1).andThen(new RetracterGobeurDurantLancer(coude, gobeur)));
 
         // Gober
-        manettePilote.leftBumper().whileTrue(coude.PIDCommand(7).alongWith(gobeur.goberCommand()));
+        manettePilote.leftBumper().whileTrue(coude.PIDCommand(7).alongWith(gobeur.goberCommand())).onFalse(coude.PIDCommand(25));
 
         // Protection coude
         manettePilote.x().onTrue(coude.PIDCommand(120));
