@@ -133,7 +133,7 @@ public class RobotContainer {
         // .alongWith(lanceur.lancerPIDCommand())
         // .alongWith(hood.goToAnglePIDCommand()));
 
-        // manettePilote.a().whileTrue(new SnapTrench(manettePilote::getLeftY, basePilotable));
+        manettePilote.a().whileTrue(new SnapTrench(manettePilote::getLeftY, basePilotable));
 
         manettePilote
             .rightBumper()
@@ -148,7 +148,7 @@ public class RobotContainer {
             .whileTrue(new WaitCommand(1).andThen(new RetracterGobeurDurantLancer(coude, gobeur)));
 
         // Gober
-        manettePilote.leftBumper().whileTrue(coude.PIDCommand(7).alongWith(gobeur.goberCommand())).onFalse(coude.PIDCommand(25));
+        manettePilote.leftBumper().whileTrue(coude.PIDCommand(7).alongWith(gobeur.goberCommand()));
 
         // Protection coude
         manettePilote.x().onTrue(coude.PIDCommand(120));
