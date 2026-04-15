@@ -124,16 +124,16 @@ public class RobotContainer {
 
     private void configureBindings() {
 
-        // manettePilote.a().whileTrue(carroussel.tournerCommand().alongWith(new
-        // RetracterGobeurDurantLancer(coude, gobeur)))
-        // .onFalse(carroussel.debloquerCommand().withTimeout(0.5));
+        manettePilote.a().whileTrue(carroussel.tournerCommand().alongWith(new
+        RetracterGobeurDurantLancer(coude, gobeur)))
+        .onFalse(carroussel.debloquerCommand().withTimeout(0.5));
 
-        // manettePilote.b().toggleOnTrue(
-        // kickeur.kickerPIDCommand()
-        // .alongWith(lanceur.lancerPIDCommand())
-        // .alongWith(hood.goToAnglePIDCommand()));
+        manettePilote.b().toggleOnTrue(
+        kickeur.kickerPIDCommand()
+        .alongWith(lanceur.lancerPIDCommand())
+        .alongWith(hood.goToAnglePIDCommand()));
 
-        manettePilote.a().whileTrue(new SnapTrench(manettePilote::getLeftY, basePilotable));
+        // manettePilote.a().whileTrue(new SnapTrench(manettePilote::getLeftY, basePilotable));
 
         manettePilote
             .rightBumper()
@@ -165,9 +165,14 @@ public class RobotContainer {
         manetteCopilote.povLeft().onTrue(superstructure.plusTrimTourelle());
         manetteCopilote.povRight().onTrue(superstructure.moinsTrimTourelle());
 
+        manettePilote.povRight().whileTrue(tourelle.tournerHoraire()); 
+        manettePilote.povLeft().whileTrue(tourelle.tournerAntiHoraire()); 
+
+
+
         //top secret
 
-        manetteCopilote.a().onTrue(Commands.runOnce(basePilotable :: MegaTag1));
+        // manetteCopilote.a().onTrue(Commands.runOnce(basePilotable :: MegaTag1));
 
     }
 

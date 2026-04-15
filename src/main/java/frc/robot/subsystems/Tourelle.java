@@ -64,10 +64,10 @@ public class Tourelle extends SubsystemBase {
     }
 
     private void setVoltageHoraire() {
-        setVoltage(-1);
+        setVoltage(-0.5);
     }
     private void setVoltageAntiHoraire() {
-        setVoltage(1);
+        setVoltage(0.5);
     }
 
     public void stop() {
